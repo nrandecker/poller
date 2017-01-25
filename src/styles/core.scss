@@ -1,6 +1,9 @@
 @import 'base';
 @import '~normalize.css/normalize';
 
+$main: #1a222c;
+$sec: #4B5664;
+
 // Some best-practice CSS that's useful for most apps
 // Just remove them if they're not what you want
 html {
@@ -18,4 +21,35 @@ body {
 *:before,
 *:after {
   box-sizing: inherit;
+}
+
+.navbar {
+  width: 100vw;
+  display: block;
+  a {
+    color:white;
+    text-decoration: none;
+  }
+}
+
+.footer {
+  background: $main;
+  padding: 10px 0;
+  margin-top: 100px;
+  text-align: center;
+  color: #FFF;
+  .love {
+    color: red;
+  }
+  a {
+    text-decoration: none;
+    margin: 0;
+    color: #FFF;
+    &:hover{
+      color: $sec;
+    }
+    &:active {
+      color: $sec;
+    }
+  }
 }

@@ -9,7 +9,6 @@ import IconMenu from 'material-ui/IconMenu'
 import AppBar from 'material-ui/AppBar'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import { logIn, logOut } from '../../modules/navbar'
-import './Navbar.scss'
 
 const mapStatetoProps = (state) => ({
   loggedIn: state.navbar.loggedIn
@@ -65,5 +64,9 @@ export const Navbar = (props) => (
     </div>
   </MuiThemeProvider>
 )
+
+Navbar.propTypes = {
+  loggedIn : React.PropTypes.bool
+}
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Navbar)
