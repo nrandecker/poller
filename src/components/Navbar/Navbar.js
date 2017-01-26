@@ -1,23 +1,11 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { IndexLink, Link } from 'react-router'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import FlatButton from 'material-ui/FlatButton'
 import IconButton from 'material-ui/IconButton'
 import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
 import AppBar from 'material-ui/AppBar'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
-import { logIn, logOut } from '../../modules/navbar'
-
-const mapStatetoProps = (state) => ({
-  loggedIn: state.navbar.loggedIn
-})
-
-const mapDispatchToProps = {
-  logIn,
-  logOut
-}
 
 const styles = {
   boxShadow: 'none',
@@ -80,4 +68,4 @@ Navbar.propTypes = {
   loggedIn : React.PropTypes.bool
 }
 
-export default connect(mapStatetoProps, mapDispatchToProps)(Navbar)
+export default Navbar

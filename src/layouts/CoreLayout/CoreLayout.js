@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../styles/core.scss'
-import Navbar from '../../components/Navbar/Navbar'
+import NavbarContainer from '../../components/Navbar/NavbarContainer'
 import Footer from '../../components/Footer/Footer'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -15,7 +15,7 @@ const muiTheme = getMuiTheme({
 export const CoreLayout = ({ children }) => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <div>
-      <Navbar />
+      <NavbarContainer />
       {children}
       <Footer />
     </div>

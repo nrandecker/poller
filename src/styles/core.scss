@@ -38,13 +38,18 @@ body {
   }
 }
 
-.home {
+.home-container {
   width: 100vw;
   color: #FFF;
   height: 50vh;
   background-color: $main;
   text-align: center;
+}
+
+.home {
   h1 {
+    text-align: center;
+    padding-top: 20px;
     margin: 0 auto;
   }
 }
