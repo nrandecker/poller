@@ -19,6 +19,18 @@ const mapDispatchToProps = {
   logOut
 }
 
+const styles = {
+  boxShadow: 'none',
+  margin: '0 auto',
+  padding: '5px'
+}
+
+const buttonStyles = {
+  color: 'white',
+  fontSize: '16px',
+  margin: '5px'
+}
+
 class Login extends Component {
   static muiName = 'FlatButton';
 
@@ -26,10 +38,10 @@ class Login extends Component {
     return (
       <div>
         <Link to='/login'>
-          <FlatButton {...this.props} label='Login' />
+          <FlatButton {...this.props} labelStyle={buttonStyles} hoverColor='#2196F3' label='Login' />
         </Link>
         <Link to='/signup'>
-          <FlatButton {...this.props} label='Signup' />
+          <FlatButton {...this.props} labelStyle={buttonStyles} hoverColor='#2196F3' label='Signup' />
         </Link>
       </div>
     )
@@ -52,17 +64,16 @@ const Logged = (props) => (
 Logged.muiName = 'IconMenu'
 
 export const Navbar = (props) => (
-  <MuiThemeProvider>
-    <div className='navbar'>
-      <AppBar
-        showMenuIconButton={false}
-        title={<IndexLink to='/' activeClassName='route--active'>
-          Poller
-        </IndexLink>}
-        iconElementRight={props.loggedIn ? <Logged /> : <Login />}
-      />
-    </div>
-  </MuiThemeProvider>
+  <AppBar
+    style={styles}
+    className='navbar'
+    showMenuIconButton={false}
+    title={<IndexLink to='/' activeClassName='route--active'>
+      <i className='icon fa fa-hand-peace-o' aria-hidden='true' />
+      Poller
+    </IndexLink>}
+    iconElementRight={props.loggedIn ? <Logged /> : <Login />}
+  />
 )
 
 Navbar.propTypes = {

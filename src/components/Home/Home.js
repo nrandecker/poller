@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 class Home extends Component {
   render () {
     return (
-      <div className='container'>
-        Home Component
+      <div className='home'>
+        <h1> Create Real Time polls </h1>
       </div>
     )
   }

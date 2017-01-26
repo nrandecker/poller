@@ -1,8 +1,9 @@
 @import 'base';
 @import '~normalize.css/normalize';
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 
-$main: #1a222c;
-$sec: #4B5664;
+$main: #2196F3;
+$sec: #3F51B5;
 
 // Some best-practice CSS that's useful for most apps
 // Just remove them if they're not what you want
@@ -12,6 +13,7 @@ html {
 
 html,
 body {
+  font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
   height: 100%;
@@ -25,10 +27,23 @@ body {
 
 .navbar {
   width: 100vw;
-  display: block;
   a {
     color:white;
     text-decoration: none;
+  }
+  .icon {
+    padding: 10px;
+  }
+}
+
+.home {
+  width: 100vw;
+  color: #FFF;
+  height: 50vh;
+  background-color: $main;
+  text-align: center;
+  h1 {
+    margin: 0 auto;
   }
 }
 
