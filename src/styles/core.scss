@@ -4,6 +4,7 @@
 
 $main: #2196F3;
 $sec: #3F51B5;
+$cut: 768px;
 
 // Some best-practice CSS that's useful for most apps
 // Just remove them if they're not what you want
@@ -40,22 +41,44 @@ body {
 
 .home-container {
   width: 100vw;
-  color: #FFF;
-  height: 50vh;
   background-color: $main;
-  text-align: center;
 }
 
 .home {
+  width: 100vw;
+  color: #FFF;
+  height: 60vh;
+  background-color: $main;
+  text-align: center;
+  overflow:auto;
   h1 {
     text-align: center;
-    padding-top: 20px;
-    margin: 0 auto;
+    margin: 20px auto;
+    font-size: 1.5em;
+    @media only screen and (min-width:$cut){
+       font-size: 2em;
+     }
   }
 }
 
+.poll-options {
+  position: relative;
+}
+
+.trash {
+  position: absolute;
+  bottom: 0;
+  margin: 10px auto;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.polls {
+  margin: 10px auto;
+}
+
 .form {
-  margin: 20px auto;
+  margin: 40px auto;
   text-align: center;
   display: flex;
   flex-direction: column;

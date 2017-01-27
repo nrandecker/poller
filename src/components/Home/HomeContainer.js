@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { addOption } from '../../modules/home'
+import { addOption, removeOption } from '../../modules/home'
 import Home from './Home'
 
 const mapStatetoProps = (state) => ({
@@ -7,7 +7,8 @@ const mapStatetoProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  addOption
+  addOption,
+  removeOption
 }
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Home)
