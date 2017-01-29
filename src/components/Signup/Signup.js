@@ -37,6 +37,7 @@ class Signup extends Component {
             <div className='form'>
               <Paper style={style} zDepth={2} >
                 <h1> Signup </h1>
+                <form>
                     <TextField
                       style={style.textField}
                       hintText='First Name'
@@ -53,7 +54,8 @@ class Signup extends Component {
                       style={style.textField}
                       hintText='Password'
                     /><br />
-                <RaisedButton label='Signup' primary={true} style={style.button} />
+                <RaisedButton label='Signup' type='submit' primary={true} style={style.button} />
+                </form>
                 <Divider />
                 <RaisedButton
                   label='Signup with Github'

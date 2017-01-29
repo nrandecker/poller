@@ -81,7 +81,7 @@ export const Home = (props) => {
                   style={style.textField}
                 /><br />
                 {pollList}
-                <RaisedButton label='Create' secondary={true} style={style.button} />
+                <RaisedButton label='Create' type='submit' secondary={true} style={style.button} />
               </form>
             </div>
           </div>
@@ -112,34 +112,5 @@ export const Home = (props) => {
     </div>
   )
 }
-
-/*
-class Home extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-  render () {
-    var pollOptions = []
-    /*
-    for (let i = 0; i < props.home.options; i++) {
-      pollOptions.push(<PollOption />)
-    }
-    console.log(pollOptions)
-    return (
-      <div className='home-container'>
-        <div className='container home'>
-          <div className='row'>
-            <div className='twelve colums'>
-              <h1> Create Real Time polls </h1>
-              <TextField
-                hintText='Type your question here...'
-              /><br />
-
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-    */
 
 export default Home
