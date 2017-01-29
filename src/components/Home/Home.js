@@ -35,7 +35,7 @@ class PollOption extends React.Component {
 }
 
 function handleOptionClick (index, props) {
-  if (index === props.options[props.options.length - 1].index) {
+  if (index === props.options.length - 1) {
     // add option
     props.addOption(index)
   }
@@ -48,18 +48,18 @@ function handleTrashClick (index, props) {
 }
 
 export const Home = (props) => {
-  var pollList = props.options.map((option) => {
+  var pollList = props.options.map((option, index) => {
     return (
-      <div className='poll-options' key={option.index}>
+      <div className='poll-options' key={index}>
         <TextField
           hintText='Poll Option'
           style={style.textField}
           underlineFocusStyle={style.underlineStyle}
           inputStyle={style.textField.text}
           hintStyle={style.textField.text}
-          onClick={() => handleOptionClick(option.index, props)}
+          onClick={() => handleOptionClick(index, props)}
         />
-        <i onClick={() => handleTrashClick(option.index, props)}
+        <i onClick={() => handleTrashClick(index, props)}
           className='trash fa fa-trash' aria-hidden='true' />
         <br />
       </div>

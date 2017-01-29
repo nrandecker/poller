@@ -1,19 +1,26 @@
 const express = require('express')
 const debug = require('debug')('app:server')
 const path = require('path')
+const mongoose = require('mongoose')
+const dotenv = require('dotenv')
 const webpack = require('webpack')
+const bodyParser = require('body-parser')
+const passport = require('passport')
 const webpackConfig = require('../config/webpack.config')
 const project = require('../config/project.config')
 const compress = require('compression')
 
+dotenv.load()
 const app = express()
+
+mongoose.connect(process.env.MONGO_DB)
 
 // Apply gzip compression
 app.use(compress())
 
 // ------------------------------------
 // Apply Webpack HMR Middleware
-// ------------------------------------
+// ---------------------------p---------
 if (project.env === 'development') {
   const compiler = webpack(webpackConfig)
 

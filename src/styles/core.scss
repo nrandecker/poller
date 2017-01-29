@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 $main: #2196F3;
-$sec: #3F51B5;
+$sec: #FF9800;
 $cut: 768px;
 
 // Some best-practice CSS that's useful for most apps
@@ -47,7 +47,7 @@ body {
 .home {
   width: 100vw;
   color: #FFF;
-  height: 60vh;
+  height: 50vh;
   background-color: $main;
   text-align: center;
   overflow:auto;

@@ -10,13 +10,13 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 const styles = {
   boxShadow: 'none',
   margin: '0 auto',
-  padding: '5px'
+  padding: ''
 }
 
 const buttonStyles = {
   color: 'white',
   fontSize: '16px',
-  margin: '5px'
+  marginRight: '10px'
 }
 
 class Login extends Component {

@@ -40,7 +40,8 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   options: [
-    { index: 0 }
+    { index: 0 },
+    { index: 1 }
   ]
 }
 
