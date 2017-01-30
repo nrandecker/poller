@@ -29,6 +29,22 @@ const style = {
 }
 
 class Signup extends Component {
+  constructor (props) {
+    super(props)
+  }
+  handleChange = (e) => {
+    this.props.formChange({ [e.target.name]: e.target.value });
+  }
+  handleFormSubmit = (e) => {
+    e.preventDefault()
+    let data = {
+      firstName: this.props.firstName,
+      lastName: this.props.lastName,
+      email: this.props.email,
+      password: this.props.password
+    }
+    this.props.signUp(data)
+  }
   render () {
     return (
       <div className='container'>
@@ -37,22 +53,38 @@ class Signup extends Component {
             <div className='form'>
               <Paper style={style} zDepth={2} >
                 <h1> Signup </h1>
-                <form>
+                <form onSubmit={this.handleFormSubmit} ref='form'>
                     <TextField
                       style={style.textField}
                       hintText='First Name'
+                      type='text'
+                      name='firstName'
+                      value={this.props.firstName}
+                      onChange={this.handleChange}
                     /><br />
                     <TextField
                       style={style.textField}
                       hintText='Last Name'
+                      type='text'
+                      name='lastName'
+                      value={this.props.lastName}
+                      onChange={this.handleChange}
                     /><br />
                     <TextField
                       style={style.textField}
                       hintText='Email'
+                      type='text'
+                      name='email'
+                      value={this.props.email}
+                      onChange={this.handleChange}
                     /><br />
                     <TextField
                       style={style.textField}
                       hintText='Password'
+                      type='password'
+                      name='password'
+                      value={this.props.password}
+                      onChange={this.handleChange}
                     /><br />
                 <RaisedButton label='Signup' type='submit' primary={true} style={style.button} />
                 </form>

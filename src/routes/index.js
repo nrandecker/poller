@@ -4,13 +4,13 @@ import { Route, IndexRoute } from 'react-router'
 import CoreLayout from '../layouts/CoreLayout'
 import HomeContainer from '../components/Home/HomeContainer'
 import Login from '../components/Login/Login'
-import Signup from '../components/Signup/Signup'
+import SignupContainer from '../components/Signup/SignupContainer'
 
 export const createRoutes = (store) => (
   <Route path='/' component={CoreLayout}>
     <IndexRoute component={HomeContainer} />
     <Route path='/login' component={Login} />
-    <Route path='/signup' component={Signup} />
+    <Route path='/signup' component={SignupContainer} />
   </Route>
 )
 

@@ -1,6 +1,7 @@
 const express = require('express')
 const debug = require('debug')('app:server')
 const path = require('path')
+const cors = require('cors')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const webpack = require('webpack')
@@ -8,6 +9,7 @@ const jwt = require('jwt-simple')
 const moment = require('moment')
 const bodyParser = require('body-parser')
 const passport = require('passport')
+const morgan = require('morgan')
 const webpackConfig = require('../config/webpack.config')
 const project = require('../config/project.config')
 const compress = require('compression')
@@ -31,6 +33,14 @@ mongoose.connect(process.env.MONGO_DB)
 
 // Apply gzip compression
 app.use(compress())
+app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(morgan('combined'))
+
+app.post('/auth/signup', function (req, res) {
+  console.log(req.body)
+})
 
 // ------------------------------------
 // Apply Webpack HMR Middleware
@@ -96,9 +106,5 @@ function createToken (user) {
 
   return jwt.encode(payload, process.env.TOKEN_SECRET)
 }
-
-app.post('/auth/signup', function (req, res) {
-  console.log(req)
-})
 
 module.exports = app
