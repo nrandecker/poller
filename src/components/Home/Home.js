@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
+import TabMenu from '../TabMenu/TabMenuContainer'
 import { addOption } from '../../modules/home'
-import { orange500 } from 'material-ui/styles/colors';
+import { orange500 } from 'material-ui/styles/colors'
 
 const style = {
   height: '100%',
@@ -89,23 +90,8 @@ export const Home = (props) => {
         </div>
       <div className='container polls'>
         <div className='row'>
-          <div className='six columns'>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation
-              ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident,
-            sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          </div>
-          <div className='six columns'>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation
-              ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident,
-            sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <div className='twelve columns'>
+            <TabMenu />
           </div>
         </div>
       </div>
