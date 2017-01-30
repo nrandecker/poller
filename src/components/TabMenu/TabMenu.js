@@ -7,7 +7,14 @@ const styles = {
     fontSize: 24,
     paddingTop: 16,
     marginBottom: 12,
-    fontWeight: 400
+    fontWeight: 400,
+    color: '#000'
+  },
+  title: {
+    color: '#000'
+  },
+  container: {
+    backgroundColor: '#FFF'
   },
   slide: {
     padding: 10
@@ -29,10 +36,11 @@ class TabMenu extends React.Component {
         <Tabs
           onChange={this.handleChange}
           value={this.props.tabIndex}
+          tabItemContainerStyle={styles.container}
         >
-          <Tab label="Tab One" value={0} />
-          <Tab label="Tab Two" value={1} />
-          <Tab label="Tab Three" value={2} />
+          <Tab label="Tab One" style={styles.title} value={0} />
+          <Tab label="Tab Two" style={styles.title} value={1} />
+          <Tab label="Tab Three" style={styles.title} value={2} />
         </Tabs>
         <SwipeableViews
           index={this.props.tabIndex}

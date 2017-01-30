@@ -88,9 +88,9 @@ export const Home = (props) => {
           </div>
         </div>
         </div>
-      <div className='container polls'>
+      <div className='container'>
         <div className='row'>
-          <div className='twelve columns'>
+          <div className='twelve columns tab-menu'>
             <TabMenu />
           </div>
         </div>

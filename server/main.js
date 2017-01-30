@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('bcrypt')
 const debug = require('debug')('app:server')
 const path = require('path')
 const cors = require('cors')
@@ -24,8 +25,6 @@ var User = mongoose.model('User', new mongoose.Schema({
   lastName: { type: String },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  liked: [String],
-  list: [String],
   accessToken: String
 }))
 
@@ -38,8 +37,44 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(morgan('combined'))
 
+function createToken (user) {
+  var payload = {
+    exp: moment().add(14, 'days').unix(),
+    iat: moment().unix(),
+    sub: user._id
+  }
+
+  return jwt.encode(payload, process.env.TOKEN_SECRET)
+}
+
 app.post('/auth/signup', function (req, res) {
-  console.log(req.body)
+  User.findOne({ email: req.body.email }, function (err, existingUser) {
+    if (existingUser) {
+      return res.status(401).send({
+        error: {
+          email: 'Email is already taken.'
+        }
+      })
+    }
+  })
+
+  var user = new User({
+    email: req.body.email,
+    password: req.body.password,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+  })
+
+  bcrypt.getSalt(10, function (err, salt) {
+    bcrypt.hash(user.password, salt, function (err, hash) {
+      user.password = hash
+
+      user.save(function () {
+        var token = createToken(user)
+        res.send({ token: token, user: user })
+      })
+    })
+  })
 })
 
 // ------------------------------------
@@ -95,16 +130,6 @@ if (project.env === 'development') {
   // the web server and not the app server, but this helps to demo the
   // server in production.
   app.use(express.static(project.paths.dist()))
-}
-
-function createToken (user) {
-  var payload = {
-    exp: moment().add(14, 'days').unix(),
-    iat: moment().unix(),
-    sub: user._id
-  }
-
-  return jwt.encode(payload, process.env.TOKEN_SECRET)
 }
 
 module.exports = app
