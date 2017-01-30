@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router'
-import Paper from 'material-ui/Paper'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
-import Divider from 'material-ui/Divider'
-import FontIcon from 'material-ui/FontIcon'
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
+import FontIcon from 'material-ui/FontIcon';
 
 const style = {
   height: '100%',
@@ -25,24 +25,24 @@ const style = {
     width: '80%',
     margin: 12
   }
-}
+};
 
 class Signup extends Component {
   constructor (props) {
-    super(props)
+    super(props);
   }
   handleChange = (e) => {
-    this.props.formChange({ [e.target.name]: e.target.value })
+    this.props.formChange({ [e.target.name]: e.target.value });
   }
   handleFormSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     let data = {
       firstName: this.props.firstName,
       lastName: this.props.lastName,
       email: this.props.email,
       password: this.props.password
-    }
-    this.props.signUp(data)
+    };
+    this.props.signUp(data);
   }
   render () {
     return (
@@ -85,25 +85,25 @@ class Signup extends Component {
                     value={this.props.password}
                     onChange={this.handleChange}
                     /><br />
-                  <RaisedButton label='Signup' type='submit' primary={true} style={style.button} />
+                  <RaisedButton label='Signup' type='submit' primary style={style.button} />
                 </form>
                 <Divider />
                 <RaisedButton
                   label='Signup with Github'
-                  secondary={true}
+                  secondary
                   style={style.button}
                   icon={<FontIcon className='fa fa-github-alt' />}
                 />
                 <RaisedButton
                   label='Signup with Google'
-                  secondary={true}
+                  secondary
                   style={style.button}
                   icon={<FontIcon className='fa fa-google' />}
                 />
                 <div className='no-account'>
                   <p>Already have an account?</p>
                   <Link to='/login'>
-                    <RaisedButton label='Login' primary={true} style={style.button} />
+                    <RaisedButton label='Login' primary style={style.button} />
                   </Link>
                 </div>
               </Paper>
@@ -111,7 +111,7 @@ class Signup extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -122,6 +122,6 @@ Signup.propTypes = {
   password: React.PropTypes.string,
   signUp: React.PropTypes.func,
   formChange: React.PropTypes.func
-}
+};
 
-export default Signup
+export default Signup;

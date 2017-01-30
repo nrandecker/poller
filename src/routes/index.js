@@ -1,10 +1,10 @@
-import React from 'react'
-import { Route, IndexRoute } from 'react-router'
+import React from 'react';
+import { Route, IndexRoute } from 'react-router';
 
-import CoreLayout from '../layouts/CoreLayout'
-import HomeContainer from '../components/Home/HomeContainer'
-import Login from '../components/Login/Login'
-import SignupContainer from '../components/Signup/SignupContainer'
+import CoreLayout from '../layouts/CoreLayout';
+import HomeContainer from '../components/Home/HomeContainer';
+import Login from '../components/Login/Login';
+import SignupContainer from '../components/Signup/SignupContainer';
 
 export const createRoutes = (store) => (
   <Route path='/' component={CoreLayout}>
@@ -12,6 +12,6 @@ export const createRoutes = (store) => (
     <Route path='/login' component={Login} />
     <Route path='/signup' component={SignupContainer} />
   </Route>
-)
+);
 
-export default createRoutes
+export default createRoutes;

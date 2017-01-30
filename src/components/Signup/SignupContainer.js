@@ -1,6 +1,6 @@
-import { connect } from 'react-redux'
-import { signUp, formChange } from '../../modules/signup'
-import Signup from './Signup'
+import { connect } from 'react-redux';
+import { signUp, formChange } from '../../modules/signup';
+import Signup from './Signup';
 
 const mapStatetoProps = (state) => ({
   error: state.signup.error,
@@ -8,11 +8,11 @@ const mapStatetoProps = (state) => ({
   lastName: state.signup.lastName,
   email: state.signup.email,
   password: state.signup.password
-})
+});
 
 const mapDispatchToProps = {
   signUp,
   formChange
-}
+};
 
-export default connect(mapStatetoProps, mapDispatchToProps)(Signup)
+export default connect(mapStatetoProps, mapDispatchToProps)(Signup);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class Footer extends Component {
   render () {
@@ -7,8 +7,8 @@ class Footer extends Component {
         <p>Build with React, Redux, and <span className='love'>❤</span>
         by <a href='https://nrandecker.github.io'>Nathan Randecker</a></p>
       </footer>
-    )
+    );
   }
 }
 
-export default Footer
+export default Footer;

@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router'
-import Paper from 'material-ui/Paper'
-import Checkbox from 'material-ui/Checkbox'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
-import Divider from 'material-ui/Divider'
-import FontIcon from 'material-ui/FontIcon'
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Paper from 'material-ui/Paper';
+import Checkbox from 'material-ui/Checkbox';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
+import FontIcon from 'material-ui/FontIcon';
 
 const style = {
   height: '100%',
@@ -26,7 +26,7 @@ const style = {
     width: '80%',
     margin: 12
   }
-}
+};
 
 class Signup extends Component {
   render () {
@@ -38,52 +38,52 @@ class Signup extends Component {
               <Paper style={style} zDepth={2} >
                 <h1> Log In </h1>
                 <form>
-                    <TextField
-                      style={style.textField}
-                      hintText='Email'
+                  <TextField
+                    style={style.textField}
+                    hintText='Email'
                     /><br />
-                    <TextField
-                      style={style.textField}
-                      hintText='Password'
+                  <TextField
+                    style={style.textField}
+                    hintText='Password'
                     /><br />
-                    <div className='check-box'>
-                      <Checkbox
-                        label='Remeber Me'
-                        style={style.checkbox}
-                        labelStyle={style.checkboxLabel}
+                  <div className='check-box'>
+                    <Checkbox
+                      label='Remeber Me'
+                      style={style.checkbox}
+                      labelStyle={style.checkboxLabel}
                       />
-                      <Link to='/forgot'>
-                        <p>Forgot Password?</p>
-                      </Link>
-                    </div>
-                <RaisedButton label='Login' type='submit' primary={true} style={style.button} />
+                    <Link to='/forgot'>
+                      <p>Forgot Password?</p>
+                    </Link>
+                  </div>
+                  <RaisedButton label='Login' type='submit' primary style={style.button} />
                 </form>
                 <Divider />
                 <RaisedButton
                   label='Login with Github'
-                  secondary={true}
+                  secondary
                   style={style.button}
                   icon={<FontIcon className='fa fa-github-alt' />}
                 />
                 <RaisedButton
                   label='Login with Google'
-                  secondary={true}
+                  secondary
                   style={style.button}
                   icon={<FontIcon className='fa fa-google' />}
                 />
                 <div className='no-account'>
                   <p>Don't have an account?</p>
                   <Link to='/signup'>
-                    <RaisedButton label='Signup' primary={true} style={style.button} />
+                    <RaisedButton label='Signup' primary style={style.button} />
                   </Link>
                 </div>
-            </Paper>
+              </Paper>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    )
+    );
   }
 }
 
-export default Signup
+export default Signup;

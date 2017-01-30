@@ -1,6 +1,6 @@
-import React from 'react'
-import { Tabs, Tab } from 'material-ui/Tabs'
-import SwipeableViews from 'react-swipeable-views'
+import React from 'react';
+import { Tabs, Tab } from 'material-ui/Tabs';
+import SwipeableViews from 'react-swipeable-views';
 
 const styles = {
   headline: {
@@ -19,15 +19,15 @@ const styles = {
   slide: {
     padding: 10
   }
-}
+};
 
 class TabMenu extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor (props) {
+    super(props);
   }
 
   handleChange = (value) => {
-    this.props.setTabIndex(value)
+    this.props.setTabIndex(value);
   }
 
   render () {
@@ -38,9 +38,9 @@ class TabMenu extends React.Component {
           value={this.props.tabIndex}
           tabItemContainerStyle={styles.container}
         >
-          <Tab label="Tab One" style={styles.title} value={0} />
-          <Tab label="Tab Two" style={styles.title} value={1} />
-          <Tab label="Tab Three" style={styles.title} value={2} />
+          <Tab label='Tab One' style={styles.title} value={0} />
+          <Tab label='Tab Two' style={styles.title} value={1} />
+          <Tab label='Tab Three' style={styles.title} value={2} />
         </Tabs>
         <SwipeableViews
           index={this.props.tabIndex}
@@ -58,8 +58,8 @@ class TabMenu extends React.Component {
           </div>
         </SwipeableViews>
       </div>
-    )
+    );
   }
 }
 
-export default TabMenu
+export default TabMenu;

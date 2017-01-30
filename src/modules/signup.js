@@ -1,13 +1,13 @@
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const SIGN_UP_SUBMIT = 'SIGN_UP'
-export const FORM_CHANGE = 'FORM_CHANGE'
-export const SET_FIRST_NAME = 'SET_FIRST_NAME'
-export const SET_LAST_NAME = 'SET_LAST_NAME'
-export const SET_EMAIL = 'SET_EMAIL'
-export const SET_PASSWORD = 'SET_PASSWORD'
-export const RESET_FORM = 'RESET_FORM'
+export const SIGN_UP_SUBMIT = 'SIGN_UP';
+export const FORM_CHANGE = 'FORM_CHANGE';
+export const SET_FIRST_NAME = 'SET_FIRST_NAME';
+export const SET_LAST_NAME = 'SET_LAST_NAME';
+export const SET_EMAIL = 'SET_EMAIL';
+export const SET_PASSWORD = 'SET_PASSWORD';
+export const RESET_FORM = 'RESET_FORM';
 
 // ------------------------------------
 // Actions
@@ -15,7 +15,7 @@ export const RESET_FORM = 'RESET_FORM'
 export function signUp (data) {
   return (dispatch) => {
     // reset the form
-    dispatch(actions.resetForm())
+    dispatch(actions.resetForm());
 
     let req = new Request('/auth/signup/', {
       headers: new Headers({
@@ -29,12 +29,15 @@ export function signUp (data) {
         email: data.email,
         password: data.password
       })
-    })
+    });
 
-    fetch(req).then(function () {
-
-    })
-  }
+    fetch(req)
+          .then(function (data) {
+            console.log(data);
+          }).catch(function (err) {
+            console.log(err);
+          });
+  };
 }
 
 /*
@@ -44,49 +47,49 @@ object is empty? set the data to empty string
 export function formChange (data) {
   return (dispatch) => {
     if (data.firstName || data.firstName === '') {
-      dispatch(actions.setFirstName(data.firstName))
+      dispatch(actions.setFirstName(data.firstName));
     } else if (data.lastName || data.lastName === '') {
-      dispatch(actions.setLastName(data.lastName))
+      dispatch(actions.setLastName(data.lastName));
     } else if (data.email || data.email === '') {
-      dispatch(actions.setEmail(data.email))
+      dispatch(actions.setEmail(data.email));
     } else if (data.password || data.password === '') {
-      dispatch(actions.setPassword(data.password))
+      dispatch(actions.setPassword(data.password));
     }
-  }
+  };
 }
 
 export function resetForm () {
   return {
     type: RESET_FORM
-  }
+  };
 }
 
 export function setFirstName (firstName) {
   return {
     type: SET_FIRST_NAME,
     firstName: firstName
-  }
+  };
 }
 
 export function setLastName (lastName) {
   return {
     type: SET_LAST_NAME,
     lastName: lastName
-  }
+  };
 }
 
 export function setEmail (email) {
   return {
     type: SET_EMAIL,
     email: email
-  }
+  };
 }
 
 export function setPassword (password) {
   return {
     type: SET_PASSWORD,
     password: password
-  }
+  };
 }
 
 export const actions = {
@@ -97,7 +100,7 @@ export const actions = {
   setEmail,
   setPassword,
   resetForm
-}
+};
 
 // ------------------------------------
 // Action Handlers
@@ -126,7 +129,7 @@ const ACTION_HANDLERS = {
     email: '',
     password: ''
   })
-}
+};
 
 // ------------------------------------
 // Reducer
@@ -137,10 +140,10 @@ const initialState = {
   email: '',
   password: '',
   error: {}
-}
+};
 
 export default function navbarReducer (state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
+  const handler = ACTION_HANDLERS[action.type];
 
-  return handler ? handler(state, action) : state
+  return handler ? handler(state, action) : state;
 }
