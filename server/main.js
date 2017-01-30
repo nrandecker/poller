@@ -34,8 +34,8 @@ mongoose.connect(process.env.MONGO_DB)
 // Apply gzip compression
 app.use(compress())
 app.use(cors())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(morgan('combined'))
 
 app.post('/auth/signup', function (req, res) {

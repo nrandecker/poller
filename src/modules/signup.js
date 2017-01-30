@@ -14,22 +14,24 @@ export const RESET_FORM = 'RESET_FORM'
 // ------------------------------------
 export function signUp (data) {
   return (dispatch) => {
-    console.log(data)
     // reset the form
     dispatch(actions.resetForm())
+
     let req = new Request('/auth/signup/', {
-      method: 'POST',
-      mode: 'cors',
       headers: new Headers({
-        'Content-Type': 'text/plain'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       }),
-      body: {
+      method: 'POST',
+      body: JSON.stringify({
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
         password: data.password
-      }
+      })
     })
+    console.log(req)
+
     fetch(req).then(function () {
 
     })
