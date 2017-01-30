@@ -13,7 +13,7 @@ const compress = require('compression')
 dotenv.load()
 const app = express()
 
-mongoose.connect(process.env.MONGO_DB)
+require('./models').connect(process.env.MONGO_DB)
 
 // Apply gzip compression
 app.use(compress())
