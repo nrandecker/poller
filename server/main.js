@@ -4,6 +4,8 @@ const path = require('path')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const webpack = require('webpack')
+const jwt = require('jwt-simple')
+const moment = require('moment')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 const webpackConfig = require('../config/webpack.config')
@@ -13,7 +15,19 @@ const compress = require('compression')
 dotenv.load()
 const app = express()
 
-require('./models').connect(process.env.MONGO_DB)
+var User = mongoose.model('User', new mongoose.Schema({
+  email: { type: String, unique: true },
+  password: { type: String, select: false },
+  firstName: { type: String },
+  lastName: { type: String },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
+  liked: [String],
+  list: [String],
+  accessToken: String
+}))
+
+mongoose.connect(process.env.MONGO_DB)
 
 // Apply gzip compression
 app.use(compress())
@@ -72,5 +86,19 @@ if (project.env === 'development') {
   // server in production.
   app.use(express.static(project.paths.dist()))
 }
+
+function createToken (user) {
+  var payload = {
+    exp: moment().add(14, 'days').unix(),
+    iat: moment().unix(),
+    sub: user._id
+  }
+
+  return jwt.encode(payload, process.env.TOKEN_SECRET)
+}
+
+app.post('/auth/signup', function (req, res) {
+  console.log(req)
+})
 
 module.exports = app
