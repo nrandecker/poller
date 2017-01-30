@@ -30,7 +30,6 @@ export function signUp (data) {
         password: data.password
       })
     })
-    console.log(req)
 
     fetch(req).then(function () {
 
@@ -38,15 +37,19 @@ export function signUp (data) {
   }
 }
 
+/*
+check the form data object and dispatch the action
+object is empty? set the data to empty string
+*/
 export function formChange (data) {
   return (dispatch) => {
-    if (data.firstName) {
+    if (data.firstName || data.firstName === '') {
       dispatch(actions.setFirstName(data.firstName))
-    } else if (data.lastName) {
+    } else if (data.lastName || data.lastName === '') {
       dispatch(actions.setLastName(data.lastName))
-    } else if (data.email) {
+    } else if (data.email || data.email === '') {
       dispatch(actions.setEmail(data.email))
-    } else if (data.password) {
+    } else if (data.password || data.password === '') {
       dispatch(actions.setPassword(data.password))
     }
   }

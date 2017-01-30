@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import Paper from 'material-ui/Paper'
-import Checkbox from 'material-ui/Checkbox'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import Divider from 'material-ui/Divider'
@@ -33,7 +32,7 @@ class Signup extends Component {
     super(props)
   }
   handleChange = (e) => {
-    this.props.formChange({ [e.target.name]: e.target.value });
+    this.props.formChange({ [e.target.name]: e.target.value })
   }
   handleFormSubmit = (e) => {
     e.preventDefault()
@@ -54,39 +53,39 @@ class Signup extends Component {
               <Paper style={style} zDepth={2} >
                 <h1> Signup </h1>
                 <form onSubmit={this.handleFormSubmit} ref='form'>
-                    <TextField
-                      style={style.textField}
-                      hintText='First Name'
-                      type='text'
-                      name='firstName'
-                      value={this.props.firstName}
-                      onChange={this.handleChange}
+                  <TextField
+                    style={style.textField}
+                    hintText='First Name'
+                    type='text'
+                    name='firstName'
+                    value={this.props.firstName}
+                    onChange={this.handleChange}
                     /><br />
-                    <TextField
-                      style={style.textField}
-                      hintText='Last Name'
-                      type='text'
-                      name='lastName'
-                      value={this.props.lastName}
-                      onChange={this.handleChange}
+                  <TextField
+                    style={style.textField}
+                    hintText='Last Name'
+                    type='text'
+                    name='lastName'
+                    value={this.props.lastName}
+                    onChange={this.handleChange}
                     /><br />
-                    <TextField
-                      style={style.textField}
-                      hintText='Email'
-                      type='text'
-                      name='email'
-                      value={this.props.email}
-                      onChange={this.handleChange}
+                  <TextField
+                    style={style.textField}
+                    hintText='Email'
+                    type='text'
+                    name='email'
+                    value={this.props.email}
+                    onChange={this.handleChange}
                     /><br />
-                    <TextField
-                      style={style.textField}
-                      hintText='Password'
-                      type='password'
-                      name='password'
-                      value={this.props.password}
-                      onChange={this.handleChange}
+                  <TextField
+                    style={style.textField}
+                    hintText='Password'
+                    type='password'
+                    name='password'
+                    value={this.props.password}
+                    onChange={this.handleChange}
                     /><br />
-                <RaisedButton label='Signup' type='submit' primary={true} style={style.button} />
+                  <RaisedButton label='Signup' type='submit' primary={true} style={style.button} />
                 </form>
                 <Divider />
                 <RaisedButton
@@ -107,13 +106,22 @@ class Signup extends Component {
                     <RaisedButton label='Login' primary={true} style={style.button} />
                   </Link>
                 </div>
-            </Paper>
+              </Paper>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     )
   }
+}
+
+Signup.propTypes = {
+  firstName: React.PropTypes.string,
+  lastName: React.PropTypes.string,
+  email: React.PropTypes.string,
+  password: React.PropTypes.string,
+  signUp: React.PropTypes.func,
+  formChange: React.PropTypes.func
 }
 
 export default Signup
