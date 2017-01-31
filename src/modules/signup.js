@@ -12,6 +12,9 @@ export const SET_PASSWORD = 'SET_PASSWORD';
 export const RESET_FORM = 'RESET_FORM';
 export const SET_USER = 'SET_USER';
 export const SET_ERROR = 'SET_ERROR';
+export const SET_SNACKBAR = 'SET_SNACKBAR';
+export const SET_SNACKBAR_OPEN = 'SET_SNACKBAR_OPEN';
+export const SET_SNACKBAR_CLOSE = 'SET_SNACKBAR_CLOSE';
 
 // ------------------------------------
 // Actions
@@ -28,6 +31,7 @@ export function signUp (data) {
       dispatch(actions.setUser(res.data.user, res.data.token));
       setTimeout(() => {
         // reset the form
+        dispatch(actions.setSnackBar('User account succesfully created.'));
         dispatch(actions.resetForm());
       }, 1000);
     })
@@ -67,6 +71,27 @@ export function setError (error) {
 export function resetForm () {
   return {
     type: RESET_FORM
+  };
+}
+
+export function setSnackBar (message) {
+  return (dispatch, getState) => {
+    (getState().signup.snackbar.open === true)
+    ? dispatch(setSnackBarClose(message)) : dispatch(setSnackBarOpen(message));
+  };
+}
+
+export function setSnackBarOpen (message) {
+  return {
+    type: SET_SNACKBAR_OPEN,
+    message: message
+  };
+}
+
+export function setSnackBarClose (message) {
+  return {
+    type: SET_SNACKBAR_CLOSE,
+    message: message
   };
 }
 
@@ -121,7 +146,10 @@ export const actions = {
   setPassword,
   resetForm,
   setUser,
-  setError
+  setError,
+  setSnackBar,
+  setSnackBarOpen,
+  setSnackBarClose
 };
 
 // ------------------------------------
@@ -163,6 +191,20 @@ const ACTION_HANDLERS = {
   [SET_ERROR] : (state, action) => ({
     ...state,
     error: action.error
+  }),
+  [SET_SNACKBAR_OPEN] : (state, action) => ({
+    ...state,
+    snackbar: {
+      open: true,
+      message: action.message
+    }
+  }),
+  [SET_SNACKBAR_CLOSE] : (state, action) => ({
+    ...state,
+    snackbar: {
+      open: false,
+      message: action.message
+    }
   })
 };
 
@@ -175,7 +217,11 @@ const initialState = {
   email: '',
   password: '',
   error: {},
-  user: {}
+  user: {},
+  snackbar: {
+    open: false,
+    message: ''
+  }
 };
 
 export default function navbarReducer (state = initialState, action) {
