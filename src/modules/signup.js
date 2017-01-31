@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -8,35 +10,32 @@ export const SET_LAST_NAME = 'SET_LAST_NAME';
 export const SET_EMAIL = 'SET_EMAIL';
 export const SET_PASSWORD = 'SET_PASSWORD';
 export const RESET_FORM = 'RESET_FORM';
+export const SET_USER = 'SET_USER';
+export const SET_ERROR = 'SET_ERROR';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export function signUp (data) {
   return (dispatch) => {
-    // reset the form
-    dispatch(actions.resetForm());
-
-    let req = new Request('/auth/signup/', {
-      headers: new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }),
-      method: 'POST',
-      body: JSON.stringify({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        password: data.password
-      })
+    axios.post('/auth/signup', {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password
+    })
+    .then(function (res) {
+      dispatch(actions.setUser(res.data.user, res.data.token));
+      setTimeout(() => {
+        // reset the form
+        dispatch(actions.resetForm());
+      }, 1000);
+    })
+    .catch(function (err) {
+      if (err.response) {
+        dispatch(actions.setError(err.response.data.error));
+      }
     });
-
-    fetch(req)
-          .then(function (data) {
-            console.log(data);
-          }).catch(function (err) {
-            console.log(err);
-          });
   };
 }
 
@@ -58,9 +57,30 @@ export function formChange (data) {
   };
 }
 
+export function setError (error) {
+  return {
+    type: SET_ERROR,
+    error: error
+  };
+}
+
 export function resetForm () {
   return {
     type: RESET_FORM
+  };
+}
+
+export function setUser (userResponse, token) {
+  let user = {
+    token: token,
+    email: userResponse.email,
+    firstName: userResponse.firstName,
+    lastName: userResponse.lastName
+  };
+
+  return {
+    type: SET_USER,
+    user: user
   };
 }
 
@@ -99,7 +119,9 @@ export const actions = {
   setLastName,
   setEmail,
   setPassword,
-  resetForm
+  resetForm,
+  setUser,
+  setError
 };
 
 // ------------------------------------
@@ -128,6 +150,19 @@ const ACTION_HANDLERS = {
     lastName: '',
     email: '',
     password: ''
+  }),
+  [SET_USER] : (state, action) => ({
+    ...state,
+    user: {
+      token: action.user.token,
+      firstName: action.user.firstName,
+      lastName: action.user.lastName,
+      email: action.user.email
+    }
+  }),
+  [SET_ERROR] : (state, action) => ({
+    ...state,
+    error: action.error
   })
 };
 
@@ -139,7 +174,8 @@ const initialState = {
   lastName: '',
   email: '',
   password: '',
-  error: {}
+  error: {},
+  user: {}
 };
 
 export default function navbarReducer (state = initialState, action) {

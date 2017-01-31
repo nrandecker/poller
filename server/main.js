@@ -32,29 +32,17 @@ mongoose.connect(process.env.MONGO_DB);
 // Apply gzip compression
 app.use(compress());
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 app.use(morgan('combined'));
-
-function createToken (user) {
-  var payload = {
-    exp: moment().add(14, 'days').unix(),
-    iat: moment().unix(),
-    sub: user._id
-  };
-  return jwt.encode(payload, process.env.TOKEN_SECRET);
-}
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/auth/signup', function (req, res) {
-  res.sned({ test: 'test' });
   User.findOne({ email: req.body.email }, function (err, existingUser) {
-    if (err) {
-      if (existingUser) {
-        return res.status(400).json({
-          success: false,
-          error: 'Email is already taken'
-        });
-      }
+    if (existingUser || err) {
+      return res.status(401).send({
+        success: false,
+        error: 'Email is already taken'
+      });
     }
 
     var user = new User({
@@ -65,25 +53,34 @@ app.post('/auth/signup', function (req, res) {
     });
 
     bcrypt.genSalt(10, function (err, salt) {
-      if (err) console.log(err);
+      if (err) {
+        return res.status(400).send({
+          success: false,
+          error: 'Something went wrong on signup'
+        });
+      }
+
       bcrypt.hash(user.password, salt, function (err, hash) {
-        if (err) console.log(err);
         user.password = hash;
 
         user.save(function () {
+          if (err) return err;
           var token = createToken(user);
-          res.json({ token: token, user: user });
+          res.send({ token: token, user: user });
         });
-        if (err) {
-          res.status(400).json({
-            success: false,
-            error: 'Something went wrong'
-          });
-        }
       });
     });
   });
 });
+
+function createToken (user) {
+  var payload = {
+    exp: moment().add(14, 'days').unix(),
+    iat: moment().unix(),
+    sub: user._id
+  };
+  return jwt.encode(payload, process.env.TOKEN_SECRET);
+}
 
 // ------------------------------------
 // Apply Webpack HMR Middleware
