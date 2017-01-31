@@ -38,9 +38,8 @@ class TabMenu extends React.Component {
           value={this.props.tabIndex}
           tabItemContainerStyle={styles.container}
         >
-          <Tab label='Tab One' style={styles.title} value={0} />
-          <Tab label='Tab Two' style={styles.title} value={1} />
-          <Tab label='Tab Three' style={styles.title} value={2} />
+          <Tab label='New Polls' style={styles.title} value={0} />
+          <Tab label='Trending Polls' style={styles.title} value={1} />
         </Tabs>
         <SwipeableViews
           index={this.props.tabIndex}
@@ -52,9 +51,6 @@ class TabMenu extends React.Component {
           </div>
           <div style={styles.slide}>
             slide n°2
-          </div>
-          <div style={styles.slide}>
-            slide n°3
           </div>
         </SwipeableViews>
       </div>
