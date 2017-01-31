@@ -29,6 +29,20 @@ const style = {
 };
 
 class Signup extends Component {
+  handleChange = (e) => {
+    this.props.formChange({ [e.target.name]: e.target.value });
+  }
+  handleFormSubmit = (e) => {
+    e.preventDefault();
+    let data = {
+      email: this.props.email,
+      password: this.props.password
+    };
+    this.props.login(data);
+  }
+  handleSnackbarClose = () => {
+    this.props.setSnackBar('');
+  }
   render () {
     return (
       <div className='container'>
@@ -37,14 +51,22 @@ class Signup extends Component {
             <div className='form'>
               <Paper style={style} zDepth={2} >
                 <h1> Log In </h1>
-                <form>
+                <form onSubmit={this.handleFormSubmit}>
                   <TextField
                     style={style.textField}
                     hintText='Email'
+                    type='text'
+                    name='email'
+                    value={this.props.email}
+                    onChange={this.handleChange}
                     /><br />
                   <TextField
                     style={style.textField}
                     hintText='Password'
+                    name='password'
+                    type='password'
+                    value={this.props.password}
+                    onChange={this.handleChange}
                     /><br />
                   <div className='check-box'>
                     <Checkbox
@@ -85,5 +107,14 @@ class Signup extends Component {
     );
   }
 }
+
+Signup.propTypes = {
+  email: React.PropTypes.string,
+  password: React.PropTypes.string,
+  login: React.PropTypes.func,
+  formChange: React.PropTypes.func,
+  snackbar: React.PropTypes.object,
+  setSnackBar: React.PropTypes.func
+};
 
 export default Signup;

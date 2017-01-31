@@ -3,7 +3,6 @@ import axios from 'axios';
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const SIGN_UP_SUBMIT = 'SIGN_UP';
 export const FORM_CHANGE = 'FORM_CHANGE';
 export const SET_FIRST_NAME = 'SET_FIRST_NAME';
 export const SET_LAST_NAME = 'SET_LAST_NAME';
@@ -43,6 +42,12 @@ export function signUp (data) {
   };
 }
 
+export function login (data) {
+  return (dispatch) => {
+    console.log(data);
+  };
+}
+
 /*
 check the form data object and dispatch the action
 object is empty? set the data to empty string
@@ -76,7 +81,7 @@ export function resetForm () {
 
 export function setSnackBar (message) {
   return (dispatch, getState) => {
-    (getState().signup.snackbar.open === true)
+    (getState().form.snackbar.open === true)
     ? dispatch(setSnackBarClose(message)) : dispatch(setSnackBarOpen(message));
   };
 }

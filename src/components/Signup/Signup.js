@@ -53,7 +53,7 @@ class Signup extends Component {
             <div className='form'>
               <Paper style={style} zDepth={2} >
                 <h1> Signup </h1>
-                <form onSubmit={this.handleFormSubmit} ref='form'>
+                <form onSubmit={this.handleFormSubmit}>
                   <TextField
                     style={style.textField}
                     hintText='First Name'

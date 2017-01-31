@@ -48,7 +48,7 @@ body {
   padding: 10px;
   width: 100vw;
   color: #FFF;
-  height: 50vh;
+  height: 45vh;
   background-color: $main;
   text-align: center;
   overflow:auto;
@@ -88,8 +88,8 @@ body {
   }
   .check-box {
     display: flex;
-    justify-content: center;
     flex-direction: row;
+    justify-content: space-around;
   }
 }
 
