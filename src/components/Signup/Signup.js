@@ -114,7 +114,7 @@ class Signup extends Component {
         <Snackbar
           open={this.props.snackbar.open}
           message={this.props.snackbar.message}
-          autoHideDuration={4000}
+          autoHideDuration={2000}
           onRequestClose={this.handleSnackbarClose}
        />
       </div>

@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
 import Checkbox from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField';
+import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import FontIcon from 'material-ui/FontIcon';
@@ -103,6 +104,12 @@ class Signup extends Component {
             </div>
           </div>
         </div>
+        <Snackbar
+          open={this.props.snackbar.open}
+          message={this.props.snackbar.message}
+          autoHideDuration={2000}
+          onRequestClose={this.handleSnackbarClose}
+       />
       </div>
     );
   }

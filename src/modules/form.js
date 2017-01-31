@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 
 // ------------------------------------
 // Constants
@@ -28,11 +29,15 @@ export function signUp (data) {
     })
     .then(function (res) {
       dispatch(actions.setUser(res.data.user, res.data.token));
+
+      // Give feedback to user and reset the form
+      dispatch(actions.setSnackBar('User account succesfully created.'));
+      dispatch(actions.resetForm());
+
       setTimeout(() => {
-        // reset the form
-        dispatch(actions.setSnackBar('User account succesfully created.'));
-        dispatch(actions.resetForm());
-      }, 1000);
+        // redirect to login page
+        browserHistory.push('/login');
+      }, 2000);
     })
     .catch(function (err) {
       if (err.response) {
@@ -43,8 +48,28 @@ export function signUp (data) {
 }
 
 export function login (data) {
-  return (dispatch) => {
-    console.log(data);
+  return (dispatch, getState) => {
+    axios.post('/auth/login', {
+      email: data.email,
+      password: data.password
+    })
+    .then(function (res) {
+      dispatch(actions.setUser(res.data.user, res.data.token));
+
+      // Give feedback to user and reset the form
+      dispatch(actions.setSnackBar('User logged in.'));
+      dispatch(actions.resetForm());
+
+      setTimeout(() => {
+        // redirect to home page
+        browserHistory.push('/');
+      }, 2000);
+    })
+    .catch(function (err) {
+      if (err.response) {
+        dispatch(actions.setError(err.response.data.message));
+      }
+    });
   };
 }
 

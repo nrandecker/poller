@@ -73,6 +73,31 @@ app.post('/auth/signup', function (req, res) {
   });
 });
 
+app.post('/auth/login', function (req, res) {
+  User.findOne({ email: req.body.email }, '+password', function (err, user) {
+    if (!user || err) {
+      return res.status(401).send({
+        sucess: false,
+        error: 'Email is already taken'
+      });
+    }
+    bcrypt.compare(req.body.password, user.password, function (err, isMatch) {
+      if (!isMatch || err) {
+        return res.status(401).send({
+          success: false,
+          error: 'Password incorrect'
+        });
+      }
+
+      user = user.toObject();
+      delete user.password;
+
+      var token = createToken(user);
+      res.send({ token: token, user: user });
+    });
+  });
+});
+
 function createToken (user) {
   var payload = {
     exp: moment().add(14, 'days').unix(),
