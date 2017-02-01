@@ -1,5 +1,4 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const debug = require('debug')('app:server');
 const path = require('path');
 const cors = require('cors');
@@ -19,6 +18,9 @@ dotenv.load();
 const app = express();
 
 mongoose.connect(process.env.MONGO_DB);
+const conn = mongoose.connection;
+
+conn.on('error', console.error.bind(console, 'connection error:'));
 
 require('./config/passport')(passport);
 
@@ -32,10 +34,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/auth/signup', function (req, res, next) {
   passport.authenticate('local-signup', function (err, user) {
-    if (err) return next(res.send({ sucess: false, message: 'Ah, Snap something went wrong!' }));
+    if (err) return next(res.send({ success: false, message: 'Ah, Snap something went wrong!' }));
 
     if (!user) {
-      return res.send(401, { sucess: false, message: 'Email is already taken.' });
+      return res.status(401).send({ success: false, message: 'Email is already taken.' });
     }
 
     var token = createToken(user);
@@ -48,14 +50,20 @@ app.post('/auth/login', function (req, res, next) {
     if (err) return next(res.send({ sucess: false, message: 'Ah, Snap something went wrong!' }));
 
     if (!user) {
-      return res.send(401, { success: false, message: 'User not found' });
+      return res.status(401).send({ success: false, message: 'Username or password is incorrect.' });
     }
-    console.log(err);
 
     delete user.password;
     var token = createToken(user);
     res.send({ token: token, user: user });
   })(req, res, next);
+});
+
+app.get('/auth/google', function (req, res, next) {
+  passport.authenticate('google', function (err, user) {
+    if (err) return err;
+    console.log(user);
+  });
 });
 
 function createToken (user) {

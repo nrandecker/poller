@@ -69,6 +69,7 @@ export function login (data) {
     })
     .catch(function (err) {
       if (err.response) {
+        console.log(err.response);
         dispatch(actions.setError(err.response.data.message));
       }
     });
