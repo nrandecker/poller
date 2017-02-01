@@ -28,6 +28,7 @@ export function signUp (data) {
       password: data.password
     })
     .then(function (res) {
+      console.log(res);
       dispatch(actions.setUser(res.data.user, res.data.token));
 
       // Give feedback to user and reset the form
@@ -41,7 +42,7 @@ export function signUp (data) {
     })
     .catch(function (err) {
       if (err.response) {
-        dispatch(actions.setError(err.response.data.error));
+        dispatch(actions.setError(err.response.data.message));
       }
     });
   };
@@ -54,7 +55,8 @@ export function login (data) {
       password: data.password
     })
     .then(function (res) {
-      dispatch(actions.setUser(res.data.user, res.data.token));
+      console.log(res);
+      dispatch(actions.setUser(res.data.user.local, res.data.token));
 
       // Give feedback to user and reset the form
       dispatch(actions.setSnackBar('User logged in.'));

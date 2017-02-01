@@ -6,6 +6,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
+const passport = require('passport');
 const jwt = require('jwt-simple');
 const moment = require('moment');
 const bodyParser = require('body-parser');
@@ -17,85 +18,44 @@ const compress = require('compression');
 dotenv.load();
 const app = express();
 
-var User = mongoose.model('User', new mongoose.Schema({
-  email: { type: String, unique: true },
-  password: { type: String, select: false },
-  firstName: { type: String },
-  lastName: { type: String },
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
-  accessToken: String
-}));
-
 mongoose.connect(process.env.MONGO_DB);
+
+require('./config/passport')(passport);
 
 // Apply gzip compression
 app.use(compress());
 app.use(cors());
+app.use(passport.initialize());
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post('/auth/signup', function (req, res) {
-  User.findOne({ email: req.body.email }, function (err, existingUser) {
-    if (existingUser || err) {
-      return res.status(401).send({
-        success: false,
-        error: 'Email is already taken'
-      });
+app.post('/auth/signup', function (req, res, next) {
+  passport.authenticate('local-signup', function (err, user) {
+    if (err) return next(res.send({ sucess: false, message: 'Ah, Snap something went wrong!' }));
+
+    if (!user) {
+      return res.send(401, { sucess: false, message: 'Email is already taken.' });
     }
 
-    var user = new User({
-      email: req.body.email.trim(),
-      password: req.body.password.trim(),
-      firstName: req.body.firstName.trim(),
-      lastName: req.body.lastName.trim()
-    });
-
-    bcrypt.genSalt(10, function (err, salt) {
-      if (err) {
-        return res.status(400).send({
-          success: false,
-          error: 'Something went wrong on signup'
-        });
-      }
-
-      bcrypt.hash(user.password, salt, function (err, hash) {
-        user.password = hash;
-
-        user.save(function () {
-          if (err) return err;
-          var token = createToken(user);
-          res.send({ token: token, user: user });
-        });
-      });
-    });
-  });
+    var token = createToken(user);
+    res.send({ token: token, user: user });
+  })(req, res, next);
 });
 
-app.post('/auth/login', function (req, res) {
-  User.findOne({ email: req.body.email }, '+password', function (err, user) {
-    if (!user || err) {
-      return res.status(401).send({
-        sucess: false,
-        error: 'Email is already taken'
-      });
+app.post('/auth/login', function (req, res, next) {
+  passport.authenticate('local-login', function (err, user) {
+    if (err) return next(res.send({ sucess: false, message: 'Ah, Snap something went wrong!' }));
+
+    if (!user) {
+      return res.send(401, { success: false, message: 'User not found' });
     }
-    bcrypt.compare(req.body.password, user.password, function (err, isMatch) {
-      if (!isMatch || err) {
-        return res.status(401).send({
-          success: false,
-          error: 'Password incorrect'
-        });
-      }
+    console.log(err);
 
-      user = user.toObject();
-      delete user.password;
-
-      var token = createToken(user);
-      res.send({ token: token, user: user });
-    });
-  });
+    delete user.password;
+    var token = createToken(user);
+    res.send({ token: token, user: user });
+  })(req, res, next);
 });
 
 function createToken (user) {
