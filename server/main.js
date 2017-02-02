@@ -22,15 +22,16 @@ const conn = mongoose.connection;
 
 conn.on('error', console.error.bind(console, 'connection error:'));
 
-require('./config/passport')(passport);
-
 // Apply gzip compression
-app.use(compress());
 app.use(cors());
+app.options('*', cors());
+app.use(compress());
 app.use(passport.initialize());
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+require('./config/passport')(passport);
 
 app.post('/auth/signup', function (req, res, next) {
   passport.authenticate('local-signup', function (err, user) {
@@ -59,11 +60,26 @@ app.post('/auth/login', function (req, res, next) {
   })(req, res, next);
 });
 
-app.get('/auth/google', function (req, res, next) {
-  passport.authenticate('google', function (err, user) {
-    if (err) return err;
+app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+app.get('/auth/google/callback', function (req, res, next) {
+  passport.authenticate('google', { session:false }, function (err, user) {
+    if (err) return next(res.send(err.message));
+
+    res.send('/auth/google/callback');
+  })(req, res, next);
+});
+
+app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
+
+app.get('/auth/github/callback', function (req, res, next) {
+  passport.authenticate('github', { session:false }, function (err, user) {
+    if (err) return next(res.send(err.message));
+
     console.log(user);
-  });
+
+    res.send('/auth/github/callback');
+  })(req, res, next);
 });
 
 function createToken (user) {

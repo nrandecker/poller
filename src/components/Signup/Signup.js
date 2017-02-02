@@ -45,6 +45,12 @@ class Signup extends Component {
   handleSnackbarClose = () => {
     this.props.setSnackBar('');
   }
+  handleGoogleLogin = () => {
+    this.props.googleLogin();
+  }
+  handleGithubLogin = () => {
+    this.props.githubLogin();
+  }
   render () {
     return (
       <div className='container'>
@@ -93,12 +99,14 @@ class Signup extends Component {
                   label='Signup with Github'
                   secondary
                   style={style.button}
+                  onClick={this.handleGithubLogin}
                   icon={<FontIcon className='fa fa-github-alt' />}
                 />
                 <RaisedButton
                   label='Signup with Google'
                   secondary
                   style={style.button}
+                  onClick={this.handleGoogleLogin}
                   icon={<FontIcon className='fa fa-google' />}
                 />
                 <div className='no-account'>
@@ -130,7 +138,9 @@ Signup.propTypes = {
   signUp: React.PropTypes.func,
   formChange: React.PropTypes.func,
   snackbar: React.PropTypes.object,
-  setSnackBar: React.PropTypes.func
+  setSnackBar: React.PropTypes.func,
+  googleLogin: React.PropTypes.func,
+  githubLogin: React.PropTypes.func
 };
 
 export default Signup;

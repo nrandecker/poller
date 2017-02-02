@@ -48,6 +48,45 @@ export function signUp (data) {
   };
 }
 
+export function googleLogin () {
+  return (dispatch) => {
+    const url = 'http://localhost:3000/auth/google';
+    const redirectUri = 'http://localhost:3000/auth/google/callback';
+
+    const win = window.open(url, 'name', 'height=600, width=450');
+    if (win) win.focus();
+    const pollTimer = window.setInterval(() => {
+      try {
+        if (!!win && win.location.href.indexOf(redirectUri) !== -1) {
+          window.clearInterval(pollTimer);
+          win.close();
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }, 100);
+  };
+}
+
+export function githubLogin () {
+  return (dispatch) => {
+    const url = 'http://localhost:3000/auth/github';
+    const redirectUri = 'http://localhost:3000/auth/github/callback';
+    const win = window.open(url, 'name', 'height=600, width=450');
+    if (win) win.focus();
+    const pollTimer = window.setInterval(() => {
+      try {
+        if (!!win && win.location.href.indexOf(redirectUri) !== -1) {
+          window.clearInterval(pollTimer);
+          win.close();
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }, 100);
+  };
+}
+
 export function login (data) {
   return (dispatch, getState) => {
     axios.post('/auth/login', {
@@ -182,7 +221,9 @@ export const actions = {
   setError,
   setSnackBar,
   setSnackBarOpen,
-  setSnackBarClose
+  setSnackBarClose,
+  googleLogin,
+  githubLogin
 };
 
 // ------------------------------------
