@@ -10,6 +10,19 @@ dotenv.load();
 const User = require('../models/user');
 
 module.exports = function (passport) {
+
+  // used to serialize the user for the session
+  passport.serializeUser(function (user, done) {
+    done(null, user.id);
+  });
+
+   // used to deserialize the user
+  passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+      done(err, user);
+    });
+  });
+
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
@@ -94,7 +107,7 @@ module.exports = function (passport) {
   },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
-      User.findOne({ githubId: profile.id }, function (err, user) {
+      User.findOne({ 'github.id': profile.id }, function (err, user) {
         if (err) console.log(err);
 
         if (user) {

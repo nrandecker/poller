@@ -28,7 +28,6 @@ export function signUp (data) {
       password: data.password
     })
     .then(function (res) {
-      console.log(res);
       dispatch(actions.setUser(res.data.user, res.data.token));
 
       // Give feedback to user and reset the form
@@ -48,10 +47,19 @@ export function signUp (data) {
   };
 }
 
+function gup (name, url) {
+  if (!url) url = location.href;
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = '[\\?&]' + name + '=([^&#]*)';
+  var regex = new RegExp(regexS);
+  var results = regex.exec(url);
+  return results == null ? null : results[1];
+}
+
 export function googleLogin () {
   return (dispatch) => {
     const url = 'http://localhost:3000/auth/google';
-    const redirectUri = 'http://localhost:3000/auth/google/callback';
+    const redirectUri = 'http://localhost:3000/signup';
 
     const win = window.open(url, 'name', 'height=600, width=450');
     if (win) win.focus();
@@ -59,10 +67,12 @@ export function googleLogin () {
       try {
         if (!!win && win.location.href.indexOf(redirectUri) !== -1) {
           window.clearInterval(pollTimer);
+          var res = gup('?', win.location.search);
           win.close();
+          dispatch(actions.setUser('', res));
         }
       } catch (err) {
-        console.log(err);
+
       }
     }, 100);
   };
@@ -70,18 +80,20 @@ export function googleLogin () {
 
 export function githubLogin () {
   return (dispatch) => {
-    const url = 'http://localhost:3000/auth/github';
-    const redirectUri = 'http://localhost:3000/auth/github/callback';
+    const url = '/auth/github';
+    const redirectUri = 'http://localhost:3000/signup';
     const win = window.open(url, 'name', 'height=600, width=450');
     if (win) win.focus();
     const pollTimer = window.setInterval(() => {
       try {
         if (!!win && win.location.href.indexOf(redirectUri) !== -1) {
           window.clearInterval(pollTimer);
+          var res = gup('?', win.location.search);
           win.close();
+          dispatch(actions.setUser('', res));
         }
       } catch (err) {
-        console.log(err);
+
       }
     }, 100);
   };

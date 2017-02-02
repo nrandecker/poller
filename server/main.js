@@ -1,7 +1,6 @@
 const express = require('express');
 const debug = require('debug')('app:server');
 const path = require('path');
-const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
@@ -13,25 +12,44 @@ const morgan = require('morgan');
 const webpackConfig = require('../config/webpack.config');
 const project = require('../config/project.config');
 const compress = require('compression');
+const session = require('express-session');
 
 dotenv.load();
 const app = express();
 
 mongoose.connect(process.env.MONGO_DB);
-const conn = mongoose.connection;
 
-conn.on('error', console.error.bind(console, 'connection error:'));
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+  console.log('Connected to db');
+});
+
+var allowCrossDomain = function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    res.send(200);
+  } else {
+    next();
+  }
+};
 
 // Apply gzip compression
-app.use(cors());
-app.options('*', cors());
 app.use(compress());
 app.use(passport.initialize());
 app.use(morgan('combined'));
 app.use(bodyParser.json());
+app.use(allowCrossDomain);
 app.use(bodyParser.urlencoded({ extended: false }));
 
 require('./config/passport')(passport);
+app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 
 app.post('/auth/signup', function (req, res, next) {
   passport.authenticate('local-signup', function (err, user) {
@@ -63,22 +81,36 @@ app.post('/auth/login', function (req, res, next) {
 app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
 app.get('/auth/google/callback', function (req, res, next) {
-  passport.authenticate('google', { session:false }, function (err, user) {
-    if (err) return next(res.send(err.message));
+  passport.authenticate('google', function (err, user) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.redirect('http://localhost:3000');
+    }
 
-    res.send('/auth/google/callback');
+    res.writeHead(302, {
+      'Location': '/signup?token=' + user.google.token
+    });
+    res.end();
   })(req, res, next);
 });
 
 app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
 
 app.get('/auth/github/callback', function (req, res, next) {
-  passport.authenticate('github', { session:false }, function (err, user) {
-    if (err) return next(res.send(err.message));
+  passport.authenticate('github', function (err, user) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.redirect('http://localhost:3000');
+    }
 
-    console.log(user);
-
-    res.send('/auth/github/callback');
+    res.writeHead(302, {
+      'Location': '/signup?token=' + user.github.token
+    });
+    res.end();
   })(req, res, next);
 });
 
