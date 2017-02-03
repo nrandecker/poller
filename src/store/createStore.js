@@ -32,8 +32,8 @@ export default (initialState = {}) => {
     initialState,
     composeEnhancers(
       applyMiddleware(...middleware),
-      ...enhancers
-    )
+      ...enhancers,
+    ),
   );
 
   // To unsubscribe, invoke `store.unsubscribeHistory()` anytime

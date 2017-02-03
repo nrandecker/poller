@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
-import { logIn, logOut } from '../../modules/navbar';
+import { auth, logOut } from '../../modules/navbar';
 import Navbar from './Navbar';
 
-const mapStatetoProps = (state) => ({
-  loggedIn: state.navbar.loggedIn
+const mapStatetoProps = state => ({
+  authenticated: state.navbar.authenticated,
 });
 
 const mapDispatchToProps = {
-  logIn,
-  logOut
+  auth,
+  logOut,
 };
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Navbar);

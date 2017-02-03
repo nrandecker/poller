@@ -12,14 +12,14 @@ const __TEST__ = project.globals.__TEST__;
 
 debug('Creating configuration.');
 const webpackConfig = {
-  name    : 'client',
-  target  : 'web',
-  devtool : project.compiler_devtool,
-  resolve : {
-    root       : project.paths.client(),
-    extensions : ['', '.js', '.jsx', '.json']
+  name: 'client',
+  target: 'web',
+  devtool: project.compiler_devtool,
+  resolve: {
+    root: project.paths.client(),
+    extensions: ['', '.js', '.jsx', '.json'],
   },
-  module : {}
+  module: {},
 };
 // ------------------------------------
 // Entry Points
@@ -27,19 +27,19 @@ const webpackConfig = {
 const APP_ENTRY = project.paths.client('main.js');
 
 webpackConfig.entry = {
-  app : __DEV__
+  app: __DEV__
     ? [APP_ENTRY].concat(`webpack-hot-middleware/client?path=${project.compiler_public_path}__webpack_hmr`)
     : [APP_ENTRY],
-  vendor : project.compiler_vendors
+  vendor: project.compiler_vendors,
 };
 
 // ------------------------------------
 // Bundle Output
 // ------------------------------------
 webpackConfig.output = {
-  filename   : `[name].[${project.compiler_hash_type}].js`,
-  path       : project.paths.dist(),
-  publicPath : project.compiler_public_path
+  filename: `[name].[${project.compiler_hash_type}].js`,
+  path: project.paths.dist(),
+  publicPath: project.compiler_public_path,
 };
 
 // ------------------------------------
@@ -56,27 +56,27 @@ webpackConfig.externals['react/addons'] = true;
 webpackConfig.plugins = [
   new webpack.DefinePlugin(project.globals),
   new HtmlWebpackPlugin({
-    template : project.paths.client('index.html'),
-    hash     : false,
-    favicon  : project.paths.public('favicon.ico'),
-    filename : 'index.html',
-    inject   : 'body',
-    minify   : {
-      collapseWhitespace : true
-    }
-  })
+    template: project.paths.client('index.html'),
+    hash: false,
+    favicon: project.paths.public('favicon.ico'),
+    filename: 'index.html',
+    inject: 'body',
+    minify: {
+      collapseWhitespace: true,
+    },
+  }),
 ];
 
 // Ensure that the compiler exits on errors during testing so that
 // they do not get skipped and misreported.
 if (__TEST__ && !argv.watch) {
   webpackConfig.plugins.push(function () {
-    this.plugin('done', function (stats) {
+    this.plugin('done', (stats) => {
       if (stats.compilation.errors.length) {
         // Pretend no assets were generated. This prevents the tests
         // from running making it clear that there were warnings.
         throw new Error(
-          stats.compilation.errors.map(err => err.message || err)
+          stats.compilation.errors.map(err => err.message || err),
         );
       }
     });
@@ -87,7 +87,7 @@ if (__DEV__) {
   debug('Enabling plugins for live development (HMR, NoErrors).');
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
   );
 } else if (__PROD__) {
   debug('Enabling plugins for production (OccurenceOrder, Dedupe & UglifyJS).');
@@ -95,13 +95,13 @@ if (__DEV__) {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      compress : {
-        unused    : true,
-        dead_code : true,
-        warnings  : false
-      }
+      compress: {
+        unused: true,
+        dead_code: true,
+        warnings: false,
+      },
     }),
-    new webpack.optimize.AggressiveMergingPlugin()
+    new webpack.optimize.AggressiveMergingPlugin(),
   );
 }
 
@@ -109,8 +109,8 @@ if (__DEV__) {
 if (!__TEST__) {
   webpackConfig.plugins.push(
     new webpack.optimize.CommonsChunkPlugin({
-      names : ['vendor']
-    })
+      names: ['vendor'],
+    }),
   );
 }
 
@@ -119,13 +119,13 @@ if (!__TEST__) {
 // ------------------------------------
 // JavaScript / JSON
 webpackConfig.module.loaders = [{
-  test    : /\.(js|jsx)$/,
-  exclude : /node_modules/,
-  loader  : 'babel',
-  query   : project.compiler_babel
+  test: /\.(js|jsx)$/,
+  exclude: /node_modules/,
+  loader: 'babel',
+  query: project.compiler_babel,
 }, {
-  test   : /\.json$/,
-  loader : 'json'
+  test: /\.json$/,
+  loader: 'json',
 }];
 
 // ------------------------------------
@@ -136,45 +136,45 @@ webpackConfig.module.loaders = [{
 const BASE_CSS_LOADER = 'css?sourceMap&-minimize';
 
 webpackConfig.module.loaders.push({
-  test    : /\.scss$/,
-  exclude : null,
-  loaders : [
+  test: /\.scss$/,
+  exclude: null,
+  loaders: [
     'style',
     BASE_CSS_LOADER,
     'postcss',
-    'sass?sourceMap'
-  ]
+    'sass?sourceMap',
+  ],
 });
 webpackConfig.module.loaders.push({
-  test    : /\.css$/,
-  exclude : null,
-  loaders : [
+  test: /\.css$/,
+  exclude: null,
+  loaders: [
     'style',
     BASE_CSS_LOADER,
-    'postcss'
-  ]
+    'postcss',
+  ],
 });
 
 webpackConfig.sassLoader = {
-  includePaths : project.paths.client('styles')
+  includePaths: project.paths.client('styles'),
 };
 
 webpackConfig.postcss = [
   cssnano({
-    autoprefixer : {
-      add      : true,
-      remove   : true,
-      browsers : ['last 2 versions']
+    autoprefixer: {
+      add: true,
+      remove: true,
+      browsers: ['last 2 versions'],
     },
-    discardComments : {
-      removeAll : true
+    discardComments: {
+      removeAll: true,
     },
-    discardUnused : false,
-    mergeIdents   : false,
-    reduceIdents  : false,
-    safe          : true,
-    sourcemap     : true
-  })
+    discardUnused: false,
+    mergeIdents: false,
+    reduceIdents: false,
+    safe: true,
+    sourcemap: true,
+  }),
 ];
 
 // File loaders
@@ -198,8 +198,8 @@ webpackConfig.module.loaders.push(
 // http://stackoverflow.com/questions/34133808/webpack-ots-parsing-error-loading-fonts/34133809#34133809
 if (!__DEV__) {
   debug('Applying ExtractTextPlugin to CSS loaders.');
-  webpackConfig.module.loaders.filter((loader) =>
-    loader.loaders && loader.loaders.find((name) => /css/.test(name.split('?')[0]))
+  webpackConfig.module.loaders.filter(loader =>
+    loader.loaders && loader.loaders.find(name => /css/.test(name.split('?')[0])),
   ).forEach((loader) => {
     const first = loader.loaders[0];
     const rest = loader.loaders.slice(1);
@@ -209,8 +209,8 @@ if (!__DEV__) {
 
   webpackConfig.plugins.push(
     new ExtractTextPlugin('[name].[contenthash].css', {
-      allChunks : true
-    })
+      allChunks: true,
+    }),
   );
 }
 

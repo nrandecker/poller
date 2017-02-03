@@ -6,11 +6,11 @@ import HomeContainer from '../components/Home/HomeContainer';
 import LoginContainer from '../components/Login/LoginContainer';
 import SignupContainer from '../components/Signup/SignupContainer';
 
-export const createRoutes = (store) => (
-  <Route path='/' component={CoreLayout}>
+export const createRoutes = store => (
+  <Route path="/" component={CoreLayout}>
     <IndexRoute component={HomeContainer} />
-    <Route path='/login' component={LoginContainer} />
-    <Route path='/signup' component={SignupContainer} />
+    <Route path="/login" component={LoginContainer} />
+    <Route path="/signup" component={SignupContainer} />
   </Route>
 );
 

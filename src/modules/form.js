@@ -19,44 +19,20 @@ export const SET_SNACKBAR_CLOSE = 'SET_SNACKBAR_CLOSE';
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function signUp (data) {
-  return (dispatch) => {
-    axios.post('/auth/signup', {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      password: data.password
-    })
-    .then(function (res) {
-      dispatch(actions.setUser(res.data.user, res.data.token));
 
-      // Give feedback to user and reset the form
-      dispatch(actions.setSnackBar('User account succesfully created.'));
-      dispatch(actions.resetForm());
-
-      setTimeout(() => {
-        // redirect to login page
-        browserHistory.push('/login');
-      }, 2000);
-    })
-    .catch(function (err) {
-      if (err.response) {
-        dispatch(actions.setError(err.response.data.message));
-      }
-    });
-  };
-}
-
-function gup (name, url) {
+/* helper function to extract route params from url
+   credit http://www.netlobo.com/url_query_string_javascript.html
+*/
+function gup(name, url) {
   if (!url) url = location.href;
-  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = '[\\?&]' + name + '=([^&#]*)';
-  var regex = new RegExp(regexS);
-  var results = regex.exec(url);
+  name = name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
+  const regexS = `[\\?&]${name}=([^&#]*)`;
+  const regex = new RegExp(regexS);
+  const results = regex.exec(url);
   return results == null ? null : results[1];
 }
 
-export function googleLogin () {
+export function googleLogin() {
   return (dispatch) => {
     const url = 'http://localhost:3000/auth/google';
     const redirectUri = 'http://localhost:3000/signup';
@@ -67,9 +43,18 @@ export function googleLogin () {
       try {
         if (!!win && win.location.href.indexOf(redirectUri) !== -1) {
           window.clearInterval(pollTimer);
-          var res = gup('?', win.location.search);
+          const res = gup('?', win.location.search);
           win.close();
-          dispatch(actions.setUser('', res));
+
+          // store our token in localStorge
+          window.localStorage.token = JSON.stringify(({
+            token: res,
+            source: 'google',
+          }));
+          setTimeout(() => {
+            // redirect to home page
+            browserHistory.push('/');
+          }, 200);
         }
       } catch (err) {
 
@@ -78,7 +63,7 @@ export function googleLogin () {
   };
 }
 
-export function githubLogin () {
+export function githubLogin() {
   return (dispatch) => {
     const url = '/auth/github';
     const redirectUri = 'http://localhost:3000/signup';
@@ -88,9 +73,18 @@ export function githubLogin () {
       try {
         if (!!win && win.location.href.indexOf(redirectUri) !== -1) {
           window.clearInterval(pollTimer);
-          var res = gup('?', win.location.search);
+          const res = gup('?', win.location.search);
           win.close();
-          dispatch(actions.setUser('', res));
+
+          // store our token in localStorge
+          window.localStorage.token = JSON.stringify(({
+            token: res,
+            source: 'github',
+          }));
+          setTimeout(() => {
+            // redirect to home page
+            browserHistory.push('/');
+          }, 200);
         }
       } catch (err) {
 
@@ -99,26 +93,55 @@ export function githubLogin () {
   };
 }
 
-export function login (data) {
+export function signUp(data) {
+  return (dispatch) => {
+    axios.post('/auth/signup', {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+    })
+    .then((res) => {
+      // Give feedback to user and reset the form
+      dispatch(actions.setSnackBar('User account succesfully created.'));
+      dispatch(actions.resetForm());
+
+      setTimeout(() => {
+        // redirect to login page
+        browserHistory.push('/login');
+      }, 2000);
+    })
+    .catch((err) => {
+      if (err.response) {
+        dispatch(actions.setError(err.response.data.message));
+      }
+    });
+  };
+}
+
+export function login(data) {
   return (dispatch, getState) => {
     axios.post('/auth/login', {
       email: data.email,
-      password: data.password
+      password: data.password,
     })
-    .then(function (res) {
-      console.log(res);
-      dispatch(actions.setUser(res.data.user.local, res.data.token));
-
+    .then((res) => {
       // Give feedback to user and reset the form
       dispatch(actions.setSnackBar('User logged in.'));
       dispatch(actions.resetForm());
+
+      // store our token in localStorge
+      window.localStorage.token = JSON.stringify(({
+        token: res.data.token,
+        source: 'local',
+      }));
 
       setTimeout(() => {
         // redirect to home page
         browserHistory.push('/');
       }, 2000);
     })
-    .catch(function (err) {
+    .catch((err) => {
       if (err.response) {
         console.log(err.response);
         dispatch(actions.setError(err.response.data.message));
@@ -131,7 +154,7 @@ export function login (data) {
 check the form data object and dispatch the action
 object is empty? set the data to empty string
 */
-export function formChange (data) {
+export function formChange(data) {
   return (dispatch) => {
     if (data.firstName || data.firstName === '') {
       dispatch(actions.setFirstName(data.firstName));
@@ -145,79 +168,78 @@ export function formChange (data) {
   };
 }
 
-export function setError (error) {
+export function setError(error) {
   return {
     type: SET_ERROR,
-    error: error
+    error,
   };
 }
 
-export function resetForm () {
+export function resetForm() {
   return {
-    type: RESET_FORM
+    type: RESET_FORM,
   };
 }
 
-export function setSnackBar (message) {
+export function setSnackBar(message) {
   return (dispatch, getState) => {
     (getState().form.snackbar.open === true)
     ? dispatch(setSnackBarClose(message)) : dispatch(setSnackBarOpen(message));
   };
 }
 
-export function setSnackBarOpen (message) {
+export function setSnackBarOpen(message) {
   return {
     type: SET_SNACKBAR_OPEN,
-    message: message
+    message,
   };
 }
 
-export function setSnackBarClose (message) {
+export function setSnackBarClose(message) {
   return {
     type: SET_SNACKBAR_CLOSE,
-    message: message
+    message,
   };
 }
 
-export function setUser (userResponse, token) {
-  let user = {
-    token: token,
+export function setUser(userResponse) {
+  const user = {
     email: userResponse.email,
     firstName: userResponse.firstName,
-    lastName: userResponse.lastName
+    lastName: userResponse.lastName,
   };
 
   return {
     type: SET_USER,
-    user: user
+    user,
   };
 }
 
-export function setFirstName (firstName) {
+export function setFirstName(firstName) {
   return {
     type: SET_FIRST_NAME,
-    firstName: firstName
+    firstName,
   };
 }
 
-export function setLastName (lastName) {
+export function setLastName(lastName) {
   return {
     type: SET_LAST_NAME,
-    lastName: lastName
+    lastName,
   };
 }
 
-export function setEmail (email) {
+export function setEmail(email) {
   return {
     type: SET_EMAIL,
-    email: email
+    email,
   };
 }
 
-export function setPassword (password) {
+export function setPassword(password) {
   return {
     type: SET_PASSWORD,
-    password: password
+    password,
   };
 }
 
@@ -235,63 +257,62 @@ export const actions = {
   setSnackBarOpen,
   setSnackBarClose,
   googleLogin,
-  githubLogin
+  githubLogin,
 };
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [SET_FIRST_NAME] : (state, action) => ({
+  [SET_FIRST_NAME]: (state, action) => ({
     ...state,
-    firstName: action.firstName
+    firstName: action.firstName,
   }),
-  [SET_LAST_NAME] : (state, action) => ({
+  [SET_LAST_NAME]: (state, action) => ({
     ...state,
-    lastName: action.lastName
+    lastName: action.lastName,
   }),
-  [SET_EMAIL] : (state, action) => ({
+  [SET_EMAIL]: (state, action) => ({
     ...state,
-    email: action.email
+    email: action.email,
   }),
-  [SET_PASSWORD] : (state, action) => ({
+  [SET_PASSWORD]: (state, action) => ({
     ...state,
-    password: action.password
+    password: action.password,
   }),
-  [RESET_FORM] : (state, action) => ({
+  [RESET_FORM]: (state, action) => ({
     ...state,
     firstName: '',
     lastName: '',
     email: '',
-    password: ''
+    password: '',
   }),
-  [SET_USER] : (state, action) => ({
+  [SET_USER]: (state, action) => ({
     ...state,
     user: {
-      token: action.user.token,
       firstName: action.user.firstName,
       lastName: action.user.lastName,
-      email: action.user.email
-    }
+      email: action.user.email,
+    },
   }),
-  [SET_ERROR] : (state, action) => ({
+  [SET_ERROR]: (state, action) => ({
     ...state,
-    error: action.error
+    error: action.error,
   }),
-  [SET_SNACKBAR_OPEN] : (state, action) => ({
+  [SET_SNACKBAR_OPEN]: (state, action) => ({
     ...state,
     snackbar: {
       open: true,
-      message: action.message
-    }
+      message: action.message,
+    },
   }),
-  [SET_SNACKBAR_CLOSE] : (state, action) => ({
+  [SET_SNACKBAR_CLOSE]: (state, action) => ({
     ...state,
     snackbar: {
       open: false,
-      message: action.message
-    }
-  })
+      message: action.message,
+    },
+  }),
 };
 
 // ------------------------------------
@@ -306,11 +327,11 @@ const initialState = {
   user: {},
   snackbar: {
     open: false,
-    message: ''
-  }
+    message: '',
+  },
 };
 
-export default function navbarReducer (state = initialState, action) {
+export default function navbarReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
 
   return handler ? handler(state, action) : state;

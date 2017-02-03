@@ -1,8 +1,7 @@
 {
   "parser": "babel-eslint",
   "extends": [
-    "standard",
-    "standard-react"
+    "airbnb"
   ],
   "plugins": [
     "babel",
@@ -19,11 +18,6 @@
     "__COVERAGE__" : false
   },
   "rules": {
-    "key-spacing"          : 0,
-    "jsx-quotes"           : [2, "prefer-single"],
-    "max-len"              : [2, 120, 2],
-    "object-curly-spacing" : [2, "always"],
-    "semi"                 : ["error", "always"],
     "no-console": "off",
   }
 }

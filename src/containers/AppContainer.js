@@ -4,15 +4,15 @@ import { Provider } from 'react-redux';
 
 class AppContainer extends Component {
   static propTypes = {
-    routes : PropTypes.object.isRequired,
-    store  : PropTypes.object.isRequired
+    routes: PropTypes.object.isRequired,
+    store: PropTypes.object.isRequired,
   }
 
-  shouldComponentUpdate () {
+  shouldComponentUpdate() {
     return false;
   }
 
-  render () {
+  render() {
     const { routes, store } = this.props;
 
     return (

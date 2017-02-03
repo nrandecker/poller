@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-var userSchema = mongoose.Schema({
+const userSchema = mongoose.Schema({
   local: {
     email: { type: String, unique: true },
     password: { type: String },
@@ -9,20 +9,20 @@ var userSchema = mongoose.Schema({
     lastName: { type: String },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
-    accessToken: String
+    accessToken: String,
   },
   google: {
-    id           : String,
-    token        : String,
-    email        : String,
-    name         : String
+    id: String,
+    token: String,
+    email: String,
+    name: String,
   },
   github: {
-    id           : String,
-    token        : String,
-    email        : String,
-    name         : String
-  }
+    id: String,
+    token: String,
+    email: String,
+    name: String,
+  },
 });
 
 // generate hash

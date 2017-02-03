@@ -1,6 +1,7 @@
 const express = require('express');
 const debug = require('debug')('app:server');
 const path = require('path');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
@@ -19,31 +20,22 @@ const app = express();
 
 mongoose.connect(process.env.MONGO_DB);
 
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback () {
+db.once('open', () => {
   console.log('Connected to db');
 });
 
-var allowCrossDomain = function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  if (req.method === 'OPTIONS') {
-    res.send(200);
-  } else {
-    next();
-  }
-};
+// load up the user model
+const User = require('./models/user');
 
 // Apply gzip compression
 app.use(compress());
+app.use(cors());
 app.use(passport.initialize());
 app.use(morgan('combined'));
 app.use(bodyParser.json());
-app.use(allowCrossDomain);
 app.use(bodyParser.urlencoded({ extended: false }));
 
 require('./config/passport')(passport);
@@ -51,21 +43,56 @@ app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secre
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-app.post('/auth/signup', function (req, res, next) {
-  passport.authenticate('local-signup', function (err, user) {
+function createToken(user) {
+  const payload = {
+    exp: moment().add(14, 'days').unix(),
+    iat: moment().unix(),
+    sub: user._id,
+  };
+  return jwt.encode(payload, process.env.TOKEN_SECRET);
+}
+
+app.post('/auth/authenticate', (req, res, next) => {
+  if (!(req.headers && req.headers.authorization)) {
+    return res.status(400).send({ message: 'You did not provide a JSON Web Token in the Authorization header.' });
+  }
+
+  const source = req.body.source;
+
+  if (source === 'local') {
+    const token = req.headers.authorization;
+    const payload = jwt.decode(token, process.env.TOKEN_SECRET);
+    const now = moment().unix();
+
+    if (now > payload.exp) {
+      return res.status(401).send({ message: 'Token has expired.' });
+    }
+
+    User.findById(payload.sub, (err, user) => {
+      if (!user || err) {
+        return res.status(400).send({ message: 'User no longer exists.' });
+      }
+
+      res.send({ user });
+    });
+  }
+});
+
+app.post('/auth/signup', (req, res, next) => {
+  passport.authenticate('local-signup', (err, user) => {
     if (err) return next(res.send({ success: false, message: 'Ah, Snap something went wrong!' }));
 
     if (!user) {
       return res.status(401).send({ success: false, message: 'Email is already taken.' });
     }
 
-    var token = createToken(user);
-    res.send({ token: token, user: user });
+    const token = createToken(user);
+    res.send({ token, user });
   })(req, res, next);
 });
 
-app.post('/auth/login', function (req, res, next) {
-  passport.authenticate('local-login', function (err, user) {
+app.post('/auth/login', (req, res, next) => {
+  passport.authenticate('local-login', (err, user) => {
     if (err) return next(res.send({ sucess: false, message: 'Ah, Snap something went wrong!' }));
 
     if (!user) {
@@ -73,15 +100,15 @@ app.post('/auth/login', function (req, res, next) {
     }
 
     delete user.password;
-    var token = createToken(user);
-    res.send({ token: token, user: user });
+    const token = createToken(user);
+    res.send({ token, user });
   })(req, res, next);
 });
 
-app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-app.get('/auth/google/callback', function (req, res, next) {
-  passport.authenticate('google', function (err, user) {
+app.get('/auth/google/callback', (req, res, next) => {
+  passport.authenticate('google', (err, user) => {
     if (err) {
       return next(err);
     }
@@ -90,7 +117,7 @@ app.get('/auth/google/callback', function (req, res, next) {
     }
 
     res.writeHead(302, {
-      'Location': '/signup?token=' + user.google.token
+      Location: `/signup?token=${user.google.token}`,
     });
     res.end();
   })(req, res, next);
@@ -98,8 +125,8 @@ app.get('/auth/google/callback', function (req, res, next) {
 
 app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
 
-app.get('/auth/github/callback', function (req, res, next) {
-  passport.authenticate('github', function (err, user) {
+app.get('/auth/github/callback', (req, res, next) => {
+  passport.authenticate('github', (err, user) => {
     if (err) {
       return next(err);
     }
@@ -108,20 +135,11 @@ app.get('/auth/github/callback', function (req, res, next) {
     }
 
     res.writeHead(302, {
-      'Location': '/signup?token=' + user.github.token
+      Location: `/signup?token=${user.github.token}`,
     });
     res.end();
   })(req, res, next);
 });
-
-function createToken (user) {
-  var payload = {
-    exp: moment().add(14, 'days').unix(),
-    iat: moment().unix(),
-    sub: user._id
-  };
-  return jwt.encode(payload, process.env.TOKEN_SECRET);
-}
 
 // ------------------------------------
 // Apply Webpack HMR Middleware
@@ -131,16 +149,16 @@ if (project.env === 'development') {
 
   debug('Enabling webpack dev and HMR middleware');
   app.use(require('webpack-dev-middleware')(compiler, {
-    publicPath  : webpackConfig.output.publicPath,
-    contentBase : project.paths.client(),
-    hot         : true,
-    quiet       : project.compiler_quiet,
-    noInfo      : project.compiler_quiet,
-    lazy        : false,
-    stats       : project.compiler_stats
+    publicPath: webpackConfig.output.publicPath,
+    contentBase: project.paths.client(),
+    hot: true,
+    quiet: project.compiler_quiet,
+    noInfo: project.compiler_quiet,
+    lazy: false,
+    stats: project.compiler_stats,
   }));
   app.use(require('webpack-hot-middleware')(compiler, {
-    path: '/__webpack_hmr'
+    path: '/__webpack_hmr',
   }));
 
   // Serve static assets from ~/public since Webpack is unaware of
@@ -152,7 +170,7 @@ if (project.env === 'development') {
   // This rewrites all routes requests to the root /index.html file
   // (ignoring file requests). If you want to implement universal
   // rendering, you'll want to remove this middleware.
-  app.use('*', function (req, res, next) {
+  app.use('*', (req, res, next) => {
     const filename = path.join(compiler.outputPath, 'index.html');
     compiler.outputFileSystem.readFile(filename, (err, result) => {
       if (err) {
@@ -169,7 +187,7 @@ if (project.env === 'development') {
     'only serve the compiled application bundle in ~/dist. Generally you ' +
     'do not need an application server for this and can instead use a web ' +
     'server such as nginx to serve your static files. See the "deployment" ' +
-    'section in the README for more information on deployment strategies.'
+    'section in the README for more information on deployment strategies.',
   );
 
   // Serving ~/dist by default. Ideally these files should be served by

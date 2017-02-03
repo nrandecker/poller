@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
 const styles = {
   headline: {
@@ -8,29 +9,26 @@ const styles = {
     paddingTop: 16,
     marginBottom: 12,
     fontWeight: 400,
-    color: '#000'
+    color: '#000',
   },
   title: {
-    color: '#000'
+    color: '#000',
   },
   container: {
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
   },
   slide: {
-    padding: 10
-  }
+    padding: 10,
+  },
 };
 
 class TabMenu extends React.Component {
-  constructor (props) {
-    super(props);
-  }
 
   handleChange = (value) => {
     this.props.setTabIndex(value);
   }
 
-  render () {
+  render() {
     return (
       <div>
         <Tabs
@@ -38,24 +36,88 @@ class TabMenu extends React.Component {
           value={this.props.tabIndex}
           tabItemContainerStyle={styles.container}
         >
-          <Tab label='New Polls' style={styles.title} value={0} />
-          <Tab label='Trending Polls' style={styles.title} value={1} />
+          <Tab label="New Polls" style={styles.title} value={0} />
+          <Tab label="Trending Polls" style={styles.title} value={1} />
         </Tabs>
         <SwipeableViews
           index={this.props.tabIndex}
           onChangeIndex={this.handleChange}
         >
-          <div>
-            <h2 style={styles.headline}>Tabs with slide effect</h2>
-            Swipe to see the next slide.<br />
+          <div style={styles.slide}>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHeaderColumn>ID</TableHeaderColumn>
+                  <TableHeaderColumn>Name</TableHeaderColumn>
+                  <TableHeaderColumn>Status</TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableRowColumn>1</TableRowColumn>
+                  <TableRowColumn>John Smith</TableRowColumn>
+                  <TableRowColumn>Employed</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>2</TableRowColumn>
+                  <TableRowColumn>Randal White</TableRowColumn>
+                  <TableRowColumn>Unemployed</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>3</TableRowColumn>
+                  <TableRowColumn>Stephanie Sanders</TableRowColumn>
+                  <TableRowColumn>Employed</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>4</TableRowColumn>
+                  <TableRowColumn>Steve Brown</TableRowColumn>
+                  <TableRowColumn>Employed</TableRowColumn>
+                </TableRow>
+              </TableBody>
+            </Table>
           </div>
           <div style={styles.slide}>
-            slide n°2
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHeaderColumn>ID</TableHeaderColumn>
+                  <TableHeaderColumn>Name</TableHeaderColumn>
+                  <TableHeaderColumn>Status</TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableRowColumn>1</TableRowColumn>
+                  <TableRowColumn>John Smith</TableRowColumn>
+                  <TableRowColumn>Employed</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>2</TableRowColumn>
+                  <TableRowColumn>Randal White</TableRowColumn>
+                  <TableRowColumn>Unemployed</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>3</TableRowColumn>
+                  <TableRowColumn>Stephanie Sanders</TableRowColumn>
+                  <TableRowColumn>Employed</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>4</TableRowColumn>
+                  <TableRowColumn>Steve Brown</TableRowColumn>
+                  <TableRowColumn>Employed</TableRowColumn>
+                </TableRow>
+              </TableBody>
+            </Table>
           </div>
         </SwipeableViews>
       </div>
     );
   }
 }
+
+TabMenu.propTypes = {
+  tabIndex: React.PropTypes.number,
+  setTabIndex: React.PropTypes.func,
+};
 
 export default TabMenu;

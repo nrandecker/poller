@@ -2,14 +2,14 @@ import { connect } from 'react-redux';
 import { signUp, formChange, setError, setSnackBar, googleLogin, githubLogin } from '../../modules/form';
 import Signup from './Signup';
 
-const mapStatetoProps = (state) => ({
+const mapStatetoProps = state => ({
   error: state.form.error,
   firstName: state.form.firstName,
   lastName: state.form.lastName,
   email: state.form.email,
   password: state.form.password,
   user: state.form.user,
-  snackbar: state.form.snackbar
+  snackbar: state.form.snackbar,
 });
 
 const mapDispatchToProps = {
@@ -18,7 +18,7 @@ const mapDispatchToProps = {
   setError,
   setSnackBar,
   googleLogin,
-  githubLogin
+  githubLogin,
 };
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Signup);

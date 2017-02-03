@@ -8,5 +8,5 @@ export default combineReducers({
   navbar,
   home,
   form,
-  tabmenu
+  tabmenu,
 });

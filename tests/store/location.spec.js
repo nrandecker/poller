@@ -2,7 +2,7 @@ import {
   LOCATION_CHANGE,
   locationChange,
   updateLocation,
-  default as locationReducer
+  default as locationReducer,
 } from 'store/location';
 
 describe('(Internal Module) Location', () => {
@@ -58,12 +58,12 @@ describe('(Internal Module) Location', () => {
 
     beforeEach(() => {
       _globalState = {
-        location : locationReducer(undefined, {})
+        location: locationReducer(undefined, {}),
       };
       _dispatchSpy = sinon.spy((action) => {
         _globalState = {
           ..._globalState,
-          location : locationReducer(_globalState.location, action)
+          location: locationReducer(_globalState.location, action),
         };
       });
     });

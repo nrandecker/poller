@@ -10,62 +10,78 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 const styles = {
   boxShadow: 'none',
   margin: '0 auto',
-  padding: ''
+  padding: '',
+  buttonStyles: {
+    color: 'white',
+    fontSize: '16px',
+    marginRight: '10px',
+  },
+  iconMenuStyles: {
+    marginRight: '20px',
+  },
 };
 
-const buttonStyles = {
-  color: 'white',
-  fontSize: '16px',
-  marginRight: '10px'
-};
+const Login = props => (
+  <div>
+    <Link to="/login">
+      <FlatButton {...props} labelStyle={styles.buttonStyles} hoverColor="#2196F3" label="Login" />
+    </Link>
+    <Link to="/signup">
+      <FlatButton {...props} labelStyle={styles.buttonStyles} hoverColor="#2196F3" label="Signup" />
+    </Link>
+  </div>
+);
 
-class Login extends Component {
-  static muiName = 'FlatButton';
-
-  render () {
-    return (
-      <div>
-        <Link to='/login'>
-          <FlatButton {...this.props} labelStyle={buttonStyles} hoverColor='#2196F3' label='Login' />
-        </Link>
-        <Link to='/signup'>
-          <FlatButton {...this.props} labelStyle={buttonStyles} hoverColor='#2196F3' label='Signup' />
-        </Link>
-      </div>
-    );
-  }
-}
-
-const Logged = (props) => (
+const Logged = props => (
   <IconMenu
     {...props}
     iconButtonElement={
-      <IconButton><MoreVertIcon /></IconButton>
+      <IconButton
+        style={styles.iconMenuStyles}
+        touch
+      ><MoreVertIcon />
+      </IconButton>
     }
-    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
     anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
   >
-    <MenuItem primaryText='Sign out' />
+    <MenuItem primaryText="Sign out" />
   </IconMenu>
 );
 
 Logged.muiName = 'IconMenu';
 
-export const Navbar = (props) => (
-  <AppBar
-    style={styles}
-    className='navbar'
-    showMenuIconButton={false}
-    title={<IndexLink to='/' activeClassName='route--active'>
-      <i className='icon fa fa-hand-peace-o' aria-hidden='true' />
-      Poller
-    </IndexLink>}
-    iconElementRight={props.loggedIn ? <Logged /> : <Login />}
-  />
-);
+class Navbar extends Component {
+  componentWillMount() {
+    this.props.auth();
+  }
+  componenetDidUpdate() {
+    this.props.auth();
+  }
+
+  handleLogOut = () => {
+    this.props.logOut();
+  }
+  render() {
+    return (
+      <AppBar
+        style={styles}
+        className="navbar"
+        showMenuIconButton={false}
+        title={<IndexLink to="/" activeClassName="route--active">
+          <i className="icon fa fa-hand-peace-o" aria-hidden="true" />
+          Poller
+        </IndexLink>}
+        iconElementRight={this.props.authenticated ? <Logged /> : <Login />}
+      />
+    );
+  }
+}
 
 Navbar.propTypes = {
-  loggedIn : React.PropTypes.bool
+  authenticated: React.PropTypes.bool,
+  auth: React.PropTypes.func,
+  logOut: React.PropTypes.func,
 };
 
 export default Navbar;

@@ -8,8 +8,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 const muiTheme = getMuiTheme({
   fontFamily: 'Montserrat, sans-serif ',
   palette: {
-    primary1Color: '#2196F3'
-  }
+    primary1Color: '#2196F3',
+  },
 });
 
 export const CoreLayout = ({ children }) => (

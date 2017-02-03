@@ -13,19 +13,19 @@ const style = {
   padding: 15,
   checkbox: {
     marginBottom: 16,
-    width: ''
+    width: '',
   },
   textField: {
-    width: '80%'
+    width: '80%',
   },
   checkboxLabel: {
     width: '100%',
-    marginRight: '20px'
+    marginRight: '20px',
   },
   button: {
     width: '80%',
-    margin: 12
-  }
+    margin: 12,
+  },
 };
 
 class Signup extends Component {
@@ -34,11 +34,11 @@ class Signup extends Component {
   }
   handleFormSubmit = (e) => {
     e.preventDefault();
-    let data = {
+    const data = {
       firstName: this.props.firstName,
       lastName: this.props.lastName,
       email: this.props.email,
-      password: this.props.password
+      password: this.props.password,
     };
     this.props.signUp(data);
   }
@@ -51,68 +51,68 @@ class Signup extends Component {
   handleGithubLogin = () => {
     this.props.githubLogin();
   }
-  render () {
+  render() {
     return (
-      <div className='container'>
-        <div className='row'>
-          <div className='offset-by-three six columns'>
-            <div className='form'>
+      <div className="container">
+        <div className="row">
+          <div className="offset-by-three six columns">
+            <div className="form">
               <Paper style={style} zDepth={2} >
                 <h1> Signup </h1>
                 <form onSubmit={this.handleFormSubmit}>
                   <TextField
                     style={style.textField}
-                    hintText='First Name'
-                    type='text'
-                    name='firstName'
+                    hintText="First Name"
+                    type="text"
+                    name="firstName"
                     value={this.props.firstName}
                     onChange={this.handleChange}
-                    /><br />
+                  /><br />
                   <TextField
                     style={style.textField}
-                    hintText='Last Name'
-                    type='text'
-                    name='lastName'
+                    hintText="Last Name"
+                    type="text"
+                    name="lastName"
                     value={this.props.lastName}
                     onChange={this.handleChange}
-                    /><br />
+                  /><br />
                   <TextField
                     style={style.textField}
-                    hintText='Email'
-                    type='text'
-                    name='email'
+                    hintText="Email"
+                    type="text"
+                    name="email"
                     value={this.props.email}
                     onChange={this.handleChange}
-                    /><br />
+                  /><br />
                   <TextField
                     style={style.textField}
-                    hintText='Password'
-                    type='password'
-                    name='password'
+                    hintText="Password"
+                    type="password"
+                    name="password"
                     value={this.props.password}
                     onChange={this.handleChange}
-                    /><br />
-                  <RaisedButton label='Signup' type='submit' primary style={style.button} />
+                  /><br />
+                  <RaisedButton label="Signup" type="submit" primary style={style.button} />
                 </form>
                 <Divider />
                 <RaisedButton
-                  label='Signup with Github'
+                  label="Signup with Github"
                   secondary
                   style={style.button}
                   onClick={this.handleGithubLogin}
-                  icon={<FontIcon className='fa fa-github-alt' />}
+                  icon={<FontIcon className="fa fa-github-alt" />}
                 />
                 <RaisedButton
-                  label='Signup with Google'
+                  label="Signup with Google"
                   secondary
                   style={style.button}
                   onClick={this.handleGoogleLogin}
-                  icon={<FontIcon className='fa fa-google' />}
+                  icon={<FontIcon className="fa fa-google" />}
                 />
-                <div className='no-account'>
+                <div className="no-account">
                   <p>Already have an account?</p>
-                  <Link to='/login'>
-                    <RaisedButton label='Login' primary style={style.button} />
+                  <Link to="/login">
+                    <RaisedButton label="Login" primary style={style.button} />
                   </Link>
                 </div>
               </Paper>
@@ -124,7 +124,7 @@ class Signup extends Component {
           message={this.props.snackbar.message}
           autoHideDuration={2000}
           onRequestClose={this.handleSnackbarClose}
-       />
+        />
       </div>
     );
   }
@@ -140,7 +140,7 @@ Signup.propTypes = {
   snackbar: React.PropTypes.object,
   setSnackBar: React.PropTypes.func,
   googleLogin: React.PropTypes.func,
-  githubLogin: React.PropTypes.func
+  githubLogin: React.PropTypes.func,
 };
 
 export default Signup;

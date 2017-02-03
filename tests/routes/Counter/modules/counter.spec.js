@@ -2,7 +2,7 @@ import {
   COUNTER_INCREMENT,
   increment,
   doubleAsync,
-  default as counterReducer
+  default as counterReducer,
 } from 'routes/Counter/modules/counter';
 
 describe('(Redux Module) Counter', () => {
@@ -56,17 +56,15 @@ describe('(Redux Module) Counter', () => {
 
     beforeEach(() => {
       _globalState = {
-        counter : counterReducer(undefined, {})
+        counter: counterReducer(undefined, {}),
       };
       _dispatchSpy = sinon.spy((action) => {
         _globalState = {
           ..._globalState,
-          counter : counterReducer(_globalState.counter, action)
+          counter: counterReducer(_globalState.counter, action),
         };
       });
-      _getStateSpy = sinon.spy(() => {
-        return _globalState;
-      });
+      _getStateSpy = sinon.spy(() => _globalState);
     });
 
     it('Should be exported as a function.', () => {
@@ -77,17 +75,13 @@ describe('(Redux Module) Counter', () => {
       expect(doubleAsync()).to.be.a('function');
     });
 
-    it('Should return a promise from that thunk that gets fulfilled.', () => {
-      return doubleAsync()(_dispatchSpy, _getStateSpy).should.eventually.be.fulfilled;
-    });
+    it('Should return a promise from that thunk that gets fulfilled.', () => doubleAsync()(_dispatchSpy, _getStateSpy).should.eventually.be.fulfilled);
 
-    it('Should call dispatch and getState exactly once.', () => {
-      return doubleAsync()(_dispatchSpy, _getStateSpy)
+    it('Should call dispatch and getState exactly once.', () => doubleAsync()(_dispatchSpy, _getStateSpy)
         .then(() => {
           _dispatchSpy.should.have.been.calledOnce;
           _getStateSpy.should.have.been.calledOnce;
-        });
-    });
+        }));
 
     it('Should produce a state that is double the previous state.', () => {
       _globalState = { counter: 2 };

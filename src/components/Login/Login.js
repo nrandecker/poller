@@ -14,19 +14,19 @@ const style = {
   padding: 15,
   checkbox: {
     marginBottom: 16,
-    width: ''
+    width: '',
   },
   textField: {
-    width: '80%'
+    width: '80%',
   },
   checkboxLabel: {
     width: '100%',
-    marginRight: '20px'
+    marginRight: '20px',
   },
   button: {
     width: '80%',
-    margin: 12
-  }
+    margin: 12,
+  },
 };
 
 class Signup extends Component {
@@ -35,69 +35,77 @@ class Signup extends Component {
   }
   handleFormSubmit = (e) => {
     e.preventDefault();
-    let data = {
+    const data = {
       email: this.props.email,
-      password: this.props.password
+      password: this.props.password,
     };
     this.props.login(data);
+  }
+  handleGoogleLogin = () => {
+    this.props.googleLogin();
+  }
+  handleGithubLogin = () => {
+    this.props.githubLogin();
   }
   handleSnackbarClose = () => {
     this.props.setSnackBar('');
   }
-  render () {
+  render() {
     return (
-      <div className='container'>
-        <div className='row'>
-          <div className='offset-by-three six columns'>
-            <div className='form'>
+      <div className="container">
+        <div className="row">
+          <div className="offset-by-three six columns">
+            <div className="form">
               <Paper style={style} zDepth={2} >
                 <h1> Log In </h1>
                 <form onSubmit={this.handleFormSubmit}>
                   <TextField
                     style={style.textField}
-                    hintText='Email'
-                    type='text'
-                    name='email'
+                    hintText="Email"
+                    type="text"
+                    name="email"
                     value={this.props.email}
                     onChange={this.handleChange}
-                    /><br />
+                  /><br />
                   <TextField
                     style={style.textField}
-                    hintText='Password'
-                    name='password'
-                    type='password'
+                    hintText="Password"
+                    name="password"
+                    type="password"
                     value={this.props.password}
                     onChange={this.handleChange}
-                    /><br />
-                  <div className='check-box'>
+                  /><br />
+                  <div className="check-box">
                     <Checkbox
-                      label='Remeber Me'
+                      label="Remeber Me"
                       style={style.checkbox}
                       labelStyle={style.checkboxLabel}
-                      />
-                    <Link to='/forgot'>
+                    />
+                    <Link to="/forgot">
                       <p>Forgot Password?</p>
                     </Link>
                   </div>
-                  <RaisedButton label='Login' type='submit' primary style={style.button} />
+                  <RaisedButton label="Login" type="submit" primary style={style.button} />
                 </form>
                 <Divider />
                 <RaisedButton
-                  label='Login with Github'
+                  label="Login with Github"
                   secondary
                   style={style.button}
-                  icon={<FontIcon className='fa fa-github-alt' />}
+                  onClick={this.handleGithubLogin}
+                  icon={<FontIcon className="fa fa-github-alt" />}
                 />
                 <RaisedButton
-                  label='Login with Google'
+                  label="Login with Google"
                   secondary
                   style={style.button}
-                  icon={<FontIcon className='fa fa-google' />}
+                  onClick={this.handleGoogleLogin}
+                  icon={<FontIcon className="fa fa-google" />}
                 />
-                <div className='no-account'>
+                <div className="no-account">
                   <p>Don't have an account?</p>
-                  <Link to='/signup'>
-                    <RaisedButton label='Signup' primary style={style.button} />
+                  <Link to="/signup">
+                    <RaisedButton label="Signup" primary style={style.button} />
                   </Link>
                 </div>
               </Paper>
@@ -109,7 +117,7 @@ class Signup extends Component {
           message={this.props.snackbar.message}
           autoHideDuration={2000}
           onRequestClose={this.handleSnackbarClose}
-       />
+        />
       </div>
     );
   }
@@ -121,7 +129,9 @@ Signup.propTypes = {
   login: React.PropTypes.func,
   formChange: React.PropTypes.func,
   snackbar: React.PropTypes.object,
-  setSnackBar: React.PropTypes.func
+  setSnackBar: React.PropTypes.func,
+  googleLogin: React.PropTypes.func,
+  githubLogin: React.PropTypes.func,
 };
 
 export default Signup;
