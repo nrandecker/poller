@@ -90,7 +90,7 @@ module.exports = function (passport) {
         newUser.google.email = profile.emails[0].value; // pull the first email
 
           // save the user
-        newUser.save((err) => {
+        newUser.save(() => {
           if (err) throw err;
           return done(null, newUser);
         });
@@ -121,12 +121,11 @@ module.exports = function (passport) {
         newUser.github.token = accessToken;
 
           // save the user
-        newUser.save((err) => {
+        newUser.save(() => {
           if (err) return done(err);
           return done(null, newUser);
         });
       });
     });
-  },
-));
+  }));
 }; // end module

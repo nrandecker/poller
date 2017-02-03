@@ -76,8 +76,7 @@ if (__TEST__ && !argv.watch) {
         // Pretend no assets were generated. This prevents the tests
         // from running making it clear that there were warnings.
         throw new Error(
-          stats.compilation.errors.map(err => err.message || err),
-        );
+          stats.compilation.errors.map(err => err.message || err));
       }
     });
   });
@@ -87,8 +86,7 @@ if (__DEV__) {
   debug('Enabling plugins for live development (HMR, NoErrors).');
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-  );
+    new webpack.NoErrorsPlugin());
 } else if (__PROD__) {
   debug('Enabling plugins for production (OccurenceOrder, Dedupe & UglifyJS).');
   webpackConfig.plugins.push(
@@ -101,8 +99,7 @@ if (__DEV__) {
         warnings: false,
       },
     }),
-    new webpack.optimize.AggressiveMergingPlugin(),
-  );
+    new webpack.optimize.AggressiveMergingPlugin());
 }
 
 // Don't split bundles during testing, since we only want import one bundle
@@ -110,8 +107,7 @@ if (!__TEST__) {
   webpackConfig.plugins.push(
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor'],
-    }),
-  );
+    }));
 }
 
 // ------------------------------------
@@ -199,19 +195,17 @@ webpackConfig.module.loaders.push(
 if (!__DEV__) {
   debug('Applying ExtractTextPlugin to CSS loaders.');
   webpackConfig.module.loaders.filter(loader =>
-    loader.loaders && loader.loaders.find(name => /css/.test(name.split('?')[0])),
-  ).forEach((loader) => {
-    const first = loader.loaders[0];
-    const rest = loader.loaders.slice(1);
-    loader.loader = ExtractTextPlugin.extract(first, rest.join('!'));
-    delete loader.loaders;
-  });
+    loader.loaders && loader.loaders.find(name => /css/.test(name.split('?')[0]))).forEach((loader) => {
+      const first = loader.loaders[0];
+      const rest = loader.loaders.slice(1);
+      loader.loader = ExtractTextPlugin.extract(first, rest.join('!'));
+      delete loader.loaders;
+    });
 
   webpackConfig.plugins.push(
     new ExtractTextPlugin('[name].[contenthash].css', {
       allChunks: true,
-    }),
-  );
+    }));
 }
 
 module.exports = webpackConfig;

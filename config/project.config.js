@@ -98,8 +98,7 @@ config.compiler_vendors = config.compiler_vendors
     debug(
       `Package "${dep}" was not found as an npm dependency in package.json; ` +
       `it won't be included in the webpack vendor bundle.
-       Consider removing it from \`compiler_vendors\` in ~/config/index.js`,
-    );
+       Consider removing it from \`compiler_vendors\` in ~/config/index.js`);
   });
 
 // ------------------------------------
