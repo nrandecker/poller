@@ -3,6 +3,7 @@ const debug = require('debug')('app:server');
 const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
 const passport = require('passport');

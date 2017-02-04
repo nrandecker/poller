@@ -45,20 +45,26 @@ const Logged = props => (
     anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
     targetOrigin={{ horizontal: 'right', vertical: 'top' }}
   >
-    <MenuItem primaryText="Sign out" />
+    <MenuItem primaryText="Your Polls" />
+    <MenuItem primaryText="Profile" />
+    <MenuItem primaryText="Sign out" onTouchTap={props.logOut} />
   </IconMenu>
 );
 
+
 Logged.muiName = 'IconMenu';
+
+Logged.propTypes = {
+  logOut: React.PropTypes.func,
+};
 
 class Navbar extends Component {
   componentWillMount() {
     this.props.auth();
   }
-  componenetDidUpdate() {
+  componenetWillUpdate() {
     this.props.auth();
   }
-
   handleLogOut = () => {
     this.props.logOut();
   }
@@ -72,7 +78,8 @@ class Navbar extends Component {
           <i className="icon fa fa-hand-peace-o" aria-hidden="true" />
           Poller
         </IndexLink>}
-        iconElementRight={this.props.authenticated ? <Logged /> : <Login />}
+        iconElementRight={this.props.authenticated
+          ? <Logged logOut={this.handleLogOut} /> : <Login />}
       />
     );
   }

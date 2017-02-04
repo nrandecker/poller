@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import { auth } from './navbar';
 
 // ------------------------------------
 // Constants
@@ -52,6 +53,7 @@ export function googleLogin() {
             source: 'google',
           }));
           setTimeout(() => {
+            dispatch(auth());
             // redirect to home page
             browserHistory.push('/');
           }, 200);
@@ -82,6 +84,7 @@ export function githubLogin() {
             source: 'github',
           }));
           setTimeout(() => {
+            dispatch(auth());
             // redirect to home page
             browserHistory.push('/');
           }, 200);
@@ -137,6 +140,7 @@ export function login(data) {
       }));
 
       setTimeout(() => {
+        dispatch(auth());
         // redirect to home page
         browserHistory.push('/');
       }, 2000);
