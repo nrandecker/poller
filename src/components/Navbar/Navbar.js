@@ -32,24 +32,25 @@ const Login = props => (
   </div>
 );
 
-const Logged = props => (
-  <IconMenu
-    {...props}
-    iconButtonElement={
-      <IconButton
-        style={styles.iconMenuStyles}
-        touch
-      ><MoreVertIcon />
-      </IconButton>
-    }
-    anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-  >
-    <MenuItem primaryText="Your Polls" />
-    <MenuItem primaryText="Profile" />
-    <MenuItem primaryText="Sign out" onTouchTap={props.logOut} />
-  </IconMenu>
-);
+const Logged = (props) => {
+  const { logOut, ...rest } = props;
+  return (
+    <IconMenu
+      {...rest}
+      iconButtonElement={
+        <IconButton style={styles.iconMenuStyles} touch>
+          <MoreVertIcon />
+        </IconButton>
+      }
+      anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+      targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+    >
+      <MenuItem primaryText="Your Polls" />
+      <MenuItem primaryText="Profile" />
+      <MenuItem primaryText="Sign out" onTouchTap={logOut} />
+    </IconMenu>
+  );
+};
 
 
 Logged.muiName = 'IconMenu';
