@@ -11,26 +11,30 @@ export const LOG_OUT = 'LOG_OUT';
 // Actions
 // ------------------------------------
 export function auth() {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     if (window.localStorage.token) {
-      const token = JSON.parse(window.localStorage.token);
-      const tokenSource = token.source;
+      try {
+        const token = JSON.parse(window.localStorage.token);
+        const tokenSource = token.source;
 
-      const config = {
-        headers: {
-          authorization: token.token,
-        },
-      };
+        const config = {
+          headers: {
+            authorization: token.token,
+          },
+        };
 
-      axios.post('/auth/authenticate', {
-        source: tokenSource,
-      }, config).then((res) => {
-        const user = res.data.user.local;
-        dispatch(setUser(user));
-        dispatch(logIn());
-      }).catch((err) => {
-        console.log(err);
-      });
+        axios.post('/auth/authenticate', {
+          source: tokenSource,
+        }, config).then((res) => {
+          const user = res.data.user.local;
+          dispatch(setUser(user));
+          dispatch(logIn());
+        }).catch((err) => {
+          console.log(err);
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 }

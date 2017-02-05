@@ -44,7 +44,7 @@ module.exports = function (passport) {
 
           // save the user
         newUser.save((err) => {
-          if (err) return done(err);
+          if (err) console.log(err);
           return done(null, newUser);
         });
          // end else
@@ -62,6 +62,7 @@ module.exports = function (passport) {
         if (err) return done(err);
 
         if (!user) return done(err);
+
 
         user.validPassword(password, function(res) {
           if (res === true) {

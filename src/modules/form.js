@@ -78,11 +78,15 @@ export function githubLogin() {
           const res = gup('?', win.location.search);
           win.close();
 
-          // store our token in localStorge
-          window.localStorage.token = JSON.stringify(({
-            token: res,
-            source: 'github',
-          }));
+          try {
+            // store our token in localStorge
+            window.localStorage.token = JSON.stringify(({
+              token: res,
+              source: 'github',
+            }));
+          } catch (e) {
+            console.log(e);
+          }
           setTimeout(() => {
             dispatch(auth());
             // redirect to home page
