@@ -85,10 +85,12 @@ body {
   p {
     margin: 0 auto;
   }
-  .check-box {
+  .forgot {
+    margin: 5px auto;
+    margin-right: 40px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-end;
   }
 }
 

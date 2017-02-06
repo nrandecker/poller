@@ -24,6 +24,11 @@ const userSchema = mongoose.Schema({
     email: String,
     name: String,
   },
+  polls: [{
+    id: { type: String },
+    title: { type: String },
+    options: [],
+  }],
 });
 
 // generate hash
@@ -32,14 +37,8 @@ userSchema.methods.generateHash = function (password) {
 };
 
 // checking if password is valid
-userSchema.methods.validPassword = function (password, cb) {
-  const promise = this.model('User').find({}, '+local.password').exec();
-  promise.then((user) => {
-    return cb(bcrypt.compareSync(password, user[0].local.password));
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+userSchema.methods.validPassword = function (password, hashPassword) {
+  return bcrypt.compareSync(password, hashPassword);
 };
 
 module.exports = mongoose.model('User', userSchema);

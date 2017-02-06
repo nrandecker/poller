@@ -15,6 +15,7 @@ const webpackConfig = require('../config/webpack.config');
 const project = require('../config/project.config');
 const compress = require('compression');
 const session = require('express-session');
+const shortid = require('shortid');
 
 dotenv.load();
 const app = express();
@@ -40,6 +41,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 require('./config/passport')(passport);
+
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
@@ -52,6 +54,69 @@ function createToken(user) {
   };
   return jwt.encode(payload, process.env.TOKEN_SECRET);
 }
+
+function authenticate(token, cb) {
+  const payload = jwt.decode(token, process.env.TOKEN_SECRET);
+  const now = moment().unix();
+
+  if (now > payload.exp) {
+    cb({ message: 'Token has expired.' });
+  }
+
+  const promise = User.findById(payload.sub).exec();
+
+  promise.then((user) => {
+    return cb(user);
+  })
+  .catch((err) => {
+    return cb(err);
+  });
+}
+
+app.post('/api/newPoll', (req, res, done) => {
+  if (!(req.headers && req.headers.authorization)) {
+    return res.status(400).send({ message: 'You did not provide a JSON Web Token in the Authorization header.' });
+  }
+
+  authenticate(req.headers.authorization, (user, err) => {
+    if (err) return res.status(400).send({ message: err });
+
+    let newUser = user;
+
+    const pollOptions = req.body.data.options.filter((option) => {
+      if (option.text) {
+        return option;
+      }
+    });
+
+    newUser.polls = newUser.polls.concat({
+      id: shortid.generate(),
+      title: req.body.data.title,
+      options: pollOptions,
+    });
+
+    newUser.save((err) => {
+      if (err) console.log(err);
+      return res.send({ poll: newUser.polls });
+    });
+  });
+});
+
+app.get('/api/getPoll', (req, res) => {
+  if (!(req.headers && req.headers.authorization)) {
+    return res.status(400).send({ message: 'You did not provide a JSON Web Token in the Authorization header.' });
+  }
+
+  console.log(req.body);
+});
+
+app.get('/api/polls', (req, res) => {
+  if (!(req.headers && req.headers.authorization)) {
+    return res.status(400).send({ message: 'You did not provide a JSON Web Token in the Authorization header.' });
+  }
+
+  console.log(req.body);
+});
 
 app.post('/auth/authenticate', (req, res, next) => {
   if (!(req.headers && req.headers.authorization)) {
@@ -100,7 +165,6 @@ app.post('/auth/login', (req, res, next) => {
       return res.status(401).send({ success: false, message: 'Username or password is incorrect.' });
     }
 
-    delete user.password;
     const token = createToken(user);
     res.send({ token, user });
   })(req, res, next);

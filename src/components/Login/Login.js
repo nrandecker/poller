@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
-import Checkbox from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -75,12 +74,7 @@ class Signup extends Component {
                     value={this.props.password}
                     onChange={this.handleChange}
                   /><br />
-                  <div className="check-box">
-                    <Checkbox
-                      label="Remeber Me"
-                      style={style.checkbox}
-                      labelStyle={style.checkboxLabel}
-                    />
+                  <div className="forgot">
                     <Link to="/forgot">
                       <p>Forgot Password?</p>
                     </Link>

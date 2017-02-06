@@ -58,17 +58,17 @@ module.exports = function (passport) {
     passReqToCallback: true,
   }, (req, email, password, done) => {
     process.nextTick(() => {
-      User.findOne({ 'local.email': email }, (err, user) => {
+      User.findOne({ 'local.email': email }, '+local.password', (err, user) => {
         if (err) return done(err);
 
         if (!user) return done(err);
 
 
-        user.validPassword(password, function(res) {
-          if (res === true) {
-            return done(null, user);
-          }
-        });
+        if (!user.validPassword(password, user.local.password)) {
+          return done(err);
+        }
+
+        return done(null, user);
       });
     });
   }));
