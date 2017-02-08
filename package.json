@@ -1,7 +1,7 @@
 {
-  "name": "react-redux-starter-kit",
+  "name": "poller",
   "version": "3.0.0-alpha.2",
-  "description": "Get started with React, Redux, and React-Router!",
+  "description": "A real time polling app",
   "main": "index.js",
   "engines": {
     "node": ">=4.5.0",
@@ -71,7 +71,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/davezuko/react-redux-starter-kit.git"
+    "url": "git+https://github.com/nrandecker/poller"
   },
   "author": "Nathan Randecker",
   "license": "MIT",
