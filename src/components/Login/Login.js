@@ -16,14 +16,14 @@ const style = {
     width: '',
   },
   textField: {
-    width: '80%',
+    width: '85%',
   },
   checkboxLabel: {
     width: '100%',
     marginRight: '20px',
   },
   button: {
-    width: '80%',
+    width: '85%',
     margin: 12,
   },
 };

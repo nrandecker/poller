@@ -27,7 +27,7 @@ const userSchema = mongoose.Schema({
   polls: [{
     id: { type: String },
     title: { type: String },
-    options: [],
+    options: [{ text: { type: String }, votes: { type: Number } }],
   }],
 });
 

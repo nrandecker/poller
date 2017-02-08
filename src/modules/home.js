@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { browserHistory } from 'react-router';
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -50,7 +50,15 @@ export function pollSubmit(data) {
         axios.post('/api/newPoll', {
           data,
         }, config).then((res) => {
-          console.log(res);
+          if (res.data.poll) {
+            const polls = res.data.poll;
+            const pollId = polls[polls.length - 1].id;
+            dispatch(actions.resetForm());
+
+            setTimeout(() => {
+              browserHistory.push(`/poll/${pollId}`);
+            }, 200);
+          }
         }).catch((err) => {
           console.log(err);
         });
@@ -151,6 +159,7 @@ const ACTION_HANDLERS = {
     ...state,
     options: [...state.options.slice(0, action.index).concat([{
       text: action.pollOption,
+      votes: 0,
     }]).concat(...state.options.slice(action.index + 1)),
     ],
   }),

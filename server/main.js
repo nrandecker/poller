@@ -73,7 +73,7 @@ function authenticate(token, cb) {
   });
 }
 
-app.post('/api/newPoll', (req, res, done) => {
+app.post('/api/newPoll', (req, res) => {
   if (!(req.headers && req.headers.authorization)) {
     return res.status(400).send({ message: 'You did not provide a JSON Web Token in the Authorization header.' });
   }
@@ -95,6 +95,7 @@ app.post('/api/newPoll', (req, res, done) => {
       options: pollOptions,
     });
 
+
     newUser.save((err) => {
       if (err) console.log(err);
       return res.send({ poll: newUser.polls });
@@ -102,12 +103,54 @@ app.post('/api/newPoll', (req, res, done) => {
   });
 });
 
-app.get('/api/getPoll', (req, res) => {
-  if (!(req.headers && req.headers.authorization)) {
-    return res.status(400).send({ message: 'You did not provide a JSON Web Token in the Authorization header.' });
-  }
+app.get('/api/getPoll/:id', (req, res) => {
+  const { id } = req.params;
+  const promise = User.findOne({ 'polls.id': id }).select('polls').exec();
 
-  console.log(req.body);
+  promise.then((result) => {
+    const { polls } = result;
+    const requestedPoll = polls.filter((poll) => {
+      if (poll.id === id) {
+        return poll;
+      }
+    });
+
+    return res.send({ poll: requestedPoll });
+  }).catch((err) => {
+    if (err) {
+      return res.send({ success: false, message: 'Ah, Snap something went wrong!' });
+    }
+  });
+});
+
+app.post('/api/vote', (req, res) => {
+  const { id } = req.body;
+  const promise = User.findOne({ 'polls.id': id }).select('polls').exec();
+
+  promise.then((result) => {
+    const { polls } = result;
+    const requestedPoll = polls.filter((poll) => {
+      if (poll.id === id) {
+        return poll;
+      }
+    });
+
+    const options = requestedPoll[0].options;
+    let updatedPoll = options.map((option) => {
+      if (option.text === req.body.option) {
+        option.votes = option.votes + 1;
+      }
+      return option;
+    });
+    result.save((err) => {
+      if (err) console.log(err);
+      return res.send({ poll: updatedPoll });
+    });
+  }).catch((err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
 });
 
 app.get('/api/polls', (req, res) => {

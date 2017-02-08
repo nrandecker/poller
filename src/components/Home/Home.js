@@ -116,7 +116,7 @@ class Home extends Component {
             </div>
           </div>
         </div>
-        <div className="container">
+        <div className="container tab-wrapper">
           <TabMenu />
         </div>
         <Snackbar
