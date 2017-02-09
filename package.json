@@ -12,7 +12,9 @@
     "compile": "better-npm-run compile",
     "lint": "eslint bin build config server src tests",
     "lint:fix": "npm run lint -- --fix",
-    "start": "better-npm-run start",
+    "start": "better-npm-run start:prod",
+    "serve": "better-npm-run start",
+    "postinstall": "npm run deploy:prod",
     "dev": "better-npm-run dev",
     "test": "better-npm-run test",
     "test:dev": "npm run test -- --watch",
@@ -28,6 +30,12 @@
         "DEBUG": "app:*"
       }
     },
+    "start:prod": {
+      "command": "node bin/server",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
     "dev": {
       "command": "nodemon bin/dev-server --ignore dist --ignore coverage --ignore tests --ignore src",
       "env": {
@@ -36,7 +44,7 @@
       }
     },
     "deploy": {
-      "command": "npm run lint && npm run test && npm run clean && npm run compile",
+      "command": "npm run clean && npm run compile",
       "env": {
         "DEBUG": "app:*"
       }
@@ -56,9 +64,8 @@
       }
     },
     "start": {
-      "command": "npm run clean && npm run compile && babel-node bin/server",
+      "command": "node bin/dev-server",
       "env": {
-        "NODE_ENV": "production",
         "DEBUG": "app:*"
       }
     },
