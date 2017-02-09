@@ -40,9 +40,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 require('./config/passport')(passport);
 
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
 
 function createToken(user) {
   const payload = {
