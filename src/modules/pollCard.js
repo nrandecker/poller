@@ -1,37 +1,57 @@
+import axios from 'axios';
+import { flatten } from 'underscore';
+
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const SET_TAB_INDEX = 'TAB_INDEX';
+export const SET_POLLS = 'SET_POLLS';
 
 // ------------------------------------
 // Actions
-// ------------------------------------
-export function setTabIndex(value) {
+// ------------------------------------'
+
+export function getPolls() {
+  return(dispatch) => {
+    axios.get('/api/polls')
+    .then((res) => {
+      let { polls } = res.data;
+      polls = flatten(polls);
+      dispatch(actions.setPolls(polls));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
+export function setPolls(polls) {
   return {
-    type: SET_TAB_INDEX,
-    value,
+    type: SET_POLLS,
+    polls,
   };
 }
 
 export const actions = {
-  setTabIndex,
+  getPolls,
+  setPolls,
 };
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [SET_TAB_INDEX]: (state, action) => ({
+  [SET_POLLS]: (state, action) => ({
     ...state,
-    tabIndex: action.value,
+    polls: action.polls,
   }),
 };
+
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 const initialState = {
-  tabIndex: 0,
+  polls: [],
 };
 
 export default function navbarReducer(state = initialState, action) {

@@ -10,7 +10,6 @@ const passport = require('passport');
 const jwt = require('jwt-simple');
 const moment = require('moment');
 const bodyParser = require('body-parser');
-const morgan = require('morgan');
 const webpackConfig = require('../config/webpack.config');
 const project = require('../config/project.config');
 const compress = require('compression');
@@ -36,7 +35,6 @@ const User = require('./models/user');
 app.use(compress());
 app.use(cors());
 app.use(passport.initialize());
-app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -93,8 +91,8 @@ app.post('/api/newPoll', (req, res) => {
       id: shortid.generate(),
       title: req.body.data.title,
       options: pollOptions,
+      created: new Date(),
     });
-
 
     newUser.save((err) => {
       if (err) console.log(err);
@@ -154,11 +152,19 @@ app.post('/api/vote', (req, res) => {
 });
 
 app.get('/api/polls', (req, res) => {
-  if (!(req.headers && req.headers.authorization)) {
-    return res.status(400).send({ message: 'You did not provide a JSON Web Token in the Authorization header.' });
-  }
+  const promise = User.find().select('polls').limit(25).exec();
 
-  console.log(req.body);
+  promise.then((result) => {
+    let polls = result.map((poll) => {
+      return poll.polls;
+    });
+    return res.send({ polls });
+  })
+  .catch((err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
 });
 
 app.post('/auth/authenticate', (req, res, next) => {

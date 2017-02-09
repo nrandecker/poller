@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { orange500 } from 'material-ui/styles/colors';
 import { browserHistory } from 'react-router';
 import Snackbar from 'material-ui/Snackbar';
-import TabMenu from '../TabMenu/TabMenuContainer';
+import PollCard from '../PollCard/PollCardContainer';
 
 const style = {
   height: '100%',
@@ -116,8 +116,8 @@ class Home extends Component {
             </div>
           </div>
         </div>
-        <div className="container tab-wrapper">
-          <TabMenu />
+        <div className="container poll-card-wrapper">
+          <PollCard />
         </div>
         <Snackbar
           open={this.props.snackbar.open}
@@ -131,5 +131,17 @@ class Home extends Component {
     );
   }
 }
+
+Home.propTypes = {
+  pollTitle: React.PropTypes.string,
+  options: React.PropTypes.arrayOf(React.PropTypes.object),
+  titleChange: React.PropTypes.func,
+  optionChange: React.PropTypes.func,
+};
+
+Home.defaultProps = {
+  pollTitle: '',
+  options: [{ text: '' }, { text: '' }],
+};
 
 export default Home;

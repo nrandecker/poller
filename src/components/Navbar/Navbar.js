@@ -76,7 +76,7 @@ class Navbar extends Component {
         className="navbar"
         showMenuIconButton={false}
         title={<IndexLink to="/" activeClassName="route--active">
-          <i className="icon fa fa-hand-peace-o" aria-hidden="true" />
+          <i className="icon fa fa-pie-chart" aria-hidden="true" />
           Poller
         </IndexLink>}
         iconElementRight={this.props.authenticated

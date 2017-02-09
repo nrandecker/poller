@@ -28,6 +28,7 @@ const userSchema = mongoose.Schema({
     id: { type: String },
     title: { type: String },
     options: [{ text: { type: String }, votes: { type: Number } }],
+    created: { type: Date },
   }],
 });
 
