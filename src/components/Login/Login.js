@@ -57,12 +57,15 @@ class Signup extends Component {
             <div className="form">
               <Paper style={style} zDepth={2} >
                 <h1> Log In </h1>
-                <form onSubmit={this.handleFormSubmit}>
+                <form autoComplete="on" onSubmit={this.handleFormSubmit}>
                   <TextField
                     style={style.textField}
                     hintText="Email"
                     type="text"
                     name="email"
+                    errorText={this.props.error}
+                    autocapitalize="off"
+                    spellcheck="false"
                     value={this.props.email}
                     onChange={this.handleChange}
                   /><br />
@@ -73,6 +76,7 @@ class Signup extends Component {
                     type="password"
                     value={this.props.password}
                     onChange={this.handleChange}
+                    errorText={this.props.error}
                   /><br />
                   <div className="forgot">
                     <Link to="/forgot">
@@ -124,6 +128,7 @@ Signup.propTypes = {
   setSnackBar: React.PropTypes.func,
   googleLogin: React.PropTypes.func,
   githubLogin: React.PropTypes.func,
+  error: React.PropTypes.string,
 };
 
 export default Signup;

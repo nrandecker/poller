@@ -55,7 +55,7 @@ class Signup extends Component {
             <div className="form">
               <Paper style={style} zDepth={2} >
                 <h1> Signup </h1>
-                <form onSubmit={this.handleFormSubmit}>
+                <form autoComplete="on" onSubmit={this.handleFormSubmit}>
                   <TextField
                     style={style.textField}
                     hintText="First Name"
@@ -63,6 +63,7 @@ class Signup extends Component {
                     name="firstName"
                     value={this.props.firstName}
                     onChange={this.handleChange}
+                    errorText={this.props.error}
                   /><br />
                   <TextField
                     style={style.textField}
@@ -71,14 +72,18 @@ class Signup extends Component {
                     name="lastName"
                     value={this.props.lastName}
                     onChange={this.handleChange}
+                    errorText={this.props.error}
                   /><br />
                   <TextField
                     style={style.textField}
                     hintText="Email"
                     type="text"
                     name="email"
+                    autocapitalize="off"
+                    spellcheck="false"
                     value={this.props.email}
                     onChange={this.handleChange}
+                    errorText={this.props.error}
                   /><br />
                   <TextField
                     style={style.textField}
@@ -87,6 +92,7 @@ class Signup extends Component {
                     name="password"
                     value={this.props.password}
                     onChange={this.handleChange}
+                    errorText={this.props.error}
                   /><br />
                   <RaisedButton label="Signup" type="submit" primary style={style.button} />
                 </form>
@@ -135,6 +141,7 @@ Signup.propTypes = {
   setSnackBar: React.PropTypes.func,
   googleLogin: React.PropTypes.func,
   githubLogin: React.PropTypes.func,
+  error: React.PropTypes.string,
 };
 
 export default Signup;

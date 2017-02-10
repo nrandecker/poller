@@ -331,7 +331,7 @@ const initialState = {
   lastName: '',
   email: '',
   password: '',
-  error: {},
+  error: '',
   user: {},
   snackbar: {
     open: false,

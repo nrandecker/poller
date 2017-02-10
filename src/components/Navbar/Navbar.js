@@ -45,8 +45,6 @@ const Logged = (props) => {
       anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
       targetOrigin={{ horizontal: 'right', vertical: 'top' }}
     >
-      <MenuItem primaryText="Your Polls" />
-      <MenuItem primaryText="Profile" />
       <MenuItem primaryText="Sign out" onTouchTap={logOut} />
     </IconMenu>
   );
