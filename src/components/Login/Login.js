@@ -28,7 +28,7 @@ const style = {
   },
 };
 
-class Signup extends Component {
+class Login extends Component {
   handleChange = (e) => {
     this.props.formChange({ [e.target.name]: e.target.value });
   }
@@ -49,6 +49,9 @@ class Signup extends Component {
   handleSnackbarClose = () => {
     this.props.setSnackBar('');
   }
+  handleOnFocus = (e) => {
+    this.props.formTouched(e.target.name);
+  }
   render() {
     return (
       <div className="container">
@@ -63,20 +66,22 @@ class Signup extends Component {
                     hintText="Email"
                     type="text"
                     name="email"
-                    errorText={this.props.error}
-                    autocapitalize="off"
-                    spellcheck="false"
+                    errorText={this.props.error.emailError || this.props.error.serverError}
+                    autoCapitalize="off"
+                    spellCheck="false"
                     value={this.props.email}
                     onChange={this.handleChange}
+                    onFocus={this.handleOnFocus}
                   /><br />
                   <TextField
                     style={style.textField}
                     hintText="Password"
                     name="password"
                     type="password"
+                    errorText={this.props.error.passwordError || this.props.error.serverError}
                     value={this.props.password}
                     onChange={this.handleChange}
-                    errorText={this.props.error}
+                    onFocus={this.handleOnFocus}
                   /><br />
                   <div className="forgot">
                     <Link to="/forgot">
@@ -119,7 +124,7 @@ class Signup extends Component {
   }
 }
 
-Signup.propTypes = {
+Login.propTypes = {
   email: React.PropTypes.string,
   password: React.PropTypes.string,
   login: React.PropTypes.func,
@@ -128,7 +133,7 @@ Signup.propTypes = {
   setSnackBar: React.PropTypes.func,
   googleLogin: React.PropTypes.func,
   githubLogin: React.PropTypes.func,
-  error: React.PropTypes.string,
+  formTouched: React.PropTypes.func,
 };
 
-export default Signup;
+export default Login;

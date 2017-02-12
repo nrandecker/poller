@@ -13,7 +13,6 @@ const bodyParser = require('body-parser');
 const webpackConfig = require('../config/webpack.config');
 const project = require('../config/project.config');
 const compress = require('compression');
-const session = require('express-session');
 const shortid = require('shortid');
 
 dotenv.load();

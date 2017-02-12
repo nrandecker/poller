@@ -47,6 +47,9 @@ class Signup extends Component {
   handleGithubLogin = () => {
     this.props.githubLogin();
   }
+  handleOnFocus = (e) => {
+    this.props.formTouched(e.target.name);
+  }
   render() {
     return (
       <div className="container">
@@ -63,7 +66,8 @@ class Signup extends Component {
                     name="firstName"
                     value={this.props.firstName}
                     onChange={this.handleChange}
-                    errorText={this.props.error}
+                    onFocus={this.handleOnFocus}
+                    errorText={this.props.error.firstNameError || this.props.error.serverError}
                   /><br />
                   <TextField
                     style={style.textField}
@@ -72,18 +76,20 @@ class Signup extends Component {
                     name="lastName"
                     value={this.props.lastName}
                     onChange={this.handleChange}
-                    errorText={this.props.error}
+                    onFocus={this.handleOnFocus}
+                    errorText={this.props.error.lastNameError || this.props.error.serverError}
                   /><br />
                   <TextField
                     style={style.textField}
                     hintText="Email"
                     type="text"
                     name="email"
-                    autocapitalize="off"
-                    spellcheck="false"
+                    autoCapitalize="off"
+                    spellCheck="false"
                     value={this.props.email}
                     onChange={this.handleChange}
-                    errorText={this.props.error}
+                    onFocus={this.handleOnFocus}
+                    errorText={this.props.error.emailError || this.props.error.serverError}
                   /><br />
                   <TextField
                     style={style.textField}
@@ -92,7 +98,8 @@ class Signup extends Component {
                     name="password"
                     value={this.props.password}
                     onChange={this.handleChange}
-                    errorText={this.props.error}
+                    onFocus={this.handleOnFocus}
+                    errorText={this.props.error.passwordError || this.props.error.serverError}
                   /><br />
                   <RaisedButton label="Signup" type="submit" primary style={style.button} />
                 </form>
@@ -141,7 +148,6 @@ Signup.propTypes = {
   setSnackBar: React.PropTypes.func,
   googleLogin: React.PropTypes.func,
   githubLogin: React.PropTypes.func,
-  error: React.PropTypes.string,
 };
 
 export default Signup;
