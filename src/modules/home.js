@@ -49,6 +49,7 @@ export function pollSubmit(data) {
 
         axios.post('/api/newPoll', {
           data,
+          tokenSource,
         }, config).then((res) => {
           if (res.data.poll) {
             const polls = res.data.poll;

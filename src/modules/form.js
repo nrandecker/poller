@@ -172,8 +172,6 @@ object is empty? set the data to empty string
 */
 export function formChange(data) {
   return (dispatch) => {
-    dispatch(actions.validate(data));
-
     if (data.firstName || data.firstName === '') {
       dispatch(actions.setFirstName(data.firstName));
     } else if (data.lastName || data.lastName === '') {
@@ -183,6 +181,7 @@ export function formChange(data) {
     } else if (data.password || data.password === '') {
       dispatch(actions.setPassword(data.password));
     }
+    dispatch(actions.validate(data));
   };
 }
 

@@ -26,7 +26,14 @@ export function auth() {
         axios.post('/auth/authenticate', {
           source: tokenSource,
         }, config).then((res) => {
-          const user = res.data.user.local;
+          let user;
+          if (tokenSource === 'github') {
+            user = res.data.user.github;
+          } else if (tokenSource === 'google') {
+            user = res.data.user.google;
+          } else {
+            user = res.data.user.local;
+          }
           dispatch(setUser(user));
           dispatch(logIn());
         }).catch((err) => {

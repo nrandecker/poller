@@ -108,12 +108,14 @@ class Signup extends Component {
                   label="Signup with Github"
                   secondary
                   style={style.button}
+                  onClick={this.handleGithubLogin}
                   icon={<FontIcon className="fa fa-github-alt" />}
                 />
                 <RaisedButton
                   label="Signup with Google"
                   secondary
                   style={style.button}
+                  onClick={this.handleGoogleLogin}
                   icon={<FontIcon className="fa fa-google" />}
                 />
                 <div className="no-account">
