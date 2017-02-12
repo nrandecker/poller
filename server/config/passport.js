@@ -76,7 +76,7 @@ module.exports = function (passport) {
   passport.use('google', new GoogleStrategy({
     clientID: process.env.GMAIL_ID,
     clientSecret: process.env.GMAIL_SECRET,
-    callbackURL: 'http://localhost:3000/auth/google/callback',
+    callbackURL: 'https://poller-nrandecker.herokuapp.com/auth/google/callback',
   },
   (token, refreshToken, profile, done) => {
     process.nextTick(() => {
@@ -106,7 +106,7 @@ module.exports = function (passport) {
   passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_ID,
     clientSecret: process.env.GITHUB_SECRET,
-    callbackURL: 'http://localhost:3000/auth/github/callback',
+    callbackURL: 'https://poller-nrandecker.herokuapp.com/auth/github/callback',
   },
   (accessToken, refreshToken, profile, done) => {
     process.nextTick(() => {

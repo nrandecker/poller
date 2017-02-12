@@ -44,7 +44,7 @@ function gup(name, url) {
 export function googleLogin() {
   return (dispatch) => {
     const url = 'http://localhost:3000/auth/google';
-    const redirectUri = 'http://localhost:3000/signup';
+    const redirectUri = '/signup';
 
     const win = window.open(url, 'name', 'height=600, width=450');
     if (win) win.focus();
@@ -76,7 +76,7 @@ export function googleLogin() {
 export function githubLogin() {
   return (dispatch) => {
     const url = '/auth/github';
-    const redirectUri = 'http://localhost:3000/signup';
+    const redirectUri = '/signup';
     const win = window.open(url, 'name', 'height=600, width=450');
     if (win) win.focus();
     const pollTimer = window.setInterval(() => {
