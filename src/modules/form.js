@@ -43,7 +43,7 @@ function gup(name, url) {
 
 export function googleLogin() {
   return (dispatch) => {
-    const url = 'http://localhost:3000/auth/google';
+    const url = '/auth/google';
     const redirectUri = '/signup';
 
     const win = window.open(url, 'name', 'height=600, width=450');
