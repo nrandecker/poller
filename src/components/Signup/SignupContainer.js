@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { signUp, formChange, setError, setSnackBar, googleLogin, githubLogin } from '../../modules/form';
+import { signUp, formChange, setError, setSnackBar, googleLogin, githubLogin, formTouched } from '../../modules/form';
 import Signup from './Signup';
 
 const mapStatetoProps = state => ({
@@ -10,6 +10,7 @@ const mapStatetoProps = state => ({
   password: state.form.password,
   user: state.form.user,
   snackbar: state.form.snackbar,
+  touched: state.form.touched,
 });
 
 const mapDispatchToProps = {
@@ -19,6 +20,7 @@ const mapDispatchToProps = {
   setSnackBar,
   googleLogin,
   githubLogin,
+  formTouched,
 };
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Signup);

@@ -13,7 +13,6 @@ const bodyParser = require('body-parser');
 const webpackConfig = require('../config/webpack.config');
 const project = require('../config/project.config');
 const compress = require('compression');
-const session = require('express-session');
 const shortid = require('shortid');
 
 dotenv.load();
@@ -75,29 +74,93 @@ app.post('/api/newPoll', (req, res) => {
     return res.status(400).send({ message: 'You did not provide a JSON Web Token in the Authorization header.' });
   }
 
-  authenticate(req.headers.authorization, (user, err) => {
-    if (err) return res.status(400).send({ message: err });
+  const { tokenSource } = req.body;
 
-    let newUser = user;
+  if (tokenSource === 'local') {
+    authenticate(req.headers.authorization, (user, err) => {
+      if (err) return res.status(400).send({ message: err });
 
-    const pollOptions = req.body.data.options.filter((option) => {
-      if (option.text) {
-        return option;
-      }
+      const newUser = user;
+      const date = new Date();
+
+      const pollOptions = req.body.data.options.filter((option) => {
+        if (option.text) {
+          return option;
+        }
+      });
+
+      console.log(newUser);
+
+      newUser.polls = newUser.polls.concat({
+        id: shortid.generate(),
+        title: req.body.data.title,
+        options: pollOptions,
+        created: date.toDateString(),
+        createdBy: newUser.local.firstName,
+      });
+
+      newUser.save((err) => {
+        if (err) console.log(err);
+        return res.send({ poll: newUser.polls });
+      });
     });
+  } else if (tokenSource === 'github') {
+    const token = req.headers.authorization;
+    const promise = User.findOne({ 'github.token': token }).exec();
+    promise.then((user) => {
+      const newUser = user;
+      const date = new Date();
 
-    newUser.polls = newUser.polls.concat({
-      id: shortid.generate(),
-      title: req.body.data.title,
-      options: pollOptions,
-      created: new Date(),
-    });
+      const pollOptions = req.body.data.options.filter((option) => {
+        if (option.text) {
+          return option;
+        }
+      });
 
-    newUser.save((err) => {
-      if (err) console.log(err);
-      return res.send({ poll: newUser.polls });
+      newUser.polls = user.polls.concat({
+        id: shortid.generate(),
+        title: req.body.data.title,
+        options: pollOptions,
+        created: date.toDateString(),
+        createdBy: user.github.name,
+      });
+
+      newUser.save((err) => {
+        if (err) console.log(err);
+        return res.send({ poll: newUser.polls });
+      });
+    }).catch(() => {
+      return res.send({ success: false, message: 'Ah, Snap something went wrong!' });
     });
-  });
+  } else if (tokenSource === 'google') {
+    const token = req.headers.authorization;
+    const promise = User.findOne({ 'google.token': token }).exec();
+    promise.then((user) => {
+      const newUser = user;
+      const date = new Date();
+
+      const pollOptions = req.body.data.options.filter((option) => {
+        if (option.text) {
+          return option;
+        }
+      });
+
+      newUser.polls = user.polls.concat({
+        id: shortid.generate(),
+        title: req.body.data.title,
+        options: pollOptions,
+        created: date.toDateString(),
+        createdBy: user.google.name,
+      });
+
+      newUser.save((err) => {
+        if (err) console.log(err);
+        return res.send({ poll: newUser.polls });
+      });
+    }).catch(() => {
+      return res.send({ success: false, message: 'Ah, Snap something went wrong!' });
+    });
+  }
 });
 
 app.get('/api/getPoll/:id', (req, res) => {
@@ -166,7 +229,7 @@ app.get('/api/polls', (req, res) => {
   });
 });
 
-app.post('/auth/authenticate', (req, res, next) => {
+app.post('/auth/authenticate', (req, res) => {
   if (!(req.headers && req.headers.authorization)) {
     return res.status(400).send({ message: 'You did not provide a JSON Web Token in the Authorization header.' });
   }
@@ -187,7 +250,23 @@ app.post('/auth/authenticate', (req, res, next) => {
         return res.status(400).send({ message: 'User no longer exists.' });
       }
 
-      res.send({ user });
+      return res.send({ user });
+    });
+  } else if (source === 'github') {
+    const token = req.headers.authorization;
+    const promise = User.findOne({ 'github.token': token }).exec();
+    promise.then((user) => {
+      return res.send({ user });
+    }).catch(() => {
+      return res.send({ success: false, message: 'Ah, Snap something went wrong!' });
+    });
+  } else if (source === 'google') {
+    const token = req.headers.authorization;
+    const promise = User.findOne({ 'google.token': token }).exec();
+    promise.then((user) => {
+      return res.send({ user });
+    }).catch(() => {
+      return res.send({ success: false, message: 'Ah, Snap something went wrong!' });
     });
   }
 });

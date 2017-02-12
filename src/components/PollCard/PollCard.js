@@ -38,7 +38,7 @@ class PollCard extends Component {
         <div key={index}>
           <Subheader
             style={styles.subHeader}
-          >{`Created on ${poll.created}`}</Subheader>
+          >{`Created on ${poll.created} by ${poll.createdBy}`}</Subheader>
           <ListItem
             onClick={this.handleListItemClick(poll.id)}
             primaryText={poll.title}
@@ -62,7 +62,7 @@ class PollCard extends Component {
         <div key={index}>
           <Subheader
             style={styles.subHeader}
-          >{`Created on ${poll.created}`}</Subheader>
+          >{`Created on ${poll.created} by ${poll.createdBy}`}</Subheader>
           <ListItem
             onClick={this.handleListItemClick(poll.id)}
             primaryText={poll.title}

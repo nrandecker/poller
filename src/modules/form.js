@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import validator from 'validator';
 import { auth } from './navbar';
 
 // ------------------------------------
@@ -12,7 +13,14 @@ export const SET_EMAIL = 'SET_EMAIL';
 export const SET_PASSWORD = 'SET_PASSWORD';
 export const RESET_FORM = 'RESET_FORM';
 export const SET_USER = 'SET_USER';
-export const SET_ERROR = 'SET_ERROR';
+
+export const SET_TOUCHED = 'SET_TOUCHED';
+export const SET_FIRST_NAME_ERROR = 'SET_FIRST_NAME_ERROR';
+export const SET_LAST_NAME_ERROR = 'SET_LAST_NAME_ERROR';
+export const SET_EMAIL_ERROR = 'SET_EMAIL_ERROR';
+export const SET_PASSWORD_ERROR = 'SET_PASSWORD_ERROR';
+export const SET_SERVER_ERROR = 'SET_SERVER_ERROR';
+
 export const SET_SNACKBAR = 'SET_SNACKBAR';
 export const SET_SNACKBAR_OPEN = 'SET_SNACKBAR_OPEN';
 export const SET_SNACKBAR_CLOSE = 'SET_SNACKBAR_CLOSE';
@@ -59,7 +67,7 @@ export function googleLogin() {
           }, 200);
         }
       } catch (err) {
-
+        console.log(err);
       }
     }, 100);
   };
@@ -94,7 +102,7 @@ export function githubLogin() {
           }, 200);
         }
       } catch (err) {
-
+        console.log(err);
       }
     }, 100);
   };
@@ -108,7 +116,7 @@ export function signUp(data) {
       email: data.email,
       password: data.password,
     })
-    .then((res) => {
+    .then(() => {
       // Give feedback to user and reset the form
       dispatch(actions.setSnackBar('User account succesfully created.'));
       dispatch(actions.resetForm());
@@ -120,14 +128,14 @@ export function signUp(data) {
     })
     .catch((err) => {
       if (err.response) {
-        dispatch(actions.setError(err.response.data.message));
+        dispatch(actions.setServerError(err.response.data.message));
       }
     });
   };
 }
 
 export function login(data) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     axios.post('/auth/login', {
       email: data.email,
       password: data.password,
@@ -152,7 +160,7 @@ export function login(data) {
     .catch((err) => {
       if (err.response) {
         console.log(err.response);
-        dispatch(actions.setError(err.response.data.message));
+        dispatch(actions.setServerError(err.response.data.message));
       }
     });
   };
@@ -173,19 +181,7 @@ export function formChange(data) {
     } else if (data.password || data.password === '') {
       dispatch(actions.setPassword(data.password));
     }
-  };
-}
-
-export function setError(error) {
-  return {
-    type: SET_ERROR,
-    error,
-  };
-}
-
-export function resetForm() {
-  return {
-    type: RESET_FORM,
+    dispatch(actions.validate(data));
   };
 }
 
@@ -193,6 +189,105 @@ export function setSnackBar(message) {
   return (dispatch, getState) => {
     (getState().form.snackbar.open === true)
     ? dispatch(setSnackBarClose(message)) : dispatch(setSnackBarOpen(message));
+  };
+}
+
+export function validate(data) {
+  return (dispatch, getState) => {
+    if (getState().form.touched.email && data.email) {
+      if (validator.isEmail(data.email)) {
+        dispatch(actions.setEmailError(''));
+      } else {
+        dispatch(actions.setEmailError('Email is invaild'));
+      }
+    } else if (getState().form.touched.password) {
+      if (data.password === '') {
+        dispatch(actions.setPasswordError('Password Field is required'));
+      } else {
+        dispatch(actions.setPasswordError(''));
+      }
+    } else if (getState().form.touched.firstName) {
+      if (data.firstName === '') {
+        dispatch(actions.setFirstNameError('First Name is required'));
+      } else {
+        dispatch(actions.setFirstNameError(''))
+      }
+    } else if (getState().form.touched.lastName) {
+      if (data.lastName === '') {
+        dispatch(actions.setLastNameError('Last Name is required'));
+      } else {
+        dispatch(actions.setLastNameError(''));
+      }
+    }
+  };
+}
+
+export function formTouched(data) {
+  return (dispatch, getState) => {
+    const newTouched = Object.assign({}, getState().form.touched);
+    if (data === 'firstName') {
+      newTouched.firstName = true;
+    }
+    if (data === 'lastName') {
+      newTouched.lastName = true;
+    }
+
+    if (data === 'email') {
+      newTouched.email = true;
+    }
+    if (data === 'password') {
+      newTouched.password = true;
+    }
+    dispatch(actions.setTouched(newTouched));
+  };
+}
+
+
+export function setTouched(touched) {
+  return {
+    type: SET_TOUCHED,
+    touched,
+  };
+}
+
+export function setLastNameError(lastNameError) {
+  return {
+    type: SET_LAST_NAME_ERROR,
+    lastNameError,
+  };
+}
+
+export function setFirstNameError(firstNameError) {
+  return {
+    type: SET_FIRST_NAME_ERROR,
+    firstNameError,
+  };
+}
+
+export function setPasswordError(passwordError) {
+  return {
+    type: SET_PASSWORD_ERROR,
+    passwordError,
+  };
+}
+
+export function setEmailError(emailError) {
+  return {
+    type: SET_EMAIL_ERROR,
+    emailError,
+  };
+}
+
+export function setServerError(serverError) {
+  return {
+    type: SET_SERVER_ERROR,
+    serverError,
+  };
+}
+
+export function resetForm() {
+  return {
+    type: RESET_FORM,
   };
 }
 
@@ -260,7 +355,14 @@ export const actions = {
   setPassword,
   resetForm,
   setUser,
-  setError,
+  formTouched,
+  setTouched,
+  validate,
+  setServerError,
+  setEmailError,
+  setFirstNameError,
+  setLastNameError,
+  setPasswordError,
   setSnackBar,
   setSnackBarOpen,
   setSnackBarClose,
@@ -288,12 +390,21 @@ const ACTION_HANDLERS = {
     ...state,
     password: action.password,
   }),
-  [RESET_FORM]: (state, action) => ({
+  [RESET_FORM]: state => ({
     ...state,
     firstName: '',
     lastName: '',
     email: '',
     password: '',
+  }),
+  [SET_TOUCHED]: (state, action) => ({
+    ...state,
+    touched: {
+      firstName: action.touched.firstName,
+      lastName: action.touched.lastName,
+      password: action.touched.password,
+      email: action.touched.email,
+    },
   }),
   [SET_USER]: (state, action) => ({
     ...state,
@@ -303,9 +414,35 @@ const ACTION_HANDLERS = {
       email: action.user.email,
     },
   }),
-  [SET_ERROR]: (state, action) => ({
+  [SET_SERVER_ERROR]: (state, action) => ({
     ...state,
-    error: action.error,
+    error: {
+      serverError: action.serverError,
+    },
+  }),
+  [SET_EMAIL_ERROR]: (state, action) => ({
+    ...state,
+    error: {
+      emailError: action.emailError,
+    },
+  }),
+  [SET_FIRST_NAME_ERROR]: (state, action) => ({
+    ...state,
+    error: {
+      firstNameError: action.firstNameError,
+    },
+  }),
+  [SET_LAST_NAME_ERROR]: (state, action) => ({
+    ...state,
+    error: {
+      lastNameError: action.lastNameError,
+    },
+  }),
+  [SET_PASSWORD_ERROR]: (state, action) => ({
+    ...state,
+    error: {
+      passwordError: action.passwordError,
+    },
   }),
   [SET_SNACKBAR_OPEN]: (state, action) => ({
     ...state,
@@ -331,7 +468,19 @@ const initialState = {
   lastName: '',
   email: '',
   password: '',
-  error: {},
+  touched: {
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+  },
+  error: {
+    firstNameError: '',
+    lastNameError: '',
+    emailError: '',
+    passwordError: '',
+    serverError: '',
+  },
   user: {},
   snackbar: {
     open: false,

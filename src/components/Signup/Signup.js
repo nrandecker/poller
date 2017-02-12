@@ -47,6 +47,9 @@ class Signup extends Component {
   handleGithubLogin = () => {
     this.props.githubLogin();
   }
+  handleOnFocus = (e) => {
+    this.props.formTouched(e.target.name);
+  }
   render() {
     return (
       <div className="container">
@@ -55,7 +58,7 @@ class Signup extends Component {
             <div className="form">
               <Paper style={style} zDepth={2} >
                 <h1> Signup </h1>
-                <form onSubmit={this.handleFormSubmit}>
+                <form autoComplete="on" onSubmit={this.handleFormSubmit}>
                   <TextField
                     style={style.textField}
                     hintText="First Name"
@@ -63,6 +66,8 @@ class Signup extends Component {
                     name="firstName"
                     value={this.props.firstName}
                     onChange={this.handleChange}
+                    onFocus={this.handleOnFocus}
+                    errorText={this.props.error.firstNameError || this.props.error.serverError}
                   /><br />
                   <TextField
                     style={style.textField}
@@ -71,14 +76,20 @@ class Signup extends Component {
                     name="lastName"
                     value={this.props.lastName}
                     onChange={this.handleChange}
+                    onFocus={this.handleOnFocus}
+                    errorText={this.props.error.lastNameError || this.props.error.serverError}
                   /><br />
                   <TextField
                     style={style.textField}
                     hintText="Email"
                     type="text"
                     name="email"
+                    autoCapitalize="off"
+                    spellCheck="false"
                     value={this.props.email}
                     onChange={this.handleChange}
+                    onFocus={this.handleOnFocus}
+                    errorText={this.props.error.emailError || this.props.error.serverError}
                   /><br />
                   <TextField
                     style={style.textField}
@@ -87,6 +98,8 @@ class Signup extends Component {
                     name="password"
                     value={this.props.password}
                     onChange={this.handleChange}
+                    onFocus={this.handleOnFocus}
+                    errorText={this.props.error.passwordError || this.props.error.serverError}
                   /><br />
                   <RaisedButton label="Signup" type="submit" primary style={style.button} />
                 </form>
@@ -95,12 +108,14 @@ class Signup extends Component {
                   label="Signup with Github"
                   secondary
                   style={style.button}
+                  onClick={this.handleGithubLogin}
                   icon={<FontIcon className="fa fa-github-alt" />}
                 />
                 <RaisedButton
                   label="Signup with Google"
                   secondary
                   style={style.button}
+                  onClick={this.handleGoogleLogin}
                   icon={<FontIcon className="fa fa-google" />}
                 />
                 <div className="no-account">

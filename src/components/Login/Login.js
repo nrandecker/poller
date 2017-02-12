@@ -28,7 +28,7 @@ const style = {
   },
 };
 
-class Signup extends Component {
+class Login extends Component {
   handleChange = (e) => {
     this.props.formChange({ [e.target.name]: e.target.value });
   }
@@ -49,6 +49,9 @@ class Signup extends Component {
   handleSnackbarClose = () => {
     this.props.setSnackBar('');
   }
+  handleOnFocus = (e) => {
+    this.props.formTouched(e.target.name);
+  }
   render() {
     return (
       <div className="container">
@@ -57,22 +60,28 @@ class Signup extends Component {
             <div className="form">
               <Paper style={style} zDepth={2} >
                 <h1> Log In </h1>
-                <form onSubmit={this.handleFormSubmit}>
+                <form autoComplete="on" onSubmit={this.handleFormSubmit}>
                   <TextField
                     style={style.textField}
                     hintText="Email"
                     type="text"
                     name="email"
+                    errorText={this.props.error.emailError || this.props.error.serverError}
+                    autoCapitalize="off"
+                    spellCheck="false"
                     value={this.props.email}
                     onChange={this.handleChange}
+                    onFocus={this.handleOnFocus}
                   /><br />
                   <TextField
                     style={style.textField}
                     hintText="Password"
                     name="password"
                     type="password"
+                    errorText={this.props.error.passwordError || this.props.error.serverError}
                     value={this.props.password}
                     onChange={this.handleChange}
+                    onFocus={this.handleOnFocus}
                   /><br />
                   <div className="forgot">
                     <Link to="/forgot">
@@ -86,12 +95,14 @@ class Signup extends Component {
                   label="Login with Github"
                   secondary
                   style={style.button}
+                  onClick={this.handleGithubLogin}
                   icon={<FontIcon className="fa fa-github-alt" />}
                 />
                 <RaisedButton
                   label="Login with Google"
                   secondary
                   style={style.button}
+                  onClick={this.handleGoogleLogin}
                   icon={<FontIcon className="fa fa-google" />}
                 />
                 <div className="no-account">
@@ -115,7 +126,7 @@ class Signup extends Component {
   }
 }
 
-Signup.propTypes = {
+Login.propTypes = {
   email: React.PropTypes.string,
   password: React.PropTypes.string,
   login: React.PropTypes.func,
@@ -124,6 +135,7 @@ Signup.propTypes = {
   setSnackBar: React.PropTypes.func,
   googleLogin: React.PropTypes.func,
   githubLogin: React.PropTypes.func,
+  formTouched: React.PropTypes.func,
 };
 
-export default Signup;
+export default Login;
