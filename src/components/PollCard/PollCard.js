@@ -29,7 +29,7 @@ class PollCard extends Component {
     browserHistory.push(`/poll/${id}`);
   }
   render() {
-    const trendingPollCard = this.props.polls.map((poll, index) => {
+    const pollCard = this.props.polls.map((poll, index) => {
       let votes = 0;
       poll.options.map((option) => {
         votes += option.votes;
@@ -38,39 +38,18 @@ class PollCard extends Component {
         <div key={index}>
           <Subheader
             style={styles.subHeader}
-          >{`Created on ${poll.created} by ${poll.createdBy}`}</Subheader>
+          >{poll.created}</Subheader>
           <ListItem
             onClick={this.handleListItemClick(poll.id)}
             primaryText={poll.title}
             secondaryText={
               <p>
-                <span style={{ color: darkBlack }}>{`Votes: ${votes}`}</span>
+                <span style={{ color: darkBlack }}>{`Created By: ${poll.createdBy}`}</span>
+                <br />
+                {`Votes: ${votes}`}
               </p>
             }
-          />
-          <Divider />
-        </div>
-      );
-    });
-
-    const newPollCard = this.props.polls.map((poll, index) => {
-      let votes = 0;
-      poll.options.map((option) => {
-        votes = votes + option.votes;
-      });
-      return (
-        <div key={index}>
-          <Subheader
-            style={styles.subHeader}
-          >{`Created on ${poll.created} by ${poll.createdBy}`}</Subheader>
-          <ListItem
-            onClick={this.handleListItemClick(poll.id)}
-            primaryText={poll.title}
-            secondaryText={
-              <p>
-                <span style={{ color: darkBlack }}>{`Votes: ${votes}`}</span>
-              </p>
-            }
+            secondaryTextLines={2}
           />
           <Divider />
         </div>
@@ -83,7 +62,7 @@ class PollCard extends Component {
             <Paper style={styles.paper} zDepth={2}>
               <h1>Trending Polls</h1>
               <List>
-                {trendingPollCard}
+                {pollCard}
               </List>
             </Paper>
           </div>
@@ -91,7 +70,7 @@ class PollCard extends Component {
             <Paper style={styles.paper} zDepth={2}>
               <h1>New Polls</h1>
               <List>
-                {newPollCard}
+                {pollCard}
               </List>
             </Paper>
           </div>
