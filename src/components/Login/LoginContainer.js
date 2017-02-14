@@ -9,6 +9,7 @@ const mapStatetoProps = state => ({
   user: state.form.user,
   snackbar: state.form.snackbar,
   touched: state.form.touched,
+  submitDisabled: state.form.submitDisabled,
 });
 
 const mapDispatchToProps = {

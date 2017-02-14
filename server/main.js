@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 const webpack = require('webpack');
 const passport = require('passport');
 const jwt = require('jwt-simple');
+const helmet = require('helmet')
 const moment = require('moment');
 const bodyParser = require('body-parser');
 const webpackConfig = require('../config/webpack.config');
@@ -32,6 +33,7 @@ const User = require('./models/user');
 
 // Apply gzip compression
 app.use(compress());
+app.use(helmet());
 app.use(cors());
 app.use(passport.initialize());
 app.use(bodyParser.json());

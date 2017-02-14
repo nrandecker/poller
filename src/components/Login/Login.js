@@ -88,7 +88,7 @@ class Login extends Component {
                       <p>Forgot Password?</p>
                     </Link>
                   </div>
-                  <RaisedButton label="Login" type="submit" primary style={style.button} />
+                  <RaisedButton label="Login" type="submit" disabled={this.props.submitDisabled} primary style={style.button} />
                 </form>
                 <Divider />
                 <RaisedButton
@@ -136,6 +136,14 @@ Login.propTypes = {
   googleLogin: React.PropTypes.func,
   githubLogin: React.PropTypes.func,
   formTouched: React.PropTypes.func,
+  submitDisabled: React.PropTypes.bool,
+  error: React.PropTypes.shape({
+    firstNameError: React.PropTypes.string,
+    lastNameError: React.PropTypes.string,
+    passwordError: React.PropTypes.string,
+    emailError: React.PropTypes.string,
+    serverError: React.PropTypes.string,
+  }),
 };
 
 export default Login;
