@@ -101,7 +101,7 @@ class Signup extends Component {
                     onFocus={this.handleOnFocus}
                     errorText={this.props.error.passwordError || this.props.error.serverError}
                   /><br />
-                  <RaisedButton label="Signup" type="submit" primary style={style.button} />
+                  <RaisedButton label="Signup" type="submit" disabled={this.props.submitDisabled} primary style={style.button} />
                 </form>
                 <Divider />
                 <RaisedButton
@@ -150,6 +150,7 @@ Signup.propTypes = {
   setSnackBar: React.PropTypes.func,
   googleLogin: React.PropTypes.func,
   githubLogin: React.PropTypes.func,
+  submitDisabled: React.PropTypes.bool,
 };
 
 export default Signup;
