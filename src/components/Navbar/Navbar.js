@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IndexLink, Link } from 'react-router';
+import { IndexLink, Link, browserHistory } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
@@ -33,7 +33,7 @@ const Login = props => (
 );
 
 const Logged = (props) => {
-  const { logOut, ...rest } = props;
+  const { logOut, profile, ...rest } = props;
   return (
     <IconMenu
       {...rest}
@@ -45,7 +45,7 @@ const Logged = (props) => {
       anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
       targetOrigin={{ horizontal: 'right', vertical: 'top' }}
     >
-      <MenuItem primaryText="Profile" href="/profile" />
+      <MenuItem primaryText="Profile" onTouchTap={profile} />
       <MenuItem primaryText="Sign out" onTouchTap={logOut} />
     </IconMenu>
   );
@@ -56,6 +56,7 @@ Logged.muiName = 'IconMenu';
 
 Logged.propTypes = {
   logOut: React.PropTypes.func,
+  profile: React.PropTypes.func,
 };
 
 class Navbar extends Component {
@@ -68,6 +69,9 @@ class Navbar extends Component {
   handleLogOut = () => {
     this.props.logOut();
   }
+  handleProfile = () => {
+    browserHistory.push('/profile');
+  }
   render() {
     return (
       <AppBar
@@ -79,7 +83,7 @@ class Navbar extends Component {
           Poller
         </IndexLink>}
         iconElementRight={this.props.authenticated
-          ? <Logged logOut={this.handleLogOut} /> : <Login />}
+          ? <Logged profile={this.handleProfile} logOut={this.handleLogOut} /> : <Login />}
       />
     );
   }
