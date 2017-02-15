@@ -67,7 +67,7 @@ export function googleLogin() {
           }, 200);
         }
       } catch (err) {
-        console.log(err);
+
       }
     }, 100);
   };
@@ -102,7 +102,7 @@ export function githubLogin() {
           }, 200);
         }
       } catch (err) {
-        console.log(err);
+
       }
     }, 100);
   };

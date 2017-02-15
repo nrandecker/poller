@@ -39,8 +39,7 @@ class UserProfile extends Component {
     browserHistory.push(`/poll/${id}`);
   }
   render() {
-    const { local, github, google, polls } = this.props.currentUser;
-    const userName = local.firstName || github.name || google.name;
+    const { polls } = this.props.currentUser;
 
     const noPollHeader = (
       <h1 style={styles.header}>You don't have any polls 😭</h1>
