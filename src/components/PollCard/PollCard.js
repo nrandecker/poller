@@ -40,7 +40,7 @@ class PollCard extends Component {
             style={styles.subHeader}
           >{poll.created}</Subheader>
           <ListItem
-            onClick={this.handleListItemClick(poll.id)}
+            onTouchTap={this.handleListItemClick(poll.id)}
             primaryText={poll.title}
             secondaryText={
               <p>

@@ -229,6 +229,26 @@ app.get('/api/polls', (req, res) => {
   });
 });
 
+app.post('/api/deletePoll', (req, res) => {
+  if (!(req.headers && req.headers.authorization)) {
+    return res.status(400).send({ message: 'You did not provide a JSON Web Token in the Authorization header.' });
+  }
+
+  const { id, index } = req.body;
+
+  const promise = User.findOne({ 'polls.id': id }).select('polls').exec();
+
+  promise.then((result) => {
+    result.polls.splice(index, 1);
+    result.save((err) => {
+      if (err) console.log(err);
+      return res.send({ polls: result });
+    });
+  }).catch((err) => {
+    console.log(err);
+  });
+});
+
 app.post('/auth/authenticate', (req, res) => {
   if (!(req.headers && req.headers.authorization)) {
     return res.status(400).send({ message: 'You did not provide a JSON Web Token in the Authorization header.' });

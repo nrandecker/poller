@@ -8,17 +8,13 @@ import SignupContainer from '../components/Signup/SignupContainer';
 import PollContainer from '../components/Poll/PollContainer';
 import UserProfileContainer from '../components/UserProfile/UserProfileContainer';
 
-import UserPolls from '../components/UserProfile/UserPolls';
-
 export const createRoutes = store => (
   <Route path="/" component={CoreLayout}>
     <IndexRoute component={HomeContainer} />
     <Route path="/login" component={LoginContainer} />
     <Route path="/signup" component={SignupContainer} />
     <Route path="/forgot" />
-    <Route path="/profile" component={UserProfileContainer}>
-      <Route path="/profile/polls" component={UserPolls} />
-    </Route>
+    <Route path="/profile" component={UserProfileContainer} />
     <Route path="/poll/:id" component={PollContainer} />
   </Route>
 );

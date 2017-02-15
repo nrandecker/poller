@@ -17,7 +17,7 @@ const styles = {
 
 
 class Poll extends Component {
-  componentWillMount() {
+  componentDidMount() {
     const { id } = this.props.params;
     this.props.getPoll(id);
   }
