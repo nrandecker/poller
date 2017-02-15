@@ -240,12 +240,12 @@ app.post('/api/deletePoll', (req, res) => {
 
   promise.then((result) => {
     result.polls.splice(index, 1);
-    result.save((err) => {
+    return result.save((err) => {
       if (err) console.log(err);
       return res.send({ polls: result });
     });
   }).catch((err) => {
-    console.log(err);
+    if (err) return res.send({ success: false, message: 'Ah, Snap something went wrong!' });
   });
 });
 
