@@ -58,7 +58,7 @@ class Home extends Component {
     Which has e as a param so we can refrence the event object
     in our function
   */
-  handleOptionChange = (index) => (e) => {
+  handleOptionChange = index => (e) => {
     e.preventDefault();
     this.props.optionChange(index, e.target.value);
   }
@@ -133,15 +133,22 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  pollTitle: React.PropTypes.string,
-  options: React.PropTypes.arrayOf(React.PropTypes.object),
-  titleChange: React.PropTypes.func,
-  optionChange: React.PropTypes.func,
+  pollTitle: React.PropTypes.string.isRequired,
+  options: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+  titleChange: React.PropTypes.func.isRequired,
+  optionChange: React.PropTypes.func.isRequired,
+  addOption: React.PropTypes.func.isRequired,
+  removeOption: React.PropTypes.func.isRequired,
+  pollSubmit: React.PropTypes.func.isRequired,
+  snackbar: React.PropTypes.shape({
+    open: React.PropTypes.bool,
+    message: React.PropTypes.string,
+  }).isRequired,
+  setSnackBar: React.PropTypes.func.isRequired,
 };
 
 Home.defaultProps = {
   pollTitle: '',
-  options: [{ text: '' }, { text: '' }],
 };
 
 export default Home;

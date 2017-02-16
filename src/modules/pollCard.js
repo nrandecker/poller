@@ -11,7 +11,7 @@ export const SET_POLLS = 'SET_POLLS';
 // ------------------------------------'
 
 export function getPolls() {
-  return(dispatch) => {
+  return (dispatch) => {
     axios.get('/api/polls')
     .then((res) => {
       let { polls } = res.data;

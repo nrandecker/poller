@@ -8,7 +8,7 @@ import SignupContainer from '../components/Signup/SignupContainer';
 import PollContainer from '../components/Poll/PollContainer';
 import UserProfileContainer from '../components/UserProfile/UserProfileContainer';
 
-export const createRoutes = store => (
+export const createRoutes = () => (
   <Route path="/" component={CoreLayout}>
     <IndexRoute component={HomeContainer} />
     <Route path="/login" component={LoginContainer} />

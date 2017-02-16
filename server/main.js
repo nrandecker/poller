@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 const webpack = require('webpack');
 const passport = require('passport');
 const jwt = require('jwt-simple');
-const helmet = require('helmet')
+const helmet = require('helmet');
 const moment = require('moment');
 const bodyParser = require('body-parser');
 const webpackConfig = require('../config/webpack.config');
@@ -89,9 +89,8 @@ app.post('/api/newPoll', (req, res) => {
         if (option.text) {
           return option;
         }
+        return false;
       });
-
-      console.log(newUser);
 
       newUser.polls = newUser.polls.concat({
         id: shortid.generate(),
@@ -117,6 +116,7 @@ app.post('/api/newPoll', (req, res) => {
         if (option.text) {
           return option;
         }
+        return false;
       });
 
       newUser.polls = user.polls.concat({
@@ -145,6 +145,7 @@ app.post('/api/newPoll', (req, res) => {
         if (option.text) {
           return option;
         }
+        return false;
       });
 
       newUser.polls = user.polls.concat({
@@ -175,6 +176,7 @@ app.get('/api/getPoll/:id', (req, res) => {
       if (poll.id === id) {
         return poll;
       }
+      return false;
     });
 
     return res.send({ poll: requestedPoll });
@@ -195,16 +197,17 @@ app.post('/api/vote', (req, res) => {
       if (poll.id === id) {
         return poll;
       }
+      return false;
     });
 
     const options = requestedPoll[0].options;
-    let updatedPoll = options.map((option) => {
+    const updatedPoll = options.map((option) => {
       if (option.text === req.body.option) {
-        option.votes = option.votes + 1;
+        option.votes += 1;
       }
       return option;
     });
-    result.save((err) => {
+    return result.save((err) => {
       if (err) console.log(err);
       return res.send({ poll: updatedPoll });
     });
@@ -219,7 +222,7 @@ app.get('/api/polls', (req, res) => {
   const promise = User.find().select('polls').limit(25).exec();
 
   promise.then((result) => {
-    let polls = result.map((poll) => {
+    const polls = result.map((poll) => {
       return poll.polls;
     });
     return res.send({ polls });

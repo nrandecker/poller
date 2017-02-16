@@ -44,7 +44,7 @@
       }
     },
     "deploy": {
-      "command": "npm run clean && npm run compile",
+      "command": "npm run lint && npm run clean && npm run compile",
       "env": {
         "DEBUG": "app:*"
       }
@@ -64,7 +64,7 @@
       }
     },
     "start": {
-      "command": "npm run clean && npm run compile && babel-node bin/server",
+      "command": "node bin/server",
       "env": {
         "NODE_ENV": "production",
         "DEBUG": "app:*"
@@ -126,6 +126,7 @@
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
     "postcss-loader": "^1.1.0",
+    "redbox-react": "^1.2.10",
     "react": "^15.4.2",
     "react-chartjs-2": "^2.0.0",
     "react-dom": "^15.0.0",
@@ -143,6 +144,8 @@
     "url-loader": "^0.5.6",
     "validator": "^6.2.1",
     "webpack": "^1.12.14",
+    "webpack-hot-middleware": "^2.12.2",
+    "webpack-dev-middleware": "^1.6.1",
     "yargs": "^6.3.0"
   },
   "devDependencies": {
@@ -174,10 +177,7 @@
     "nodemon": "^1.10.2",
     "phantomjs-prebuilt": "^2.1.12",
     "react-addons-test-utils": "^15.0.0",
-    "redbox-react": "^1.2.10",
     "sinon": "^1.17.5",
-    "sinon-chai": "^2.8.0",
-    "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.12.2"
+    "sinon-chai": "^2.8.0"
   }
 }

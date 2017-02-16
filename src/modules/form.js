@@ -35,7 +35,7 @@ export const SET_SNACKBAR_CLOSE = 'SET_SNACKBAR_CLOSE';
 */
 function gup(name, url) {
   if (!url) url = location.href;
-  name = name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
+  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
   const regexS = `[\\?&]${name}=([^&#]*)`;
   const regex = new RegExp(regexS);
   const results = regex.exec(url);
@@ -68,7 +68,7 @@ export function googleLogin() {
           }, 200);
         }
       } catch (err) {
-
+        if (err) console.log(err);
       }
     }, 100);
   };
@@ -103,7 +103,7 @@ export function githubLogin() {
           }, 200);
         }
       } catch (err) {
-
+        if (err) console.log(err);
       }
     }, 100);
   };
@@ -213,7 +213,7 @@ export function validate(data) {
       if (data.firstName === '') {
         dispatch(actions.setFirstNameError('First Name is required'));
       } else {
-        dispatch(actions.setFirstNameError(''))
+        dispatch(actions.setFirstNameError(''));
       }
     } if (touched.lastName) {
       if (data.lastName === '') {

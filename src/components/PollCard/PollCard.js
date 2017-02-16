@@ -33,6 +33,7 @@ class PollCard extends Component {
       let votes = 0;
       poll.options.map((option) => {
         votes += option.votes;
+        return votes;
       });
       return (
         <div key={index}>
@@ -81,7 +82,8 @@ class PollCard extends Component {
 }
 
 PollCard.propTypes = {
-  getPolls: React.PropTypes.func,
+  getPolls: React.PropTypes.func.isRequired,
+  polls: React.PropTypes.array.isRequired,
 };
 
 export default PollCard;

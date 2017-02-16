@@ -140,17 +140,25 @@ class Signup extends Component {
 }
 
 Signup.propTypes = {
-  firstName: React.PropTypes.string,
-  lastName: React.PropTypes.string,
-  email: React.PropTypes.string,
-  password: React.PropTypes.string,
-  signUp: React.PropTypes.func,
-  formChange: React.PropTypes.func,
-  snackbar: React.PropTypes.object,
-  setSnackBar: React.PropTypes.func,
-  googleLogin: React.PropTypes.func,
-  githubLogin: React.PropTypes.func,
-  submitDisabled: React.PropTypes.bool,
+  firstName: React.PropTypes.string.isRequired,
+  lastName: React.PropTypes.string.isRequired,
+  email: React.PropTypes.string.isRequired,
+  password: React.PropTypes.string.isRequired,
+  signUp: React.PropTypes.func.isRequired,
+  formChange: React.PropTypes.func.isRequired,
+  snackbar: React.PropTypes.object.isRequired,
+  setSnackBar: React.PropTypes.func.isRequired,
+  googleLogin: React.PropTypes.func.isRequired,
+  githubLogin: React.PropTypes.func.isRequired,
+  submitDisabled: React.PropTypes.bool.isRequired,
+  formTouched: React.PropTypes.func.isRequired,
+  error: React.PropTypes.shape({
+    firstNameError: React.PropTypes.string,
+    lastNameError: React.PropTypes.string,
+    passwordError: React.PropTypes.string,
+    emailError: React.PropTypes.string,
+    serverError: React.PropTypes.string,
+  }).isRequired,
 };
 
 export default Signup;

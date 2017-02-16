@@ -1,9 +1,9 @@
 import React from 'react';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import '../../styles/core.scss';
 import NavbarContainer from '../../components/Navbar/NavbarContainer';
 import Footer from '../../components/Footer/Footer';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const muiTheme = getMuiTheme({
   fontFamily: 'Montserrat, sans-serif ',
@@ -21,5 +21,9 @@ export const CoreLayout = ({ children }) => (
     </div>
   </MuiThemeProvider>
 );
+
+CoreLayout.propTypes = {
+  children: React.PropTypes.node.isRequired,
+};
 
 export default CoreLayout;

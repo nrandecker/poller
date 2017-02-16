@@ -67,7 +67,7 @@ export function pollSubmit(data) {
         console.log(e);
       }
     } else {
-      dispatch(actions.setSnackBar())
+      dispatch(actions.setSnackBar());
     }
   };
 }

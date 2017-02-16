@@ -50,7 +50,7 @@ export function deletePoll(id, index) {
         axios.post('/api/deletePoll', {
           id,
           index,
-        }, config).then((res) => {
+        }, config).then(() => {
           dispatch(actions.getUserPolls());
         }).catch((err) => {
           console.log(err);
