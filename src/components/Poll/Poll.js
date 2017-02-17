@@ -99,16 +99,19 @@ class Poll extends Component {
 }
 
 Poll.propTypes = {
-  getPoll: React.PropTypes.func,
-  pollOptions: React.PropTypes.array,
+  params: React.PropTypes.object.isRequired,
+  getPoll: React.PropTypes.func.isRequired,
+  votes: React.PropTypes.array.isRequired,
+  pollOptions: React.PropTypes.array.isRequired,
   pollTitle: React.PropTypes.string,
   optionVote: React.PropTypes.bool,
-  showVote: React.PropTypes.func,
-  vote: React.PropTypes.func,
+  showVote: React.PropTypes.func.isRequired,
+  vote: React.PropTypes.func.isRequired,
 };
 
 Poll.defaultProps = {
   optionVote: false,
+  pollTitle: '',
 };
 
 export default Poll;

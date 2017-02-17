@@ -15,6 +15,7 @@ export const RESET_FORM = 'RESET_FORM';
 export const SET_USER = 'SET_USER';
 
 export const SET_TOUCHED = 'SET_TOUCHED';
+export const SET_SUBMIT_STATUS = 'SET_SUBMIT_STATUS';
 export const SET_FIRST_NAME_ERROR = 'SET_FIRST_NAME_ERROR';
 export const SET_LAST_NAME_ERROR = 'SET_LAST_NAME_ERROR';
 export const SET_EMAIL_ERROR = 'SET_EMAIL_ERROR';
@@ -34,7 +35,7 @@ export const SET_SNACKBAR_CLOSE = 'SET_SNACKBAR_CLOSE';
 */
 function gup(name, url) {
   if (!url) url = location.href;
-  name = name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
+  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
   const regexS = `[\\?&]${name}=([^&#]*)`;
   const regex = new RegExp(regexS);
   const results = regex.exec(url);
@@ -67,7 +68,7 @@ export function googleLogin() {
           }, 200);
         }
       } catch (err) {
-
+        if (err) console.log(err);
       }
     }, 100);
   };
@@ -102,7 +103,7 @@ export function githubLogin() {
           }, 200);
         }
       } catch (err) {
-
+        if (err) console.log(err);
       }
     }, 100);
   };
@@ -110,6 +111,12 @@ export function githubLogin() {
 
 export function signUp(data) {
   return (dispatch) => {
+    // sanitize inputs
+    data.email = validator.blacklist(validator.trim(data.email), '\\[\\]\\\\');
+    data.password = validator.blacklist(validator.trim(data.password), '\\[\\]\\\\');
+    data.firstName = validator.blacklist(validator.trim(data.firstName), '\\[\\]\\\\');
+    data.lastName = validator.blacklist(validator.trim(data.lastName), '\\[\\]\\\\');
+
     axios.post('/auth/signup', {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -136,6 +143,10 @@ export function signUp(data) {
 
 export function login(data) {
   return (dispatch) => {
+    // sanitize inputs
+    data.email = validator.blacklist(validator.trim(data.email), '\\[\\]\\\\');
+    data.password = validator.blacklist(validator.trim(data.password), '\\[\\]\\\\');
+
     axios.post('/auth/login', {
       email: data.email,
       password: data.password,
@@ -182,6 +193,7 @@ export function formChange(data) {
       dispatch(actions.setPassword(data.password));
     }
     dispatch(actions.validate(data));
+    dispatch(actions.submitStatus());
   };
 }
 
@@ -194,30 +206,48 @@ export function setSnackBar(message) {
 
 export function validate(data) {
   return (dispatch, getState) => {
-    if (getState().form.touched.email && data.email) {
+    const { touched } = getState().form;
+    if (touched.email && data.email) {
       if (validator.isEmail(data.email)) {
         dispatch(actions.setEmailError(''));
       } else {
         dispatch(actions.setEmailError('Email is invaild'));
       }
-    } else if (getState().form.touched.password) {
+    } if (touched.password) {
       if (data.password === '') {
         dispatch(actions.setPasswordError('Password Field is required'));
       } else {
         dispatch(actions.setPasswordError(''));
       }
-    } else if (getState().form.touched.firstName) {
+    } if (touched.firstName) {
       if (data.firstName === '') {
         dispatch(actions.setFirstNameError('First Name is required'));
       } else {
-        dispatch(actions.setFirstNameError(''))
+        dispatch(actions.setFirstNameError(''));
       }
-    } else if (getState().form.touched.lastName) {
+    } if (touched.lastName) {
       if (data.lastName === '') {
         dispatch(actions.setLastNameError('Last Name is required'));
       } else {
         dispatch(actions.setLastNameError(''));
       }
+    }
+  };
+}
+
+export function submitStatus() {
+  return (dispatch, getState) => {
+    const { error } = getState().form;
+    let submitError = false;
+    Object.keys(error).forEach((key) => {
+      if (!!error[key]) {
+        submitError = true;
+      }
+    });
+    if (submitError) {
+      dispatch(actions.setSubmitStatus(true));
+    } else {
+      dispatch(actions.setSubmitStatus(false));
     }
   };
 }
@@ -242,6 +272,13 @@ export function formTouched(data) {
   };
 }
 
+
+export function setSubmitStatus(status) {
+  return {
+    type: SET_SUBMIT_STATUS,
+    status,
+  };
+}
 
 export function setTouched(touched) {
   return {
@@ -363,6 +400,8 @@ export const actions = {
   setFirstNameError,
   setLastNameError,
   setPasswordError,
+  setSubmitStatus,
+  submitStatus,
   setSnackBar,
   setSnackBarOpen,
   setSnackBarClose,
@@ -424,25 +463,41 @@ const ACTION_HANDLERS = {
     ...state,
     error: {
       emailError: action.emailError,
+      passwordError: state.error.passwordError,
+      firstNameError: state.error.firstNameError,
+      lastNameError: state.error.lastNameError,
     },
   }),
   [SET_FIRST_NAME_ERROR]: (state, action) => ({
     ...state,
     error: {
       firstNameError: action.firstNameError,
+      lastNameError: state.error.lastNameError,
+      passwordError: state.error.passwordError,
+      emailError: state.error.emailError,
     },
   }),
   [SET_LAST_NAME_ERROR]: (state, action) => ({
     ...state,
     error: {
       lastNameError: action.lastNameError,
+      firstNameError: state.error.firstNameError,
+      passwordError: state.error.passwordError,
+      emailError: state.error.emailError,
     },
   }),
   [SET_PASSWORD_ERROR]: (state, action) => ({
     ...state,
     error: {
       passwordError: action.passwordError,
+      emailError: state.error.emailError,
+      firstNameError: state.error.firstNameError,
+      lastNameError: state.error.lastNameError,
     },
+  }),
+  [SET_SUBMIT_STATUS]: (state, action) => ({
+    ...state,
+    submitDisabled: action.status,
   }),
   [SET_SNACKBAR_OPEN]: (state, action) => ({
     ...state,
@@ -481,6 +536,7 @@ const initialState = {
     passwordError: '',
     serverError: '',
   },
+  submitDisabled: false,
   user: {},
   snackbar: {
     open: false,

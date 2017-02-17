@@ -49,15 +49,11 @@ class UserProfile extends Component {
       <h1 style={styles.header}>Your Polls</h1>
     );
 
-    const noPolls = (
-      <div>
-      </div>
-    )
-
     const pollCard = polls.map((poll, index) => {
       let votes = 0;
       poll.options.map((option) => {
         votes += option.votes;
+        return votes;
       });
       return (
         <div key={index}>
@@ -107,8 +103,21 @@ class UserProfile extends Component {
 }
 
 UserProfile.propTypes = {
-  getUserPolls: React.PropTypes.func,
-  deletePoll: React.PropTypes.func,
+  getUserPolls: React.PropTypes.func.isRequired,
+  deletePoll: React.PropTypes.func.isRequired,
+  polls: React.PropTypes.array,
+  currentUser: React.PropTypes.object.isRequired,
 };
+
+UserProfile.defaultProps = {
+  polls: [{
+    id: '',
+    title: '',
+    options: [{}],
+    created: '',
+    createby: '',
+  }],
+};
+
 
 export default UserProfile;

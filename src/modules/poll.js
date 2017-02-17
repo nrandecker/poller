@@ -20,8 +20,8 @@ export function getPoll(id) {
     .then((res) => {
       const { poll } = res.data;
       dispatch(actions.setPollTitle(poll[0].title));
-      dispatch(actions.setPollVotes(poll[0].options))
-      dispatch(actions.setPollOptions(poll[0].options))
+      dispatch(actions.setPollVotes(poll[0].options));
+      dispatch(actions.setPollOptions(poll[0].options));
     })
     .catch((err) => {
       console.log(err);
@@ -61,7 +61,7 @@ export function setPollVotes(poll) {
 export function showVote() {
   return (dispatch, getState) => {
     const { optionVote } = getState().poll;
-    (optionVote === false) ? dispatch(actions.showVoteTrue()) : dispatch(actions.showVoteFalse())
+    (optionVote === false) ? dispatch(actions.showVoteTrue()) : dispatch(actions.showVoteFalse());
   };
 }
 

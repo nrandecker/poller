@@ -69,11 +69,11 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [LOG_IN]: (state, action) => ({
+  [LOG_IN]: state => ({
     ...state,
     authenticated: true,
   }),
-  [LOG_OUT]: (state, action) => ({
+  [LOG_OUT]: state => ({
     ...state,
     authenticated: false,
   }),

@@ -88,7 +88,7 @@ class Login extends Component {
                       <p>Forgot Password?</p>
                     </Link>
                   </div>
-                  <RaisedButton label="Login" type="submit" primary style={style.button} />
+                  <RaisedButton label="Login" type="submit" disabled={this.props.submitDisabled} primary style={style.button} />
                 </form>
                 <Divider />
                 <RaisedButton
@@ -127,15 +127,26 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  email: React.PropTypes.string,
-  password: React.PropTypes.string,
-  login: React.PropTypes.func,
-  formChange: React.PropTypes.func,
-  snackbar: React.PropTypes.object,
-  setSnackBar: React.PropTypes.func,
-  googleLogin: React.PropTypes.func,
-  githubLogin: React.PropTypes.func,
-  formTouched: React.PropTypes.func,
+  email: React.PropTypes.string.isRequired,
+  password: React.PropTypes.string.isRequired,
+  login: React.PropTypes.func.isRequired,
+  formChange: React.PropTypes.func.isRequired,
+  snackbar: React.PropTypes.shape({
+    open: React.PropTypes.bool,
+    message: React.PropTypes.string,
+  }).isRequired,
+  setSnackBar: React.PropTypes.func.isRequired,
+  googleLogin: React.PropTypes.func.isRequired,
+  githubLogin: React.PropTypes.func.isRequired,
+  formTouched: React.PropTypes.func.isRequired,
+  submitDisabled: React.PropTypes.bool.isRequired,
+  error: React.PropTypes.shape({
+    firstNameError: React.PropTypes.string,
+    lastNameError: React.PropTypes.string,
+    passwordError: React.PropTypes.string,
+    emailError: React.PropTypes.string,
+    serverError: React.PropTypes.string,
+  }).isRequired,
 };
 
 export default Login;

@@ -1,19 +1,21 @@
 sudo: false
 language: node_js
 node_js:
-  - "6"
-
+- '6'
 cache:
   directories:
-    - node_modules
-
+  - node_modules
 install:
-  - npm install -g yarn
-  - yarn install
-
+- npm install -g yarn
+- yarn install
 script:
-  - npm run deploy:dev
-  - npm run deploy:prod
-
+- npm run deploy:prod
 after_success:
-  - npm run codecov
+- npm run codecov
+deploy:
+  provider: heroku
+  api_key:
+    secure: ej8LEhDIw6wMNz88tKgXJ5pH25gtbwuOHAspoQMhE8wKv3Gf25+plXFt0mDkQG1c02as5/RW3G163bqCiR3ASNS5GodtCUz+nvRLix0sSbY2Glc4hA1kAsLbDcy5YqvNcLNOuFW61/+T5vYaOmsA4lyftl4pCzGOTQjE7CQP5VKrSYrlMS9b9fOV5OJCJEn7mYZGM9ig6u3yn9+HUan9lUT6UsjEm89bammEsRf36pdACiWLGeEkwKgL+g670e94DhzwiyJ292mguqIBvKXprn7zK5amyVf8B6/YY3VdPkA62AgEd06W0+DJwgzkULlivNX7dqap7kyCKQsDDOwMJXXSGG+pGMfMSDUkSVaBO8QK66R7vKlX9dCrPJCV0n6KDoOwZlyRsWtZSn0EUWCMZYrdcM94NwUEtT5e9bhvHbxqtG7FM7Sia+2qBiWhSLDMHcTSYvwSvR8hwcCoi8b8EOAt0OOdIrgiNRe/nMVsgfsYin64uSyI9A76vzpGS9s0XjQq8UjxI/50VUAFg4sWfe+Sy7hE1fFgueiTQuZ/SRWBZ4HTFizIrqsXKYorBLzvjwjeg3VArbxfSyK7Lsw39RZSAhxYYMERXVN2TAW6i86lZ0x9rnAmsiTeqUB/1KLGbbOE8ZYgswF6/umhikWtKQjXxEBL4jjPajHGtV8NQno=
+  app: poller-nrandecker
+  on:
+    repo: nrandecker/poller

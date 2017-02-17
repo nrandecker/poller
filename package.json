@@ -44,7 +44,7 @@
       }
     },
     "deploy": {
-      "command": "npm run clean && npm run compile",
+      "command": "npm run lint && npm run clean && npm run compile",
       "env": {
         "DEBUG": "app:*"
       }
@@ -64,7 +64,7 @@
       }
     },
     "start": {
-      "command": "npm run clean && npm run compile && babel-node bin/server",
+      "command": "node bin/server",
       "env": {
         "NODE_ENV": "production",
         "DEBUG": "app:*"
@@ -110,6 +110,7 @@
     "extract-text-webpack-plugin": "^1.0.0",
     "file-loader": "^0.9.0",
     "fs-extra": "^1.0.0",
+    "helmet": "^3.4.0",
     "html-webpack-plugin": "^2.22.0",
     "imports-loader": "^0.7.0",
     "ip": "^1.1.2",
@@ -118,7 +119,7 @@
     "material-ui": "^0.16.7",
     "moment": "^2.17.1",
     "mongoose": "^4.8.0",
-    "node-sass": "^3.4.2",
+    "node-sass": "^4.5.0",
     "normalize.css": "^5.0.0",
     "passport": "^0.3.2",
     "passport-github2": "^0.1.10",
@@ -132,6 +133,7 @@
     "react-router": "^3.0.0",
     "react-swipeable-views": "^0.10.3",
     "react-tap-event-plugin": "^2.0.1",
+    "redbox-react": "^1.2.10",
     "redux": "^3.6.0",
     "redux-thunk": "^2.0.0",
     "rimraf": "^2.5.4",
@@ -142,6 +144,8 @@
     "url-loader": "^0.5.6",
     "validator": "^6.2.1",
     "webpack": "^1.12.14",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-hot-middleware": "^2.12.2",
     "yargs": "^6.3.0"
   },
   "devDependencies": {
@@ -173,10 +177,7 @@
     "nodemon": "^1.10.2",
     "phantomjs-prebuilt": "^2.1.12",
     "react-addons-test-utils": "^15.0.0",
-    "redbox-react": "^1.2.10",
     "sinon": "^1.17.5",
-    "sinon-chai": "^2.8.0",
-    "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.12.2"
+    "sinon-chai": "^2.8.0"
   }
 }

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import validator from 'validator';
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -47,6 +48,13 @@ export function pollSubmit(data) {
           },
         };
 
+        // sanitize inputs
+        data.title = validator.blacklist(validator.trim(data.title), '\\[\\]\\\\');
+        data.options = data.options.map((option) => {
+          option.text = validator.blacklist(validator.trim(option.text), '\\[\\]\\\\');
+          return option;
+        });
+
         axios.post('/api/newPoll', {
           data,
           tokenSource,
@@ -67,7 +75,7 @@ export function pollSubmit(data) {
         console.log(e);
       }
     } else {
-      dispatch(actions.setSnackBar())
+      dispatch(actions.setSnackBar());
     }
   };
 }
