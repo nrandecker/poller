@@ -111,6 +111,12 @@ export function githubLogin() {
 
 export function signUp(data) {
   return (dispatch) => {
+    // sanitize inputs
+    data.email = validator.blacklist(validator.trim(data.email), '\\[\\]\\\\');
+    data.password = validator.blacklist(validator.trim(data.password), '\\[\\]\\\\');
+    data.firstName = validator.blacklist(validator.trim(data.firstName), '\\[\\]\\\\');
+    data.lastName = validator.blacklist(validator.trim(data.lastName), '\\[\\]\\\\');
+
     axios.post('/auth/signup', {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -137,6 +143,10 @@ export function signUp(data) {
 
 export function login(data) {
   return (dispatch) => {
+    // sanitize inputs
+    data.email = validator.blacklist(validator.trim(data.email), '\\[\\]\\\\');
+    data.password = validator.blacklist(validator.trim(data.password), '\\[\\]\\\\');
+
     axios.post('/auth/login', {
       email: data.email,
       password: data.password,
