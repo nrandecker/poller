@@ -13,7 +13,6 @@ export const createRoutes = () => (
     <IndexRoute component={HomeContainer} />
     <Route path="/login" component={LoginContainer} />
     <Route path="/signup" component={SignupContainer} />
-    <Route path="/forgot" />
     <Route path="/profile" component={UserProfileContainer} />
     <Route path="/poll/:id" component={PollContainer} />
   </Route>

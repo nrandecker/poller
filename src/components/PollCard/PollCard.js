@@ -22,14 +22,34 @@ const styles = {
 
 
 class PollCard extends Component {
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     this.props.getPolls();
   }
   handleListItemClick = id => () => {
     browserHistory.push(`/poll/${id}`);
   }
   render() {
-    const pollCard = this.props.polls.map((poll, index) => {
+    // const trendingSortedPolls = [...this.props.polls];
+
+    /* sort the polls by votes for the trending card
+    const sortVotes = trendingSortedPolls.map((poll) => {
+      let votes = 0;
+      poll.options.map((option) => {
+        votes += option.votes;
+        return votes;
+      });
+
+      return poll.options.sort((a, b) => {
+        return a.votes - b.votes;
+      });
+    });
+
+    console.log(sortVotes);
+
+    */
+
+    const newPollCard = this.props.polls.map((poll, index) => {
       let votes = 0;
       poll.options.map((option) => {
         votes += option.votes;
@@ -63,7 +83,7 @@ class PollCard extends Component {
             <Paper style={styles.paper} zDepth={2}>
               <h1>Trending Polls</h1>
               <List>
-                {pollCard}
+                {newPollCard}
               </List>
             </Paper>
           </div>
@@ -71,7 +91,7 @@ class PollCard extends Component {
             <Paper style={styles.paper} zDepth={2}>
               <h1>New Polls</h1>
               <List>
-                {pollCard}
+                {newPollCard}
               </List>
             </Paper>
           </div>

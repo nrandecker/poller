@@ -86,13 +86,6 @@ body {
   p {
     margin: 0 auto;
   }
-  .forgot {
-    margin: 5px auto;
-    margin-right: 40px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-  }
 }
 
 .poll {
@@ -110,9 +103,6 @@ body {
   margin: 30px auto;
 }
 
-.poll-card {
-}
-
 .chip-wrapper {
   margin: 10px auto;
   width: 75%;
@@ -120,6 +110,27 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.voted {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+  .icons {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    i {
+      cursor: pointer;
+      padding: 0px 10px;
+      font-size: 30px;
+    }
+    a {
+      color: $main;
+    }
+  }
 }
 
 .footer {

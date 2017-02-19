@@ -9,6 +9,8 @@ export const SET_POLL_VOTES = 'SET_POLL_VOTES';
 export const SET_OPTION_VOTE = 'SET_VOTE';
 export const SHOW_VOTE_TRUE = 'SHOW_VOTE_TRUE';
 export const SHOW_VOTE_FALSE = 'SHOW_VOTE_FALSE';
+export const SET_VOTE = 'SET_VOTE';
+export const RESET = 'RESET';
 
 // ------------------------------------
 // Actions
@@ -38,6 +40,7 @@ export function vote(id, option) {
     .then((res) => {
       const { poll } = res.data;
       dispatch(actions.setPollVotes(poll));
+      dispatch(actions.setVoteStatus(true));
     })
     .catch((err) => {
       console.log(err);
@@ -55,6 +58,19 @@ export function setPollVotes(poll) {
   return {
     type: SET_POLL_VOTES,
     votes,
+  };
+}
+
+export function setVoteStatus(voteStatus) {
+  return {
+    type: SET_VOTE,
+    voteStatus,
+  };
+}
+
+export function reset() {
+  return {
+    type: RESET,
   };
 }
 
@@ -100,6 +116,7 @@ export const actions = {
   setPollVotes,
   showVoteFalse,
   showVoteTrue,
+  setVoteStatus,
 };
 
 
@@ -127,6 +144,18 @@ const ACTION_HANDLERS = {
     ...state,
     votes: action.votes,
   }),
+  [SET_VOTE]: (state, action) => ({
+    ...state,
+    voted: action.voteStatus,
+  }),
+  [RESET]: state => ({
+    ...state,
+    pollTitle: '',
+    pollOptions: [],
+    optionVote: false,
+    votes: [],
+    voted: false,
+  }),
 };
 
 // ------------------------------------
@@ -137,6 +166,7 @@ const initialState = {
   pollOptions: [],
   optionVote: false,
   votes: [],
+  voted: false,
 };
 
 export default function navbarReducer(state = initialState, action) {

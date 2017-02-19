@@ -83,11 +83,6 @@ class Login extends Component {
                     onChange={this.handleChange}
                     onFocus={this.handleOnFocus}
                   /><br />
-                  <div className="forgot">
-                    <Link to="/forgot">
-                      <p>Forgot Password?</p>
-                    </Link>
-                  </div>
                   <RaisedButton label="Login" type="submit" disabled={this.props.submitDisabled} primary style={style.button} />
                 </form>
                 <Divider />

@@ -60,10 +60,8 @@ Logged.propTypes = {
 };
 
 class Navbar extends Component {
-  componentWillMount() {
-    this.props.auth();
-  }
-  componenetWillUpdate() {
+  constructor(props) {
+    super(props);
     this.props.auth();
   }
   handleLogOut = () => {

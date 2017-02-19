@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getPoll, showVote, vote } from '../../modules/poll';
+import { getPoll, showVote, vote, reset } from '../../modules/poll';
 import Poll from './Poll';
 
 const mapStatetoProps = state => ({
@@ -7,12 +7,14 @@ const mapStatetoProps = state => ({
   pollOptions: state.poll.pollOptions,
   optionVote: state.poll.optionVote,
   votes: state.poll.votes,
+  voted: state.poll.voted,
 });
 
 const mapDispatchToProps = {
   getPoll,
   showVote,
   vote,
+  reset,
 };
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Poll);
