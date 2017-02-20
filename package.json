@@ -120,7 +120,7 @@
     "material-ui": "^0.16.7",
     "moment": "^2.17.1",
     "mongoose": "^4.8.0",
-    "node-sass": "^4.5.0",
+    "node-sass": "^3.4.3",
     "normalize.css": "^5.0.0",
     "passport": "^0.3.2",
     "passport-github2": "^0.1.10",
