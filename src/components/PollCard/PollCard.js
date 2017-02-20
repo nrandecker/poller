@@ -74,7 +74,7 @@ class PollCard extends Component {
 
 
     // sort polls by the newest created
-    const newSortedPolls = [...this.props.polls];
+    const newSortedPolls = [...this.props.polls].reverse();
 
     const newPollCard = newSortedPolls.map((poll, index) => {
       let votes = 0;
