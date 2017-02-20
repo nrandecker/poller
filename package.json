@@ -126,6 +126,7 @@
     "passport-github2": "^0.1.10",
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
+    "phantomjs-prebuilt": "^2.1.14",
     "postcss-loader": "^1.1.0",
     "react": "^15.4.2",
     "react-chartjs-2": "^2.0.0",
