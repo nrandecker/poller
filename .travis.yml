@@ -6,8 +6,8 @@ cache:
   directories:
   - node_modules
 install:
-- npm install -g yarn
-- yarn install
+- npm install
+- npm rebuild node-sass
 script:
 - npm run deploy:prod
 after_success:
