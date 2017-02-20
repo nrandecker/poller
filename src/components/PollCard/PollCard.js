@@ -9,8 +9,7 @@ import { browserHistory } from 'react-router';
 
 const styles = {
   paper: {
-    height: '700px',
-    overflowY: 'scroll',
+    height: '100%',
     width: '100%',
     textAlign: 'center',
     margin: '20px auto',

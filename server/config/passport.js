@@ -80,13 +80,14 @@ module.exports = function passportStrategies(passport) {
   },
   (token, refreshToken, profile, done) => {
     process.nextTick(() => {
-      User.findOne({ 'google.id': profile.id }, (err, user) => {
-        if (err) console.log(err);
+      const promise = User.findOne({ 'google.id': profile.id }).exec();
 
+      promise.then((user) => {
         if (user) {
           // if a user is found, log them in
           return done(null, user);
         }
+
         const newUser = new User();
 
         newUser.google.id = profile.id;
@@ -94,11 +95,15 @@ module.exports = function passportStrategies(passport) {
         newUser.google.name = profile.displayName;
         newUser.google.email = profile.emails[0].value; // pull the first email
 
-          // save the user
-        newUser.save(() => {
-          if (err) throw err;
+        console.log(newUser);
+
+        // save the user
+        return newUser.save((error) => {
+          if (error) console.log(error);
           return done(null, newUser);
         });
+      }).catch((err) => {
+        console.log(err);
       });
     });
   }));
@@ -110,9 +115,9 @@ module.exports = function passportStrategies(passport) {
   },
   (accessToken, refreshToken, profile, done) => {
     process.nextTick(() => {
-      User.findOne({ 'github.id': profile.id }, (err, user) => {
-        if (err) console.log(err);
+      const promise = User.findOne({ 'github.id': profile.id }).exec();
 
+      promise.then((user) => {
         if (user) {
           return done(null, user);
         }
@@ -124,12 +129,15 @@ module.exports = function passportStrategies(passport) {
         newUser.github.id = profile._json.id;
         newUser.github.name = profile._json.name;
         newUser.github.token = accessToken;
+        newUser.github.refreshToken = refreshToken;
 
           // save the user
-        newUser.save(() => {
-          if (err) return done(err);
+        newUser.save((error) => {
+          if (error) return done(error);
           return done(null, newUser);
         });
+      }).catch((err) => {
+        console.log(err);
       });
     });
   }));
