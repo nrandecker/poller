@@ -9,7 +9,7 @@ dotenv.load();
 // load up the user model
 const User = require('../models/user');
 
-module.exports = function (passport) {
+module.exports = function passportStrategies(passport) {
   // used to serialize the user for the session
   passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -43,8 +43,8 @@ module.exports = function (passport) {
         newUser.local.lastName = req.body.lastName;
 
           // save the user
-        newUser.save((err) => {
-          if (err) console.log(err);
+        newUser.save((error) => {
+          if (error) console.log(error);
           return done(null, newUser);
         });
          // end else

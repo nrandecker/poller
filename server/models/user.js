@@ -34,12 +34,12 @@ const userSchema = mongoose.Schema({
 });
 
 // generate hash
-userSchema.methods.generateHash = function (password) {
+userSchema.methods.generateHash = function genHash(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 // checking if password is valid
-userSchema.methods.validPassword = function (password, hashPassword) {
+userSchema.methods.validPassword = function compare(password, hashPassword) {
   return bcrypt.compareSync(password, hashPassword);
 };
 

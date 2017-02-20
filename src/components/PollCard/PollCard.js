@@ -9,7 +9,8 @@ import { browserHistory } from 'react-router';
 
 const styles = {
   paper: {
-    height: '100%',
+    height: '700px',
+    overflowY: 'scroll',
     width: '100%',
     textAlign: 'center',
     margin: '20px auto',
@@ -30,26 +31,53 @@ class PollCard extends Component {
     browserHistory.push(`/poll/${id}`);
   }
   render() {
-    // const trendingSortedPolls = [...this.props.polls];
+    const trendingSortedPolls = [...this.props.polls];
 
-    /* sort the polls by votes for the trending card
-    const sortVotes = trendingSortedPolls.map((poll) => {
+    // tally all votes from the options
+    let sortVotes = trendingSortedPolls.map((poll) => {
       let votes = 0;
       poll.options.map((option) => {
         votes += option.votes;
         return votes;
       });
 
-      return poll.options.sort((a, b) => {
-        return a.votes - b.votes;
-      });
+      poll.totalVotes = votes;
+      return poll;
     });
 
-    console.log(sortVotes);
+    // sort the votes based on their votes
+    sortVotes = sortVotes.sort((a, b) => {
+      return b.totalVotes - a.totalVotes;
+    });
 
-    */
+    const trendingPollCard = sortVotes.map((poll, index) => {
+      return (
+        <div key={index}>
+          <Subheader
+            style={styles.subHeader}
+          >{poll.created}</Subheader>
+          <ListItem
+            onTouchTap={this.handleListItemClick(poll.id)}
+            primaryText={poll.title}
+            secondaryText={
+              <p>
+                <span style={{ color: darkBlack }}>{`Created By: ${poll.createdBy}`}</span>
+                <br />
+                {`Votes: ${poll.totalVotes}`}
+              </p>
+            }
+            secondaryTextLines={2}
+          />
+          <Divider />
+        </div>
+      );
+    });
 
-    const newPollCard = this.props.polls.map((poll, index) => {
+
+    // sort polls by the newest created
+    const newSortedPolls = [...this.props.polls];
+
+    const newPollCard = newSortedPolls.map((poll, index) => {
       let votes = 0;
       poll.options.map((option) => {
         votes += option.votes;
@@ -83,7 +111,7 @@ class PollCard extends Component {
             <Paper style={styles.paper} zDepth={2}>
               <h1>Trending Polls</h1>
               <List>
-                {newPollCard}
+                {trendingPollCard}
               </List>
             </Paper>
           </div>

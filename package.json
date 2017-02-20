@@ -44,7 +44,7 @@
       }
     },
     "deploy": {
-      "command": "npm run lint && npm run clean && npm run compile",
+      "command": "npm run lint && npm run test && npm run clean && npm run compile",
       "env": {
         "DEBUG": "app:*"
       }
@@ -106,6 +106,7 @@
     "debug": "^2.2.0",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
+    "express-history-api-fallback": "^2.1.0",
     "express-session": "^1.15.0",
     "extract-text-webpack-plugin": "^1.0.0",
     "file-loader": "^0.9.0",

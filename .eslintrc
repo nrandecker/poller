@@ -27,7 +27,7 @@
     "import/no-named-as-default": 0,
     "no-shadow": [1, { "builtinGlobals": false, "hoist": "functions", "allow": [] }],
     "no-unused-expressions": ["error", { "allowTernary": true }],
-    "consistent-return": 1,
+    "consistent-return": 0,
     "no-underscore-dangle": 0,
     "arrow-body-style": 0,
     "no-use-before-define": 0,
