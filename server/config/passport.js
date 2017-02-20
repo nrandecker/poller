@@ -132,7 +132,7 @@ module.exports = function passportStrategies(passport) {
         newUser.github.refreshToken = refreshToken;
 
           // save the user
-        newUser.save((error) => {
+        return newUser.save((error) => {
           if (error) return done(error);
           return done(null, newUser);
         });
