@@ -43,6 +43,7 @@ class Poll extends Component {
     const { id } = this.props.params;
     this.props.reset();
     this.props.getPoll(id);
+    this.props.checkVote(id);
   }
   handleChipTouchTap = option => () => {
     const { id } = this.props.params;
@@ -167,6 +168,7 @@ class Poll extends Component {
 Poll.propTypes = {
   params: React.PropTypes.object.isRequired,
   getPoll: React.PropTypes.func.isRequired,
+  checkVote: React.PropTypes.func.isRequired,
   votes: React.PropTypes.array.isRequired,
   pollOptions: React.PropTypes.array.isRequired,
   pollTitle: React.PropTypes.string,

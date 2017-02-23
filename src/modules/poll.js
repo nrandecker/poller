@@ -31,6 +31,21 @@ export function getPoll(id) {
   };
 }
 
+export function checkVote(id) {
+  return (dispatch) => {
+    if (window.localStorage.voted) {
+      try {
+        const votedArr = JSON.parse(window.localStorage.voted);
+        if (votedArr.voted.indexOf(id) !== -1) {
+          dispatch(actions.setVoteStatus(true));
+        }
+      } catch (e) {
+        if (e) console.log(e);
+      }
+    }
+  };
+}
+
 export function vote(id, option) {
   return (dispatch) => {
     axios.post('/api/vote', {
@@ -41,6 +56,20 @@ export function vote(id, option) {
       const { poll } = res.data;
       dispatch(actions.setPollVotes(poll));
       dispatch(actions.setVoteStatus(true));
+      try {
+        if (window.localStorage.voted) {
+          // add the id to the storedIds
+          const votedArr = JSON.parse(window.localStorage.voted);
+          votedArr.voted.push(id);
+          window.localStorage.setItem('voted', JSON.stringify(votedArr));
+        } else {
+          window.localStorage.voted = JSON.stringify(({
+            voted: [id],
+          }));
+        }
+      } catch (e) {
+        if (e) console.log(e);
+      }
     })
     .catch((err) => {
       console.log(err);

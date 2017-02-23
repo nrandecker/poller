@@ -22,6 +22,7 @@ describe('<Poll/>', () => {
         showVote: (_spies.showVote = sinon.spy()),
         vote: (_spies.vote = sinon.spy()),
         reset: (_spies.reset = sinon.spy()),
+        checkVote: (_spies.checkVote = sinon.spy()),
       }, _spies.dispatch = sinon.spy())
     }
     _wrapper = shallow(<Poll {..._props} />)
