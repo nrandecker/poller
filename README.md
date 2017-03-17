@@ -9,13 +9,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-- Node ```^4.5.0```
-- Yarn ```^0.17.0``` or npm ```^3.0.0```
+- Node `^4.5.0`
+- Yarn `^0.17.0` or npm `^3.0.0`
 
 ### Install from source
 
-``` $ git clone https://github.com/nrandecker/poller.git <my-project-name>
-$ cd <my-project-name> ```
+` $ git clone https://github.com/nrandecker/poller.git <my-project-name>
+$ cd <my-project-name> `
 
 Then install from npm or yarn
 
@@ -25,7 +25,7 @@ Then install from npm or yarn
 
 ## Testing
 
-``` $ npm run test ```
+` $ npm run test `
 
 ## Built With
 * [react](https://github.com/facebook/react)
